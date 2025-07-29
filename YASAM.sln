@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YASAM", "YASAM\YASAM.csproj", "{73100BF2-5C12-4B63-878C-3F3445682D6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YASAM.ViewModels", "YASAM.ViewModels\YASAM.ViewModels.csproj", "{3BA0DC37-0415-4D6D-A0D0-1523822793DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YASM.SteamInterface", "YASM.SteamInterface\YASM.SteamInterface.csproj", "{AE7EDDFE-57C0-4F14-993A-CEB1AA611B5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73100BF2-5C12-4B63-878C-3F3445682D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73100BF2-5C12-4B63-878C-3F3445682D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73100BF2-5C12-4B63-878C-3F3445682D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73100BF2-5C12-4B63-878C-3F3445682D6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BA0DC37-0415-4D6D-A0D0-1523822793DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BA0DC37-0415-4D6D-A0D0-1523822793DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BA0DC37-0415-4D6D-A0D0-1523822793DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BA0DC37-0415-4D6D-A0D0-1523822793DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE7EDDFE-57C0-4F14-993A-CEB1AA611B5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE7EDDFE-57C0-4F14-993A-CEB1AA611B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE7EDDFE-57C0-4F14-993A-CEB1AA611B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE7EDDFE-57C0-4F14-993A-CEB1AA611B5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
