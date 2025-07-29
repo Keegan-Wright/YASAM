@@ -4,6 +4,8 @@ using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using Avalonia.Markup.Xaml;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using YASAM.ViewModels;
 using YASAM.Views;
 
@@ -20,13 +22,22 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            var services = new ServiceCollection();
+            services.AddSingleton(desktop);
+            
+            services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<MainWindow>();
+            
+            
+            var provider = services.BuildServiceProvider();
+
+            Ioc.Default.ConfigureServices(provider);
+            
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(),
-            };
+            desktop.MainWindow = Ioc.Default.GetService<MainWindow>();
+            desktop.MainWindow.DataContext = Ioc.Default.GetService<MainWindowViewModel>();
         }
 
         base.OnFrameworkInitializationCompleted();

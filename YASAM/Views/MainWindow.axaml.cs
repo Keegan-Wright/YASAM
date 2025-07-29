@@ -1,8 +1,9 @@
 using Avalonia.Controls;
+using SukiUI.Controls;
 
 namespace YASAM.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : SukiWindow
 {
     public MainWindow()
     {
