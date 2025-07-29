@@ -6,5 +6,10 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YASAM.Views.YourGamesView"
              x:DataType="vm:YourGamesViewModel">
-    <TextBlock Text="{Binding DisplayName}"></TextBlock>
+    <StackPanel>
+        <TextBlock Text="{Binding DisplayName}"></TextBlock>
+        <TextBlock Text="{Binding OwnedGames}"></TextBlock>
+        <TextBlock Text="{Binding InstalledGames}"></TextBlock>
+    </StackPanel>
+
 </UserControl>
