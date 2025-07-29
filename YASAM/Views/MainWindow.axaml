@@ -8,6 +8,7 @@
                    x:Class="YASAM.Views.MainWindow"
                    x:DataType="vm:MainWindowViewModel"
                    Icon="/Assets/avalonia-logo.ico"
+                   BackgroundStyle="GradientDarker"
                    Title="YASAM">
 
     <Design.DataContext>

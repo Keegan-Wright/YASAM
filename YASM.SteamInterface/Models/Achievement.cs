@@ -1,6 +1,6 @@
 ﻿namespace YASM.SteamInterface;
 
-internal record Achievement
+public record Achievement
 {
     public string? Id { get; set; }
     public string? Name { get; set; }

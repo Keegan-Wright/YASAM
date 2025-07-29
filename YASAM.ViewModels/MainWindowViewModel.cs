@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace YASAM.ViewModels;
 
@@ -14,10 +15,11 @@ public partial class MainWindowViewModel : ViewModelBase
     
     public MainWindowViewModel()
     {
+        
         PageList =
         [
-            new YourGamesViewModel() { DisplayName = "Your Games" },
-            new IdlingGamesViewModel() { DisplayName = "Idling Games" },
+            Ioc.Default.GetRequiredService<YourGamesViewModel>(),
+            Ioc.Default.GetRequiredService<IdlingGamesViewModel>(),
         ];
     }
 }

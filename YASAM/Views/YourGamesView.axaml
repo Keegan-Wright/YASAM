@@ -3,13 +3,58 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:YASAM.ViewModels;assembly=YASAM.ViewModels"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YASAM.Views.YourGamesView"
              x:DataType="vm:YourGamesViewModel">
-    <StackPanel>
-        <TextBlock Text="{Binding DisplayName}"></TextBlock>
-        <TextBlock Text="{Binding OwnedGames}"></TextBlock>
-        <TextBlock Text="{Binding InstalledGames}"></TextBlock>
-    </StackPanel>
+    <Interaction.Behaviors>
+        <RoutedEventTriggerBehavior
+            RoutedEvent="{x:Static  Control.LoadedEvent}">
+            <InvokeCommandAction
+                Command="{Binding LoadCommand, Mode=OneTime}" />
+        </RoutedEventTriggerBehavior>
+    </Interaction.Behaviors>
+    
+    <sukiUi:GlassCard Margin="10">
+        <Grid RowDefinitions="Auto, *" RowSpacing="10">
+            <StackPanel>
+                <TextBlock Classes="h1">Your Games</TextBlock>
+                <TextBlock Classes="caption">
+                    <TextBlock Text="{Binding OwnedGames}"></TextBlock>
+                    <TextBlock>Owned Games,</TextBlock>
+                    <TextBlock Text="{Binding InstalledGames}"></TextBlock>
+                    <TextBlock>Installed</TextBlock>
+                </TextBlock>
+            </StackPanel>
+
+        
+            <ScrollViewer Grid.Row="1" AllowAutoHide="True">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding Games}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel ItemSpacing="10" LineSpacing="10"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid RowDefinitions="*,*" ColumnDefinitions="2*,*,*" Width="300">
+                                    <Border Grid.ColumnSpan="3" ClipToBounds="True" CornerRadius="10">
+                                        <Image 
+                                            asyncImageLoader:ImageLoader.Source="{Binding ImageUrl }"></Image>
+                                    </Border>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Name}"></TextBlock>
+                                    <TextBlock Grid.Row="1" Grid.Column="1">Play</TextBlock>
+                                    <TextBlock Grid.Row="1" Grid.Column="2">Achievements</TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </sukiUi:GlassCard>
+
 
 </UserControl>

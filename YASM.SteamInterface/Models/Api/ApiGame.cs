@@ -2,10 +2,10 @@ using System.Text.Json.Serialization;
 
 namespace YASM.SteamInterface.Api;
 
-internal record ApiGame
+public record ApiGame
 {
     [JsonPropertyName("appid")]
-    public int AppId { get; set; }
+    public uint AppId { get; set; }
 
     [JsonPropertyName("name")]
     public string Name { get; set; }

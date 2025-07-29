@@ -1,6 +1,6 @@
 namespace YASM.SteamInterface;
 
-internal interface ISteamWorksService
+public interface ISteamWorksService
 {
     IAsyncEnumerable<Achievement> GetAchivementsByAppId(string appId);
     Task<bool> LockAchivement(string appId, string achivementId);
@@ -10,4 +10,6 @@ internal interface ISteamWorksService
     Task<bool> UpdateStats(string appId, IEnumerable<StatUpdate> statUpdates);
     Task<bool> ResetAllStats(string appId);
     Task<bool> IdleGame(string appId);
+
+    IAsyncEnumerable<Game> GetGames();
 }

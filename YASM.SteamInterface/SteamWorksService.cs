@@ -2,12 +2,12 @@ using Steamworks;
 
 namespace YASM.SteamInterface;
 
-internal class SteamWorksService : ISteamWorksService
+public class SteamWorksService : ISteamWorksService
 {
     private readonly CSteamID _steamId;
-    private readonly SteamApiClient _steamApiClient;
+    private readonly ISteamApiClient _steamApiClient;
     
-    public SteamWorksService(SteamApiClient steamApiClient)
+    public SteamWorksService(ISteamApiClient steamApiClient)
     {
         if (!SteamAPI.Init())
         {
@@ -57,14 +57,15 @@ internal class SteamWorksService : ISteamWorksService
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<Game> GetGames(string steamUserId)
+    public async IAsyncEnumerable<Game> GetGames()
     {
-        var games = _steamApiClient.GetGames(steamUserId);
+        var steamUserId = SteamUser.GetSteamID();
+        var games = _steamApiClient.GetGames(steamUserId.ToString());
 
         await foreach (var game in games)
         {
             var installed = SteamApps.BIsAppInstalled(new AppId_t(Convert.ToUInt32(game.AppId)));
-            yield return new Game(game.AppId, game.Name, installed,game.ImgIconUrl);
+            yield return new Game(game.AppId, game.Name, installed, $"https://cdn.cloudflare.steamstatic.com/steam/apps/{game.AppId}/header.jpg", game.PlaytimeForever);
         }
     }
 }

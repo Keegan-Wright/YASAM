@@ -2,7 +2,7 @@ using YASM.SteamInterface.Api;
 
 namespace YASM.SteamInterface;
 
-internal interface ISteamApiClient
+public interface ISteamApiClient
 {
     IAsyncEnumerable<ApiGame> GetGames(string steamUserId);
 
