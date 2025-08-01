@@ -1,4 +1,4 @@
-namespace YASM.SteamInterface.Enums;
+namespace YASAM.SteamInterface.Enums;
 
 [Flags]
 public enum StatFlags

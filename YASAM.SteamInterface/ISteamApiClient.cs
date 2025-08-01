@@ -1,6 +1,6 @@
-using YASM.SteamInterface.Api;
+using YASAM.SteamInterface.Api;
 
-namespace YASM.SteamInterface;
+namespace YASAM.SteamInterface;
 
 public interface ISteamApiClient
 {

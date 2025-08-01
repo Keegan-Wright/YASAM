@@ -1,4 +1,4 @@
-namespace YASM.SteamInterface;
+namespace YASAM.SteamInterface;
 
 public interface ISteamWorksService
 {

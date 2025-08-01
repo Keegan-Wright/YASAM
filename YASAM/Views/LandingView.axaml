@@ -21,7 +21,7 @@
     <sukiUi:GlassCard>
         <Grid RowDefinitions="Auto, *">
             
-            <sukiUi:GlassCard>
+            <sukiUi:GlassCard IsInteractive="True">
                 <StackPanel>
                     <TextBlock Classes="h1">Add a new user</TextBlock>
                 
@@ -79,7 +79,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <sukiUi:GlassCard>
+                        <sukiUi:GlassCard IsInteractive="True">
                             <StackPanel>
                                 <TextBlock Text="{Binding Name}"></TextBlock>
                                 

@@ -18,7 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\YASAM.Services.Client\YASAM.Services.Client.csproj" />
-      <ProjectReference Include="..\YASM.SteamInterface\YASM.SteamInterface.csproj" />
+      <ProjectReference Include="..\YASAM.SteamInterface\YASAM.SteamInterface.csproj" />
     </ItemGroup>
 
 </Project>

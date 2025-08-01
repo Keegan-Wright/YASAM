@@ -1,4 +1,4 @@
-namespace YASM.SteamInterface;
+namespace YASAM.SteamInterface;
 
 internal record Stat
 {

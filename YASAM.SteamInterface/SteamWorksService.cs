@@ -1,6 +1,6 @@
 using Steamworks;
 
-namespace YASM.SteamInterface;
+namespace YASAM.SteamInterface;
 
 public class SteamWorksService : ISteamWorksService
 {

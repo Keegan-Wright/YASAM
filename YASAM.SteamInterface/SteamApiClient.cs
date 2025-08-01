@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
-using YASM.SteamInterface.Api;
+using YASAM.SteamInterface.Api;
 
-namespace YASM.SteamInterface;
+namespace YASAM.SteamInterface;
 
 public class SteamApiClient : HttpClient, ISteamApiClient
 {
