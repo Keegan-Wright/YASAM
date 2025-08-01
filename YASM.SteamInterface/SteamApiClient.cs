@@ -6,19 +6,17 @@ namespace YASM.SteamInterface;
 public class SteamApiClient : HttpClient, ISteamApiClient
 {
     private readonly HttpClient _client;
-    private readonly string _SteamApiKey;
     
     public SteamApiClient(HttpClient client)
     {
         _client = client;
-        _SteamApiKey = "TEMPPLACEHOLDER";
     }
 
 
-    public async IAsyncEnumerable<ApiGame> GetGames(string steamUserId)
+    public async IAsyncEnumerable<ApiGame> GetGames(ulong steamUserId, string steamApiKey)
     {
         
-        var apiResponse =  await _client.GetFromJsonAsync<ApiGetOwnedGames?>($"/IPlayerService/GetOwnedGames/v0001/?key={_SteamApiKey}&steamid={steamUserId}&include_played_free_games=true&include_appinfo=true");
+        var apiResponse =  await _client.GetFromJsonAsync<ApiGetOwnedGames?>($"/IPlayerService/GetOwnedGames/v0001/?key={steamApiKey}&steamid={steamUserId}&include_played_free_games=true&include_appinfo=true");
 
         foreach (var game in apiResponse.Response.Games)
         {

@@ -10,6 +10,4 @@ public interface ISteamWorksService
     Task<bool> UpdateStats(string appId, IEnumerable<StatUpdate> statUpdates);
     Task<bool> ResetAllStats(string appId);
     Task<bool> IdleGame(string appId);
-
-    IAsyncEnumerable<Game> GetGames();
 }

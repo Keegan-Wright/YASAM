@@ -1,0 +1,105 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:YASAM.ViewModels;assembly=YASAM.ViewModels"
+             xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:views="clr-namespace:YASAM.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="YASAM.Views.LandingView"
+             x:DataType="vm:LandingViewModel">
+    
+    <Interaction.Behaviors>
+        <RoutedEventTriggerBehavior
+            RoutedEvent="{x:Static  Control.LoadedEvent}">
+            <InvokeCommandAction
+                Command="{Binding LoadCommand, Mode=OneTime}" />
+        </RoutedEventTriggerBehavior>
+    </Interaction.Behaviors>
+    
+    
+    <sukiUi:GlassCard>
+        <Grid RowDefinitions="Auto, *">
+            
+            <sukiUi:GlassCard>
+                <StackPanel>
+                    <TextBlock Classes="h1">Add a new user</TextBlock>
+                
+                    <TextBlock Margin="6,0,0,3"
+                               FontWeight="DemiBold"
+                               Foreground="{DynamicResource SukiLowText}"
+                               Text="Username" />
+                    <TextBox
+                        Classes="clearButton"
+                        Text="{Binding NewUserName}"
+                        Watermark="Username" />  
+                
+                    <TextBlock Margin="6,0,0,3"
+                               FontWeight="DemiBold"
+                               Foreground="{DynamicResource SukiLowText}"
+                               Text="Steam User Id" />
+                    <TextBox
+                        Classes="clearButton"
+                        Text="{Binding NewUserSteamId}"
+                        Watermark="Steam User Id" />  
+                
+                
+                    <TextBlock Margin="6,0,0,3"
+                               FontWeight="DemiBold"
+                               Foreground="{DynamicResource SukiLowText}"
+                               Text="API Key" />
+                    <TextBox
+                        Classes="clearButton"
+                        Text="{Binding NewUserSteamApiKey}"
+                        Watermark="API Key" />  
+                
+                    <Button Name="ButtonSignIn"
+                            Width="160"
+                            Height="40"
+                            Margin="0,0,0,7"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Classes="Flat Rounded"
+                            Command="{Binding AddTrackedUserCommand}"
+                            FontWeight="DemiBold">
+                        Track User
+                    </Button>
+                
+                </StackPanel>
+
+            </sukiUi:GlassCard>
+            
+            <ItemsControl Grid.Row="1"
+                          Padding="0 10 0 0"
+                          ItemsSource="{Binding TrackedUsers}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Spacing="10"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <sukiUi:GlassCard>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}"></TextBlock>
+                                
+                                <Button Name="ButtonSignIn"
+                                        Width="160"
+                                        Height="40"
+                                        Margin="0,0,0,7"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Bottom"
+                                        Classes="Flat Rounded"
+                                        Command="{Binding $parent[ItemsControl].((vm:LandingViewModel)DataContext).SelectUserCommand}"
+                                        CommandParameter="{Binding}"
+                                        FontWeight="DemiBold">
+                                    Select
+                                </Button>
+                            </StackPanel>
+                        </sukiUi:GlassCard>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </sukiUi:GlassCard>
+</UserControl>

@@ -56,16 +56,4 @@ public class SteamWorksService : ISteamWorksService
     {
         throw new NotImplementedException();
     }
-
-    public async IAsyncEnumerable<Game> GetGames()
-    {
-        var steamUserId = SteamUser.GetSteamID();
-        var games = _steamApiClient.GetGames(steamUserId.ToString());
-
-        await foreach (var game in games)
-        {
-            var installed = SteamApps.BIsAppInstalled(new AppId_t(Convert.ToUInt32(game.AppId)));
-            yield return new Game(game.AppId, game.Name, installed, $"https://cdn.cloudflare.steamstatic.com/steam/apps/{game.AppId}/header.jpg", game.PlaytimeForever);
-        }
-    }
 }

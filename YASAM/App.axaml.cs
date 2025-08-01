@@ -8,9 +8,12 @@ using System.Net.Http.Headers;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SukiUI;
 using SukiUI.Models;
+using YASAM.Data;
+using YASAM.Services.Client;
 using YASAM.ViewModels;
 using YASAM.Views;
 using YASM.SteamInterface;
@@ -30,6 +33,10 @@ public partial class App : Application
         {
             var services = new ServiceCollection();
             services.AddSingleton(desktop);
+
+            SQLitePCL.Batteries.Init();
+            services.AddDbContext<YasamDbContext>();
+            
             
             AddWindows(services);
             AddViews(services);
@@ -39,6 +46,20 @@ public partial class App : Application
             var provider = services.BuildServiceProvider();
 
             Ioc.Default.ConfigureServices(provider);
+            
+            
+            
+            var db = Ioc.Default.GetRequiredService<YasamDbContext>();
+
+            try
+            {
+                db.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+                _ = db.Database.EnsureCreated();
+            }
+            
             
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
@@ -59,6 +80,8 @@ public partial class App : Application
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<YourGamesViewModel>();
         services.AddSingleton<IdlingGamesViewModel>();
+        services.AddSingleton<LandingViewModel>();
+        services.AddSingleton<SelectedUserViewModel>();
     }
 
     private static void AddWindows(ServiceCollection services)
@@ -70,10 +93,12 @@ public partial class App : Application
     {
         services.AddSingleton<YourGamesView>();
         services.AddSingleton<IdlingGamesView>();
+        services.AddSingleton<LandingView>();
     }
 
     private static void AddServices(ServiceCollection services)
     {
+        services.AddSingleton<IUserService, UserService>();
         services.AddHttpClient<ISteamApiClient, SteamApiClient>(client =>
         {
             client.BaseAddress = new Uri("http://api.steampowered.com/");

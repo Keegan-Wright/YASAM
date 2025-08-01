@@ -11,20 +11,16 @@ public sealed partial class GameViewModel : ViewModelBase
     private string _name;
     
     [ObservableProperty]
-    private bool _installed;
-    
-    [ObservableProperty]
     private string _imageUrl;
     
     [ObservableProperty]
     private int _playTime;
 
-    public GameViewModel(uint appId, string name, bool installed, string imageUrl, int playTime)
+    public GameViewModel(uint appId, string name, int playTime)
     {
         AppId = appId;
         Name = name;
-        Installed = installed;
-        ImageUrl = imageUrl;
+        ImageUrl = $"https://cdn.cloudflare.steamstatic.com/steam/apps/{AppId}/header.jpg";
         PlayTime = playTime;
     }
 }

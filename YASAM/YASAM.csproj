@@ -25,6 +25,14 @@
         </PackageReference>
         <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.3.0.6" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.7">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.7" />
@@ -33,6 +41,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\YASAM.Data\YASAM.Data.csproj" />
+      <ProjectReference Include="..\YASAM.Services.Client\YASAM.Services.Client.csproj" />
       <ProjectReference Include="..\YASAM.ViewModels\YASAM.ViewModels.csproj" />
     </ItemGroup>
 
