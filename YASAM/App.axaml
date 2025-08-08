@@ -1,6 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              x:Class="YASAM.App"
              xmlns:local="using:YASAM"
              RequestedThemeVariant="Default">
@@ -12,5 +13,6 @@
   
              <Application.Styles>
                  <sukiUi:SukiTheme Locale="en-GB" />
+                 <materialIcons:MaterialIconStyles />
              </Application.Styles>
 </Application>

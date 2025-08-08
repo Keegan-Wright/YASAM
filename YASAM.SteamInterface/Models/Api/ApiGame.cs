@@ -5,7 +5,7 @@ namespace YASAM.SteamInterface.Api;
 public record ApiGame
 {
     [JsonPropertyName("appid")]
-    public uint AppId { get; set; }
+    public ulong AppId { get; set; }
 
     [JsonPropertyName("name")]
     public string Name { get; set; }

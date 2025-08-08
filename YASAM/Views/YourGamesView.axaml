@@ -21,29 +21,51 @@
         <Grid RowDefinitions="Auto, *" RowSpacing="10">
             <StackPanel>
                 <TextBlock Classes="h1">Your Games</TextBlock>
-                <TextBlock Classes="caption">
+                
+                <TextBlock Classes="caption" IsVisible="{Binding !Loading}">
                     <Run Text="{Binding OwnedGames}"></Run>
                     <Run>Owned Games</Run>
                 </TextBlock>
             </StackPanel>
+            
+
+                
+                <ScrollViewer Grid.Row="1" AllowAutoHide="True">
+                    <sukiUi:BusyArea IsBusy="{Binding Loading}">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding Games}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel ItemSpacing="10" LineSpacing="10"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <controls:GameCard> 
+                                        <Interaction.Behaviors>
+                                            <RoutedEventTriggerBehavior
+                                                RoutedEvent="{x:Static  controls:GameCard.IdleEvent}">
+                                                <InvokeCommandAction
+                                                    Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).IdleRequested, Mode=OneTime}"
+                                                    CommandParameter="{Binding AppId}"/>
+                                            </RoutedEventTriggerBehavior>
+                                            
+                                            <RoutedEventTriggerBehavior
+                                                RoutedEvent="{x:Static  controls:GameCard.ShowAchievementsEvent}">
+                                                <InvokeCommandAction
+                                                    Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).ShowAchievements, Mode=OneTime}"
+                                                    CommandParameter="{Binding AppId}"/>
+                                            </RoutedEventTriggerBehavior>
+                                        </Interaction.Behaviors>
+                                    </controls:GameCard>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                    </sukiUi:BusyArea>
+                </ScrollViewer>
 
         
-            <ScrollViewer Grid.Row="1" AllowAutoHide="True">
-                <StackPanel>
-                    <ItemsControl ItemsSource="{Binding Games}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel ItemSpacing="10" LineSpacing="10"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <controls:GameCard></controls:GameCard>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </ScrollViewer>
         </Grid>
     </sukiUi:GlassCard>
 

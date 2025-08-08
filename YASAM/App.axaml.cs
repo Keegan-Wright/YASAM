@@ -16,7 +16,7 @@ using YASAM.Data;
 using YASAM.Services.Client;
 using YASAM.ViewModels;
 using YASAM.Views;
-using YASM.SteamInterface;
+using YASAM.SteamInterface;
 
 namespace YASAM;
 

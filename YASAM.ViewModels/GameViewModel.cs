@@ -5,7 +5,7 @@ namespace YASAM.ViewModels;
 public sealed partial class GameViewModel : ViewModelBase
 {
     [ObservableProperty]
-    private uint _appId;
+    private ulong _appId;
     
     [ObservableProperty]
     private string _name;
@@ -16,7 +16,7 @@ public sealed partial class GameViewModel : ViewModelBase
     [ObservableProperty]
     private int _playTime;
 
-    public GameViewModel(uint appId, string name, int playTime)
+    public GameViewModel(ulong appId, string name, int playTime)
     {
         AppId = appId;
         Name = name;

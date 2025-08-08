@@ -13,20 +13,25 @@ public sealed partial class YourGamesViewModel : PageViewModelBase
     public override string DisplayName { get; init; }
 
     private readonly ISteamApiClient _steamApiClient;
-
+    private readonly ISteamWorksService _steamWorksService;
+    
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(OwnedGames))]
     private ObservableCollection<GameViewModel> _games = [];
+
+    [ObservableProperty]
+    private bool _loading;
     
     public int OwnedGames => Games.Count;
     
     [ObservableProperty]
     private DateTimeOffset? _lastUpdated;
 
-    public YourGamesViewModel(ISteamApiClient steamApiClient, SelectedUserViewModel selectedUser)
+    public YourGamesViewModel(ISteamApiClient steamApiClient, SelectedUserViewModel selectedUser, ISteamWorksService steamWorksService)
     {
         _selectedUser = selectedUser;
+        _steamWorksService = steamWorksService;
         _steamApiClient = steamApiClient;
         DisplayName = "Your Games";
     }
@@ -37,6 +42,7 @@ public sealed partial class YourGamesViewModel : PageViewModelBase
     {
         if (!LastUpdated.HasValue || (DateTimeOffset.UtcNow - LastUpdated?.UtcDateTime > TimeSpan.FromMinutes(5)))
         {
+            Loading = true;
             var games  = _steamApiClient.GetGames(_selectedUser.SteamUserId, _selectedUser.ApiKey);
            var gameVMs = new List<GameViewModel>();
             await foreach (var game in games)
@@ -45,7 +51,19 @@ public sealed partial class YourGamesViewModel : PageViewModelBase
             }
             Games = new ObservableCollection<GameViewModel>(gameVMs.OrderBy(x => x.Name));
             LastUpdated = DateTimeOffset.UtcNow;
+            Loading = false;
         }
+    }
+
+    public void IdleRequested(ulong appId)
+    {
+        _steamWorksService.IdleGame(appId);
+    }
+
+
+    public void ShowAchievements(ulong appId)
+    {
+        
     }
 
 }
