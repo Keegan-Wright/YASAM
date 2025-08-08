@@ -8,6 +8,7 @@ internal class Program
         app.Configure(config =>
         {
             config.AddCommand<IdleGameCommand>("idle");
+            config.AddCommand<UnlockSingleAchievementCommand>("unlockAchievement");
         });
 
 
@@ -18,5 +19,6 @@ internal class Program
 
 public enum SteamUtilityCommandType
 {
-    Idle
+    Idle,
+    UnlockSingleAchievement,
 }

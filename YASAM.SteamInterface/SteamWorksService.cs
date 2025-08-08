@@ -32,7 +32,10 @@ public class SteamWorksService : ISteamWorksService
 
     public Task<bool> UnlockAchivement(ulong appId, string achivementId)
     {
-        throw new NotImplementedException();
+ 
+        var process = InvokeSteamCommand(appId,SteamUtilityCommandType.UnlockSingleAchievement);
+        process.WaitForExit();
+        return Task.FromResult(process.ExitCode == 0);
     }
 
     public Task<bool> LockAllAchievements(ulong appId)
@@ -57,33 +60,39 @@ public class SteamWorksService : ISteamWorksService
 
     public async Task<bool> IdleGame(GameToInvoke gameToInvoke)
     {
+        await UnlockAchivement(gameToInvoke.AppId, "");
+        return true;
         if (_idlingGames.ContainsKey(gameToInvoke.AppId))
         {
             return true;
         }
 
-        var processId = InvokeSteamCommand(gameToInvoke.AppId,SteamUtilityCommandType.Idle);
-        _idlingGames.Add(gameToInvoke.AppId, new IdlingGame(processId, gameToInvoke.AppId, gameToInvoke.GameName));
+        var process = InvokeSteamCommand(gameToInvoke.AppId,SteamUtilityCommandType.Idle);
+        _idlingGames.Add(gameToInvoke.AppId, new IdlingGame(process.Id, gameToInvoke.AppId, gameToInvoke.GameName));
         return true;
     }
 
-    private int InvokeSteamCommand(ulong appId, SteamUtilityCommandType commandType)
+    private Process InvokeSteamCommand(ulong appId, SteamUtilityCommandType commandType)
     {
         using Process proc = new System.Diagnostics.Process ();
         proc.StartInfo.FileName = "/bin/bash";
-        proc.StartInfo.UseShellExecute = false; 
-        
+        proc.StartInfo.UseShellExecute = false;
+        var baseCommandPath = "./YASAM.SteamInterface.Executor";
         switch (commandType)
         {
             case SteamUtilityCommandType.Idle:
             {
-                
-                proc.StartInfo.Arguments = $"-c \" ./YASAM.SteamInterface.Executor idle {appId} \"";
+                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} idle {appId} \"";
+                break;
+            }
+            case SteamUtilityCommandType.UnlockSingleAchievement:
+            {
+                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} unlockAchievement {appId} 115 \"";
                 break;
             }
         }
         proc.Start();
-        return proc.Id;
+        return proc;
     }
 
     public bool StopIdleGame(GameToInvoke gameToInvoke)

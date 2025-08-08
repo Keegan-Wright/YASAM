@@ -3,6 +3,7 @@ using System.Text;
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Steamworks;
+using YASAM.SteamInterface.Executor.Helpers;
 
 public class IdleGameCommand : AsyncCommand<IdleGameCommand.Settings>
 {
@@ -15,17 +16,7 @@ public class IdleGameCommand : AsyncCommand<IdleGameCommand.Settings>
     {
         AnsiConsole.MarkupLine($"[grey]IdleGameCommand for app id: {settings.AppId}[/]");
 
-        var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-        var fileName = "steam_appid.txt";
-
-        var combinedPath = Path.Combine(appPath, fileName);
-        if (File.Exists(combinedPath)) File.Delete(combinedPath);
-
-        using var filestream = new FileStream(combinedPath, FileMode.CreateNew);
-        using var writer = new StreamWriter(filestream, Encoding.ASCII);
-        writer.Write(settings.AppId);
-        writer.Flush();
-        writer.Close();
+        SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
 
 
         AppDomain.CurrentDomain.ProcessExit += (_, __) =>
@@ -50,4 +41,5 @@ public class IdleGameCommand : AsyncCommand<IdleGameCommand.Settings>
         
         while (true) Thread.Sleep(1000);
     }
+    
 }
