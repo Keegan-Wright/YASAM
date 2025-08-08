@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YASAM.Data", "YASAM.Data\YA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YASAM.Services.Client", "YASAM.Services.Client\YASAM.Services.Client.csproj", "{E3320EEF-39D7-45C0-AC7A-6107CA6793A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YASAM.SteamInterface.Executor", "YASAM.SteamInterface.Executor\YASAM.SteamInterface.Executor.csproj", "{49425602-4C35-43EC-A9D1-D8FFC30045A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{E3320EEF-39D7-45C0-AC7A-6107CA6793A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3320EEF-39D7-45C0-AC7A-6107CA6793A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3320EEF-39D7-45C0-AC7A-6107CA6793A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49425602-4C35-43EC-A9D1-D8FFC30045A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49425602-4C35-43EC-A9D1-D8FFC30045A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49425602-4C35-43EC-A9D1-D8FFC30045A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49425602-4C35-43EC-A9D1-D8FFC30045A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

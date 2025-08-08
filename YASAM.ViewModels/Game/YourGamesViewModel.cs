@@ -3,10 +3,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Steamworks;
 using YASAM.SteamInterface;
+using YASAM.SteamInterface.Internal;
 
 namespace YASAM.ViewModels;
 
-public sealed partial class YourGamesViewModel : PageViewModelBase
+public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardConsumer
 {
     
     private readonly SelectedUserViewModel _selectedUser;
@@ -55,13 +56,13 @@ public sealed partial class YourGamesViewModel : PageViewModelBase
         }
     }
 
-    public void IdleRequested(ulong appId)
+    public void IdleActionClicked(GameViewModel vm)
     {
-        _steamWorksService.IdleGame(appId);
+        _steamWorksService.IdleGame(new GameToInvoke(vm.AppId, vm.Name));
     }
 
 
-    public void ShowAchievements(ulong appId)
+    public void ShowAchievements(GameViewModel vm)
     {
         
     }

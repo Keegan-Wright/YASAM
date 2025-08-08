@@ -1,7 +1,10 @@
+using System.Collections.Frozen;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Text.Unicode;
 using Steamworks;
+using YASAM.SteamInterface.Internal;
 
 namespace YASAM.SteamInterface;
 
@@ -10,7 +13,7 @@ public class SteamWorksService : ISteamWorksService
     private protected CSteamID _steamUserId;
     private readonly ISteamApiClient _steamApiClient;
     
-    private readonly Dictionary<ulong, CancellationTokenSource> _idlingTasks = new();
+    private readonly Dictionary<ulong, IdlingGame> _idlingGames = new();
     
     public SteamWorksService(ISteamApiClient steamApiClient)
     {
@@ -52,83 +55,48 @@ public class SteamWorksService : ISteamWorksService
         throw new NotImplementedException();
     }
 
-    public async Task<bool> IdleGame(ulong appId)
+    public async Task<bool> IdleGame(GameToInvoke gameToInvoke)
     {
-        if (_idlingTasks.ContainsKey(appId))
+        if (_idlingGames.ContainsKey(gameToInvoke.AppId))
         {
-            await StopIdleGame(appId);
             return true;
         }
 
-        Console.WriteLine("Running idle game" + appId);
-        var cts = new CancellationTokenSource();
-        cts.CancelAfter(TimeSpan.FromSeconds(30));
-        _idlingTasks.Add(appId, cts);
-        await InitialiseSteamWithAppId(appId, cts.Token);
+        var processId = InvokeSteamCommand(gameToInvoke.AppId,SteamUtilityCommandType.Idle);
+        _idlingGames.Add(gameToInvoke.AppId, new IdlingGame(processId, gameToInvoke.AppId, gameToInvoke.GameName));
         return true;
     }
-    public async Task<bool> StopIdleGame(ulong appId)
+
+    private int InvokeSteamCommand(ulong appId, SteamUtilityCommandType commandType)
     {
-        await _idlingTasks[appId].CancelAsync();
-        return true;
-    }
-    private async Task InitialiseSteamWithAppId(ulong appId, CancellationToken token)
-    {
-        var runTask = Task.Run(async () =>
+        using Process proc = new System.Diagnostics.Process ();
+        proc.StartInfo.FileName = "/bin/bash";
+        proc.StartInfo.UseShellExecute = false; 
+        
+        switch (commandType)
         {
-            var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            var fileName = "steam_appid.txt";
-        
-            var combinedPath = Path.Combine(appPath, fileName);
-            if (File.Exists(combinedPath))
+            case SteamUtilityCommandType.Idle:
             {
-            
-                File.Delete(combinedPath);
-            }
-
-            using var filestream = new FileStream(combinedPath, FileMode.CreateNew); 
-            using var writer = new StreamWriter(filestream, Encoding.ASCII);
-            writer.Write(appId);
-            writer.Flush();
-            writer.Close();
-
-        
-            AppDomain.CurrentDomain.ProcessExit += (_, __) => SteamAPI.Shutdown();
-        
-            try
-            {
-                Environment.SetEnvironmentVariable("SteamAppId", appId.ToString());
-        
-                SteamAPI.InitEx(out string msg);
-                Console.WriteLine(msg);
-
-                if (!string.IsNullOrWhiteSpace(msg))
-                {
-                    throw new Exception(msg);
-                }
-            
-                Console.WriteLine($"SteamAppId: {appId}");
-                _steamUserId = SteamUser.GetSteamID();
-                Console.WriteLine($"SteamUserId: {_steamUserId}");
-
-                while (true)
-                {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
-                    
-                    Thread.Sleep(1000);
-                }
                 
+                proc.StartInfo.Arguments = $"-c \" ./YASAM.SteamInterface.Executor idle {appId} \"";
+                break;
             }
-            finally
-            {
-                SteamAPI.Shutdown();
-            }
-        }, token);
-        await runTask;
+        }
+        proc.Start();
+        return proc.Id;
+    }
 
-        var a = 1;
+    public bool StopIdleGame(GameToInvoke gameToInvoke)
+    {
+        var process = Process.GetProcessById(_idlingGames[gameToInvoke.AppId].ProcessId);
+        process.Kill();
+        _idlingGames.Remove(gameToInvoke.AppId);
+        return true;
+    }
+
+    public FrozenSet<IdlingGame> GetIdlingGames()
+    {
+        var games = _idlingGames.Select(x => x.Value).ToList();
+        return games.ToFrozenSet();
     }
 }

@@ -1,0 +1,22 @@
+﻿using Spectre.Console.Cli;
+
+internal class Program
+{
+    public static async Task Main(string[] args)
+    {
+        var app = new CommandApp();
+        app.Configure(config =>
+        {
+            config.AddCommand<IdleGameCommand>("idle");
+        });
+
+
+        await app.RunAsync(args);
+    }
+    
+}
+
+public enum SteamUtilityCommandType
+{
+    Idle
+}

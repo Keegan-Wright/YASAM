@@ -13,7 +13,7 @@
         <RoutedEventTriggerBehavior
             RoutedEvent="{x:Static  Control.LoadedEvent}">
             <InvokeCommandAction
-                Command="{Binding LoadCommand, Mode=OneTime}" />
+                Command="{Binding LoadCommand}" />
         </RoutedEventTriggerBehavior>
     </Interaction.Behaviors>
     
@@ -46,15 +46,15 @@
                                             <RoutedEventTriggerBehavior
                                                 RoutedEvent="{x:Static  controls:GameCard.IdleEvent}">
                                                 <InvokeCommandAction
-                                                    Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).IdleRequested, Mode=OneTime}"
-                                                    CommandParameter="{Binding AppId}"/>
+                                                    Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).IdleActionClicked, Mode=OneTime}"
+                                                    CommandParameter="{Binding }"/>
                                             </RoutedEventTriggerBehavior>
                                             
                                             <RoutedEventTriggerBehavior
                                                 RoutedEvent="{x:Static  controls:GameCard.ShowAchievementsEvent}">
                                                 <InvokeCommandAction
                                                     Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).ShowAchievements, Mode=OneTime}"
-                                                    CommandParameter="{Binding AppId}"/>
+                                                    CommandParameter="{Binding }"/>
                                             </RoutedEventTriggerBehavior>
                                         </Interaction.Behaviors>
                                     </controls:GameCard>

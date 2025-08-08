@@ -62,6 +62,7 @@ public sealed partial class LandingViewModel : PageViewModelBase
     {
         var selectedUser = Ioc.Default.GetRequiredService<SelectedUserViewModel>();
         selectedUser.UpdateSelectedUser(user.Id, user.Name, user.SteamUserId, user.ApiKey);
+        
     }
 
 }

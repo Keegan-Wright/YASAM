@@ -3,8 +3,63 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:YASAM.ViewModels;assembly=YASAM.ViewModels"
+             xmlns:controls="clr-namespace:YASAM.Controls"
+             xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YASAM.Views.IdlingGamesView"
              x:DataType="vm:IdlingGamesViewModel">
-    <TextBlock Text="{Binding DisplayName}"></TextBlock>
+    
+    <Interaction.Behaviors>
+        <RoutedEventTriggerBehavior
+            RoutedEvent="{x:Static  Control.LoadedEvent}">
+            <InvokeCommandAction
+                Command="{Binding LoadCommand, Mode=OneTime}" />
+        </RoutedEventTriggerBehavior>
+    </Interaction.Behaviors>
+    
+    
+    <sukiUi:GlassCard Margin="10">
+        <Grid RowDefinitions="Auto, *" RowSpacing="10">
+            <StackPanel>
+                <TextBlock Classes="h1">Your Idling Games</TextBlock>
+            </StackPanel>
+            
+                <ScrollViewer Grid.Row="1" AllowAutoHide="True">
+                    <sukiUi:BusyArea IsBusy="{Binding Loading}">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding IdlingGames}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel ItemSpacing="10" LineSpacing="10"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <controls:GameCard> 
+                                        <Interaction.Behaviors>
+                                            <RoutedEventTriggerBehavior
+                                                RoutedEvent="{x:Static  controls:GameCard.IdleEvent}">
+                                                <InvokeCommandAction
+                                                    Command="{Binding $parent[ItemsControl].((vm:IdlingGamesViewModel)DataContext).IdleActionClicked, Mode=OneTime}"
+                                                    CommandParameter="{Binding }"/>
+                                            </RoutedEventTriggerBehavior>
+                                            
+                                            <RoutedEventTriggerBehavior
+                                                RoutedEvent="{x:Static  controls:GameCard.ShowAchievementsEvent}">
+                                                <InvokeCommandAction
+                                                    Command="{Binding $parent[ItemsControl].((vm:IdlingGamesViewModel)DataContext).ShowAchievements, Mode=OneTime}"
+                                                    CommandParameter="{Binding }"/>
+                                            </RoutedEventTriggerBehavior>
+                                        </Interaction.Behaviors>
+                                    </controls:GameCard>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                    </sukiUi:BusyArea>
+                </ScrollViewer>
+
+        
+        </Grid>
+    </sukiUi:GlassCard>
 </UserControl>

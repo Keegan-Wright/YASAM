@@ -1,3 +1,6 @@
+using System.Collections.Frozen;
+using YASAM.SteamInterface.Internal;
+
 namespace YASAM.SteamInterface;
 
 public interface ISteamWorksService
@@ -9,6 +12,7 @@ public interface ISteamWorksService
     Task<bool> UnlockAllAchievements(ulong appId);
     Task<bool> UpdateStats(ulong appId, IEnumerable<StatUpdate> statUpdates);
     Task<bool> ResetAllStats(ulong appId);
-    Task<bool> IdleGame(ulong appId);
-    Task<bool> StopIdleGame(ulong appId);
+    Task<bool> IdleGame(GameToInvoke gameToInvoke);
+    bool StopIdleGame(GameToInvoke gameToInvoke);
+    FrozenSet<IdlingGame> GetIdlingGames();
 }
