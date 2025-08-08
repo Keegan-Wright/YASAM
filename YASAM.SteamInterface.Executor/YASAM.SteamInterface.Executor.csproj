@@ -8,15 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Facepunch.Steamworks" Version="2.3.0" />
       <PackageReference Include="Spectre.Console" Version="0.50.0" />
       <PackageReference Include="Spectre.Console.Cli" Version="0.50.0" />
-      <PackageReference Include="Steamworks.NET" Version="2024.8.0" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Steamworks.NET">
-        <HintPath>..\..\..\.nuget\packages\steamworks.net\2024.8.0\ref\netstandard2.1\Steamworks.NET.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>

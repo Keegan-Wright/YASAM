@@ -22,20 +22,15 @@ public class IdleGameCommand : AsyncCommand<IdleGameCommand.Settings>
         AppDomain.CurrentDomain.ProcessExit += (_, __) =>
         {
             AnsiConsole.MarkupLine("[red] Exiting[/]");
-            SteamAPI.Shutdown();
+            SteamClient.Shutdown();
         };
 
 
         Environment.SetEnvironmentVariable("SteamAppId", settings.AppId.ToString());
 
-        SteamAPI.InitEx(out var msg);
-        Console.WriteLine(msg);
+        SteamClient.Init(settings.AppId, true);
 
-        if (!string.IsNullOrWhiteSpace(msg))
-        {
-            AnsiConsole.MarkupLine($"[red] Error occured: {msg}[/]");
-            throw new Exception(msg);
-        }
+
 
         AnsiConsole.MarkupLine("[green] Successfully idling game[/]");
         

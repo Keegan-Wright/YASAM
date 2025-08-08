@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Steamworks.NET" Version="2024.8.0" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\YASAM.SteamInterface.Executor\YASAM.SteamInterface.Executor.csproj" />
     </ItemGroup>
 

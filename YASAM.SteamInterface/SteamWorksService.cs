@@ -1,16 +1,11 @@
 using System.Collections.Frozen;
 using System.Diagnostics;
-using System.Reflection;
-using System.Text;
-using System.Text.Unicode;
-using Steamworks;
 using YASAM.SteamInterface.Internal;
 
 namespace YASAM.SteamInterface;
 
 public class SteamWorksService : ISteamWorksService
 {
-    private protected CSteamID _steamUserId;
     private readonly ISteamApiClient _steamApiClient;
     
     private readonly Dictionary<ulong, IdlingGame> _idlingGames = new();
@@ -35,7 +30,9 @@ public class SteamWorksService : ISteamWorksService
  
         var process = InvokeSteamCommand(appId,SteamUtilityCommandType.UnlockSingleAchievement);
         process.WaitForExit();
+        process.Dispose();
         return Task.FromResult(process.ExitCode == 0);
+
     }
 
     public Task<bool> LockAllAchievements(ulong appId)
@@ -60,21 +57,22 @@ public class SteamWorksService : ISteamWorksService
 
     public async Task<bool> IdleGame(GameToInvoke gameToInvoke)
     {
-        await UnlockAchivement(gameToInvoke.AppId, "");
-        return true;
         if (_idlingGames.ContainsKey(gameToInvoke.AppId))
         {
             return true;
         }
 
         var process = InvokeSteamCommand(gameToInvoke.AppId,SteamUtilityCommandType.Idle);
+
         _idlingGames.Add(gameToInvoke.AppId, new IdlingGame(process.Id, gameToInvoke.AppId, gameToInvoke.GameName));
+        
+
         return true;
     }
 
     private Process InvokeSteamCommand(ulong appId, SteamUtilityCommandType commandType)
     {
-        using Process proc = new System.Diagnostics.Process ();
+        Process proc = new Process ();
         proc.StartInfo.FileName = "/bin/bash";
         proc.StartInfo.UseShellExecute = false;
         var baseCommandPath = "./YASAM.SteamInterface.Executor";
@@ -99,6 +97,7 @@ public class SteamWorksService : ISteamWorksService
     {
         var process = Process.GetProcessById(_idlingGames[gameToInvoke.AppId].ProcessId);
         process.Kill();
+        process.Dispose();
         _idlingGames.Remove(gameToInvoke.AppId);
         return true;
     }
