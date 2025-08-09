@@ -24,4 +24,14 @@ public class SteamApiClient : HttpClient, ISteamApiClient
         }
 
     }
+
+    public async IAsyncEnumerable<ApiGameAchievement> GetAchievements(ulong steamUserId, string apiKey, ulong appId)
+    {
+        var apiResponse =  await _client.GetFromJsonAsync<ApiAchievementsForGameResponse?>($"/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appId}&key={apiKey}&steamid={steamUserId}&l=en-gb");
+
+        foreach (var achievement in apiResponse.PlayerStats.Achievements)
+        {
+            yield return achievement;
+        }
+    }
 }

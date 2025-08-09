@@ -14,21 +14,18 @@ public class SteamWorksService : ISteamWorksService
     {
         _steamApiClient  = steamApiClient;
     }
-
-    public IAsyncEnumerable<Achievement> GetAchivementsByAppId(ulong appId)
-    {
-        throw new NotImplementedException();
-    }
-
     public Task<bool> LockAchivement(ulong appId, string achivementId)
     {
-        throw new NotImplementedException();
+        var process = InvokeSteamCommand(appId,SteamUtilityCommandType.LockSingleAchievement, achivementId);
+        process.WaitForExit();
+        process.Dispose();
+        return Task.FromResult(process.ExitCode == 0);
     }
 
     public Task<bool> UnlockAchivement(ulong appId, string achivementId)
     {
  
-        var process = InvokeSteamCommand(appId,SteamUtilityCommandType.UnlockSingleAchievement);
+        var process = InvokeSteamCommand(appId,SteamUtilityCommandType.UnlockSingleAchievement,  achivementId);
         process.WaitForExit();
         process.Dispose();
         return Task.FromResult(process.ExitCode == 0);
@@ -37,24 +34,20 @@ public class SteamWorksService : ISteamWorksService
 
     public Task<bool> LockAllAchievements(ulong appId)
     {
-        throw new NotImplementedException();
+        var process = InvokeSteamCommand(appId,SteamUtilityCommandType.LockAllAchievements);
+        process.WaitForExit();
+        process.Dispose();
+        return Task.FromResult(process.ExitCode == 0);
     }
 
     public Task<bool> UnlockAllAchievements(ulong appId)
     {
-        throw new NotImplementedException();
+        var process = InvokeSteamCommand(appId,SteamUtilityCommandType.UnlockAllAchievements);
+        process.WaitForExit();
+        process.Dispose();
+        return Task.FromResult(process.ExitCode == 0);
     }
-
-    public Task<bool> UpdateStats(ulong appId, IEnumerable<StatUpdate> statUpdates)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> ResetAllStats(ulong appId)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public async Task<bool> IdleGame(GameToInvoke gameToInvoke)
     {
         if (_idlingGames.ContainsKey(gameToInvoke.AppId))
@@ -70,7 +63,7 @@ public class SteamWorksService : ISteamWorksService
         return true;
     }
 
-    private Process InvokeSteamCommand(ulong appId, SteamUtilityCommandType commandType)
+    private Process InvokeSteamCommand(ulong appId, SteamUtilityCommandType commandType, string arguments = null!)
     {
         Process proc = new Process ();
         proc.StartInfo.FileName = "/bin/bash";
@@ -85,9 +78,21 @@ public class SteamWorksService : ISteamWorksService
             }
             case SteamUtilityCommandType.UnlockSingleAchievement:
             {
-                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} unlockAchievement {appId} 115 \"";
+                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} unlockAchievement {appId} {arguments} \"";
                 break;
             }
+            case SteamUtilityCommandType.LockSingleAchievement:
+                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} lockAchievement {appId} {arguments} \"";
+                break;
+            case SteamUtilityCommandType.LockAllAchievements:
+                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} lockAllAchievement {appId} \"";
+                break;
+
+            case SteamUtilityCommandType.UnlockAllAchievements:
+                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} unlockAllAchievements {appId} \"";
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(commandType), commandType, null);
         }
         proc.Start();
         return proc;

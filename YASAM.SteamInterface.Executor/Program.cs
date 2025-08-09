@@ -9,6 +9,9 @@ internal class Program
         {
             config.AddCommand<IdleGameCommand>("idle");
             config.AddCommand<UnlockSingleAchievementCommand>("unlockAchievement");
+            config.AddCommand<LockSingleAchievementCommand>("lockAchievement");
+            config.AddCommand<UnlockAllAchievementsCommand>("unlockAllAchievements");
+            config.AddCommand<LockAllAchievementsCommand>("lockAllAchievements");
         });
 
 
@@ -19,6 +22,9 @@ internal class Program
 
 public enum SteamUtilityCommandType
 {
-    Idle,
-    UnlockSingleAchievement,
+    Idle = 0,
+    UnlockSingleAchievement = 1,
+    LockSingleAchievement = 2,
+    LockAllAchievements = 3,
+    UnlockAllAchievements = 4
 }
