@@ -17,6 +17,9 @@ public partial class GameAchievementsViewModel : ViewModelBase
 
     [ObservableProperty]
     private bool _loading;
+    
+    [ObservableProperty]
+    private ulong _appId;
 
     public GameAchievementsViewModel(ISteamApiClient steamApiClient, ISteamWorksService steamWorksService, SelectedUserViewModel selectedUserViewModel)
     {
@@ -27,16 +30,19 @@ public partial class GameAchievementsViewModel : ViewModelBase
 
 
     [RelayCommand]
-    public async void LoadAchievements()
+    private async Task LoadAsync()
     {
         Loading = true;
-        var games  = _steamApiClient.GetAchievements(_selectedUserViewModel.SteamUserId, _selectedUserViewModel.ApiKey, AppId);
-        var gameVMs = new List<GameViewModel>();
-        await foreach (var game in games)
+        
+        var achievements  = _steamApiClient.GetAchievements(_selectedUserViewModel.SteamUserId, _selectedUserViewModel.ApiKey, AppId);
+        var achievementsVMs = new List<GameAchievementViewModel>();
+        
+        await foreach (var achievement in achievements)
         {
-            gameVMs.Add(new(game.AppId, game.Name, game.PlaytimeForever));
+            achievementsVMs.Add(new(achievement.ApiName, achievement.Name, achievement.Description, achievement.Achieved == 1, achievement.Hidden == 1, achievement.NotAchievedIcon, achievement.AchievedIcon));
         }
-        Games = new ObservableCollection<GameViewModel>(gameVMs.OrderBy(x => x.Name));
+        
+        Achievements = new ObservableCollection<GameAchievementViewModel>(achievementsVMs.OrderBy(x => x.DisplayName));
         Loading = false;
     }
 }

@@ -11,6 +11,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SukiUI;
+using SukiUI.Dialogs;
 using SukiUI.Models;
 using YASAM.Data;
 using YASAM.Services.Client;
@@ -42,6 +43,8 @@ public partial class App : Application
             AddViews(services);
             AddViewModels(services);
             AddServices(services);
+            
+            services.AddSingleton<ISukiDialogManager, SukiDialogManager>(x => new SukiDialogManager());
             
             var provider = services.BuildServiceProvider();
 
@@ -82,6 +85,7 @@ public partial class App : Application
         services.AddSingleton<IdlingGamesViewModel>();
         services.AddSingleton<LandingViewModel>();
         services.AddSingleton<SelectedUserViewModel>();
+        services.AddSingleton<GameAchievementsViewModel>();
     }
 
     private static void AddWindows(ServiceCollection services)
@@ -94,6 +98,7 @@ public partial class App : Application
         services.AddSingleton<YourGamesView>();
         services.AddSingleton<IdlingGamesView>();
         services.AddSingleton<LandingView>();
+        services.AddSingleton<GameAchievementsView>();
     }
 
     private static void AddServices(ServiceCollection services)

@@ -7,11 +7,35 @@ public partial class GameAchievementViewModel : ViewModelBase
     [ObservableProperty]
     private bool _achieved;
     
+    [ObservableProperty]
+    private bool _hidden;
+    
     
     [ObservableProperty]
     private string _id;
     
     
     [ObservableProperty]
-    private bool _displayName;
+    private string _displayName;
+    
+    [ObservableProperty]
+    private string _description;
+    
+    [ObservableProperty]
+    private string _icon;
+
+    [ObservableProperty]
+    private string _icongray;
+
+    public GameAchievementViewModel(string? achievementApiName, string achievementName, string achievementDescription, bool achievementAchieved, bool achievementHidden, string lockedIcon, string icon)
+    {
+        Id = achievementApiName;
+        DisplayName =  achievementName;
+        Description = achievementDescription;
+        Achieved = achievementAchieved;
+        Achieved = achievementAchieved;
+        Hidden = achievementHidden;
+        Icongray = lockedIcon;
+        Icon = icon;
+    }
 }

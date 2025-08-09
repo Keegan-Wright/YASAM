@@ -1,0 +1,37 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:YASAM.ViewModels;assembly=YASAM.ViewModels"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="vm:GameAchievementViewModel"
+             x:Class="YASAM.Controls.GameAchievementCard">
+    
+        <Grid
+              ColumnDefinitions="auto,*"
+              Width="300" 
+              RowSpacing="10"
+              ColumnSpacing="10">
+            
+            <Border Grid.ColumnSpan="3" ClipToBounds="True" CornerRadius="10">
+                
+                <Panel>
+                    
+                    <Image IsVisible="{Binding Achieved}"
+                        asyncImageLoader:ImageLoader.Source="{Binding Icon }"></Image>
+                    
+                    
+                    <Image IsVisible="{Binding !Achieved}"
+                           asyncImageLoader:ImageLoader.Source="{Binding Icongray }"></Image>
+                </Panel>
+                
+                
+            </Border>
+            
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding DisplayName}"></TextBlock>
+        </Grid>
+
+</UserControl>

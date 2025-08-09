@@ -51,5 +51,9 @@
         <DependentUpon>IdlingGames.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Controls\GameAchievementCard.axaml.cs">
+        <DependentUpon>GameAchievementCard.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
+using SukiUI.Dialogs;
 using YASAM.SteamInterface;
 using YASAM.SteamInterface.Internal;
 
@@ -63,7 +65,14 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
 
     public void ShowAchievements(GameViewModel vm)
     {
-        
+        var achievementsViewModel = Ioc.Default.GetRequiredService<GameAchievementsViewModel>();
+        achievementsViewModel.AppId = vm.AppId;
+
+        var dialogManager = Ioc.Default.GetRequiredService<ISukiDialogManager>();
+        dialogManager.CreateDialog()
+            .WithViewModel((s) => achievementsViewModel)
+            .TryShow();
+
     }
 
 }

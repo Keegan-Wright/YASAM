@@ -21,13 +21,13 @@
     <sukiUi:GlassCard Margin="10">
         <Grid RowDefinitions="Auto, *" RowSpacing="10">
             <StackPanel>
-                <TextBlock Classes="h1">Your Idling Games</TextBlock>
+                <TextBlock Classes="h1">Achievement Management</TextBlock>
             </StackPanel>
             
                 <ScrollViewer Grid.Row="1" AllowAutoHide="True">
                     <sukiUi:BusyArea IsBusy="{Binding Loading}">
                     <StackPanel>
-                        <ItemsControl ItemsSource="{Binding IdlingGames}">
+                        <ItemsControl ItemsSource="{Binding Achievements}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel ItemSpacing="10" LineSpacing="10"/>
@@ -35,33 +35,13 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <controls:GameCard> 
-                                        <Interaction.Behaviors>
-                                            <RoutedEventTriggerBehavior
-                                                RoutedEvent="{x:Static  controls:GameCard.IdleEvent}">
-                                                <InvokeCommandAction
-                                                    Command="{Binding $parent[ItemsControl].((vm:IdlingGamesViewModel)DataContext).IdleActionClicked, Mode=OneTime}"
-                                                    CommandParameter="{Binding }"/>
-                                            </RoutedEventTriggerBehavior>
-                                            
-                                            <RoutedEventTriggerBehavior
-                                                RoutedEvent="{x:Static  controls:GameCard.ShowAchievementsEvent}">
-                                                <InvokeCommandAction
-                                                    Command="{Binding $parent[ItemsControl].((vm:IdlingGamesViewModel)DataContext).ShowAchievements, Mode=OneTime}"
-                                                    CommandParameter="{Binding }"/>
-                                            </RoutedEventTriggerBehavior>
-                                        </Interaction.Behaviors>
-                                    </controls:GameCard>
+                                    <controls:GameAchievementCard></controls:GameAchievementCard>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
                     </sukiUi:BusyArea>
                 </ScrollViewer>
-
-        
         </Grid>
     </sukiUi:GlassCard>
-    
-    
 </UserControl>

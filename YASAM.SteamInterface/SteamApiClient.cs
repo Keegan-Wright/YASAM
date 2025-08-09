@@ -27,10 +27,22 @@ public class SteamApiClient : HttpClient, ISteamApiClient
 
     public async IAsyncEnumerable<ApiGameAchievement> GetAchievements(ulong steamUserId, string apiKey, ulong appId)
     {
-        var apiResponse =  await _client.GetFromJsonAsync<ApiAchievementsForGameResponse?>($"/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appId}&key={apiKey}&steamid={steamUserId}&l=en-gb");
+        var gameSchemaApiTask =
+             _client.GetFromJsonAsync<ApiSchemaForGameResponse>(
+                $"ISteamUserStats/GetSchemaForGame/v0002/?appid={appId}&key={apiKey}&l=en-gb");
+        
+        var achievementsApiTask =  _client.GetFromJsonAsync<ApiAchievementsForGameResponse?>($"/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appId}&key={apiKey}&steamid={steamUserId}&l=en");
 
-        foreach (var achievement in apiResponse.PlayerStats.Achievements)
+        await Task.WhenAll(gameSchemaApiTask, achievementsApiTask);
+        
+        foreach (var achievement in achievementsApiTask.Result.PlayerStats.Achievements)
         {
+            var matchingSchemaItem = gameSchemaApiTask.Result.Game.AvailableGameStats.Achievements.FirstOrDefault(x => x.Name == achievement.ApiName);
+            
+            achievement.Hidden = matchingSchemaItem.Hidden;
+            achievement.AchievedIcon = matchingSchemaItem.Icon;
+            achievement.NotAchievedIcon = matchingSchemaItem.Icongray;
+            
             yield return achievement;
         }
     }
