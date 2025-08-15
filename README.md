@@ -59,6 +59,8 @@ This project wouldn't be possible without these amazing open-source tools and li
 - [Avalonia UI](https://avaloniaui.net/) - Cross-platform .NET UI framework
 - [Spectre Console](https://spectreconsole.net/) - A library that makes it easier to create beautiful console applications
 - [.NET Community Toolkit](https://github.com/CommunityToolkit) - Collection of helpers and APIs for building .NET applications
+- [SukiUI](https://github.com/kikipoulet/SukiUI)
+- [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks)
 
 ## Inspiration
 This project aims to bring functionality similar to these Windows tools to Linux:
