@@ -28,7 +28,7 @@ YASAM (Yet Another Steam Application Manager) is a Linux-compatible alternative 
 git clone https://github.com/Keegan-Wright/YASAM.git
 cd YASAM
 
-# Further expansion....
+# Further expansion...
 ```
 
 ## Usage
@@ -38,6 +38,27 @@ cd YASAM
 
 ## Platform Compatibility
 **Note:** This application has been developed on **Linux** and has **not yet been tested** on **Windows** or **macOS**. While the tooling used within YASAM is cross-platform there are extra factors at play with how processes are invoked on a platform-by-platform basis so expect some things not to work until future updates when running on a non linux system.
+
+## Contributing
+
+Contributions, suggestions, and feedback are warmly welcomed! If you'd like to contribute:
+
+- Fork the repository
+- Create a feature branch (`git checkout -b feature/amazing-feature`)
+- Commit your changes (`git commit -m 'Add some amazing feature'`)
+- Push to the branch (`git push origin feature/amazing-feature`)
+- Open a Pull Request
+
+For suggestions or feature requests, please open an issue with the tag "enhancement".
+Bug reports should include as much detail as possible about how to reproduce the issue.
+
+## Special Thanks
+
+This project wouldn't be possible without these amazing open-source tools and libraries:
+
+- [Avalonia UI](https://avaloniaui.net/) - Cross-platform .NET UI framework
+- [Spectre Console](https://spectreconsole.net/) - A library that makes it easier to create beautiful console applications
+- [.NET Community Toolkit](https://github.com/CommunityToolkit) - Collection of helpers and APIs for building .NET applications
 
 ## Inspiration
 This project aims to bring functionality similar to these Windows tools to Linux:
