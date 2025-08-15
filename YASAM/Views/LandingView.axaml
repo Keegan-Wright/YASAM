@@ -18,7 +18,7 @@
     </Interaction.Behaviors>
     
     
-    <sukiUi:GlassCard>
+    <sukiUi:GlassCard Margin="10">
         <Grid RowDefinitions="Auto, *">
             
             <sukiUi:GlassCard IsInteractive="True">

@@ -19,4 +19,9 @@ public static class SteamProcessHelpers
         writer.Flush();
         writer.Close();
     }
+
+    internal static void SetEnvionmentVariable(ulong appId)
+    {
+        Environment.SetEnvironmentVariable("SteamAppId", appId.ToString());
+    }
 }

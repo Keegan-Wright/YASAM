@@ -14,21 +14,30 @@ public class SteamWorksService : ISteamWorksService
     {
         _steamApiClient  = steamApiClient;
     }
-    public Task<bool> LockAchivement(ulong appId, string achivementId)
+    public Task<bool> LockAchievements(ulong appId, IEnumerable<string> achievementIds)
     {
-        var process = InvokeSteamCommand(appId,SteamUtilityCommandType.LockSingleAchievement, achivementId);
+        if (!achievementIds.Any())
+            return Task.FromResult(true);
+        
+        var args = $"{string.Join(" ", achievementIds)}";
+        var process = InvokeSteamCommand(appId,SteamUtilityCommandType.LockAchievements, args);
         process.WaitForExit();
+        var result = process.ExitCode == 0;
         process.Dispose();
-        return Task.FromResult(process.ExitCode == 0);
+        return Task.FromResult(result);
     }
 
-    public Task<bool> UnlockAchivement(ulong appId, string achivementId)
+    public Task<bool> UnlockAchievements(ulong appId, IEnumerable<string> achievementIds)
     {
- 
-        var process = InvokeSteamCommand(appId,SteamUtilityCommandType.UnlockSingleAchievement,  achivementId);
+        if (!achievementIds.Any())
+            return Task.FromResult(true);
+        
+        var args = $"{string.Join(" ", achievementIds)}";
+        var process = InvokeSteamCommand(appId,SteamUtilityCommandType.UnlockAchievements,  args);
         process.WaitForExit();
+        var result = process.ExitCode == 0;
         process.Dispose();
-        return Task.FromResult(process.ExitCode == 0);
+        return Task.FromResult(result);
 
     }
 
@@ -36,16 +45,18 @@ public class SteamWorksService : ISteamWorksService
     {
         var process = InvokeSteamCommand(appId,SteamUtilityCommandType.LockAllAchievements);
         process.WaitForExit();
+        var result = process.ExitCode == 0;
         process.Dispose();
-        return Task.FromResult(process.ExitCode == 0);
+        return Task.FromResult(result);
     }
 
     public Task<bool> UnlockAllAchievements(ulong appId)
     {
         var process = InvokeSteamCommand(appId,SteamUtilityCommandType.UnlockAllAchievements);
         process.WaitForExit();
+        var result = process.ExitCode == 0;
         process.Dispose();
-        return Task.FromResult(process.ExitCode == 0);
+        return Task.FromResult(result);
     }
     
     public async Task<bool> IdleGame(GameToInvoke gameToInvoke)
@@ -76,13 +87,13 @@ public class SteamWorksService : ISteamWorksService
                 proc.StartInfo.Arguments = $"-c \" {baseCommandPath} idle {appId} \"";
                 break;
             }
-            case SteamUtilityCommandType.UnlockSingleAchievement:
+            case SteamUtilityCommandType.UnlockAchievements:
             {
-                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} unlockAchievement {appId} {arguments} \"";
+                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} unlockAchievements {appId} {arguments} \"";
                 break;
             }
-            case SteamUtilityCommandType.LockSingleAchievement:
-                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} lockAchievement {appId} {arguments} \"";
+            case SteamUtilityCommandType.LockAchievements:
+                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} lockAchievements {appId} {arguments} \"";
                 break;
             case SteamUtilityCommandType.LockAllAchievements:
                 proc.StartInfo.Arguments = $"-c \" {baseCommandPath} lockAllAchievement {appId} \"";

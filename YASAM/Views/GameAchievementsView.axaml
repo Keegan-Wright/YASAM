@@ -19,13 +19,13 @@
     
     
     <sukiUi:GlassCard Margin="10">
-        <Grid RowDefinitions="Auto, *" RowSpacing="10">
+        <Grid RowDefinitions="Auto, *, Auto" RowSpacing="10">
             <StackPanel>
                 <TextBlock Classes="h1">Achievement Management</TextBlock>
             </StackPanel>
             
                 <ScrollViewer Grid.Row="1" AllowAutoHide="True">
-                    <sukiUi:BusyArea IsBusy="{Binding Loading}">
+                    <sukiUi:BusyArea BusyText="Loading Your Achievements" IsBusy="{Binding Loading}">
                     <StackPanel>
                         <ItemsControl ItemsSource="{Binding Achievements}">
                             <ItemsControl.ItemsPanel>
@@ -42,6 +42,35 @@
                     </StackPanel>
                     </sukiUi:BusyArea>
                 </ScrollViewer>
+            
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="10">
+                <Button 
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Classes="Flat Rounded"
+                        Command="{Binding UnlockAllAchievementsCommand}"
+                        FontWeight="DemiBold">
+                    Unlock All
+                </Button>
+                
+                <Button
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Classes="Flat Rounded"
+                        Command="{Binding LockAllAchievementsCommand}"
+                        FontWeight="DemiBold">
+                    Lock All
+                </Button>
+                
+                <Button
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Classes="Flat Rounded"
+                        Command="{Binding SaveChangesCommand}"
+                        FontWeight="DemiBold">
+                    Save Changes
+                </Button>
+            </StackPanel>
         </Grid>
     </sukiUi:GlassCard>
 </UserControl>

@@ -70,7 +70,12 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
 
         var dialogManager = Ioc.Default.GetRequiredService<ISukiDialogManager>();
         dialogManager.CreateDialog()
-            .WithViewModel((s) => achievementsViewModel)
+            .WithViewModel((s) =>
+            {
+                s.ShowCardBackground = true;
+                s.CanDismissWithBackgroundClick = true;
+                return achievementsViewModel;
+            })
             .TryShow();
 
     }

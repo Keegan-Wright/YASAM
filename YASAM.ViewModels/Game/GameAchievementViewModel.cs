@@ -27,8 +27,17 @@ public partial class GameAchievementViewModel : ViewModelBase
     [ObservableProperty]
     private string _icongray;
 
-    public GameAchievementViewModel(string? achievementApiName, string achievementName, string achievementDescription, bool achievementAchieved, bool achievementHidden, string lockedIcon, string icon)
+    [ObservableProperty]
+    private bool _shouldToggle;
+
+    [ObservableProperty] 
+    private DateTimeOffset? _unlockTime;
+    
+    public string CheckboxMessage => Achieved ? "Lock" : "Unlock";
+    
+    public GameAchievementViewModel(string? achievementApiName, string achievementName, string achievementDescription, bool achievementAchieved, bool achievementHidden, string lockedIcon, string icon, DateTimeOffset? unlockTime)
     {
+        _unlockTime = unlockTime;
         Id = achievementApiName;
         DisplayName =  achievementName;
         Description = achievementDescription;

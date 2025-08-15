@@ -1,8 +1,8 @@
 public enum SteamUtilityCommandType
 {
     Idle = 0,
-    UnlockSingleAchievement = 1,
-    LockSingleAchievement = 2,
+    UnlockAchievements = 1,
+    LockAchievements = 2,
     LockAllAchievements = 3,
     UnlockAllAchievements = 4
 }

@@ -1,4 +1,6 @@
-﻿using Spectre.Console.Cli;
+﻿using Spectre.Console;
+using Spectre.Console.Cli;
+using Steamworks;
 
 internal class Program
 {
@@ -8,12 +10,17 @@ internal class Program
         app.Configure(config =>
         {
             config.AddCommand<IdleGameCommand>("idle");
-            config.AddCommand<UnlockSingleAchievementCommand>("unlockAchievement");
-            config.AddCommand<LockSingleAchievementCommand>("lockAchievement");
+            config.AddCommand<UnlockAchievementsCommand>("unlockAchievements");
+            config.AddCommand<LockAchievementsCommand>("lockAchievements");
             config.AddCommand<UnlockAllAchievementsCommand>("unlockAllAchievements");
             config.AddCommand<LockAllAchievementsCommand>("lockAllAchievements");
         });
 
+        AppDomain.CurrentDomain.ProcessExit += (_, __) =>
+        {
+            AnsiConsole.MarkupLine("[red] Exiting[/]");
+            SteamClient.Shutdown();
+        };
 
         await app.RunAsync(args);
     }

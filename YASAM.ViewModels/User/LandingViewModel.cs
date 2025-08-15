@@ -33,6 +33,9 @@ public sealed partial class LandingViewModel : PageViewModelBase
     [RelayCommand]
     private async Task LoadAsync()
     {
+        if (TrackedUsers.Any())
+            return;
+        
         await foreach (var user in _userService.GetTrackedUsersAsync())
         {
             TrackedUsers.Add(new TrackedUserViewModel()
