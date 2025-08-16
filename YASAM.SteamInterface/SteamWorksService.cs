@@ -76,8 +76,6 @@ public class SteamWorksService : ISteamWorksService
 
     private Process InvokeSteamCommand(ulong appId, SteamUtilityCommandType commandType, string arguments = null!)
     {
-        try
-        {
             Process proc = new Process();
             proc.StartInfo.CreateNoWindow = true;
             proc.StartInfo.UseShellExecute = false;
@@ -90,7 +88,7 @@ public class SteamWorksService : ISteamWorksService
             }
 
 
-            proc.StartInfo.FileName = $"{AppDomain.CurrentDomain.BaseDirectory}\\{executableName}";
+            proc.StartInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, executableName);
 
             switch (commandType)
             {
@@ -119,13 +117,6 @@ public class SteamWorksService : ISteamWorksService
             }
             proc.Start();
             return proc;
-
-        }
-        catch (Exception ex)
-        {
-
-            throw ex;
-        }
     }
 
     public bool StopIdleGame(GameToInvoke gameToInvoke)
