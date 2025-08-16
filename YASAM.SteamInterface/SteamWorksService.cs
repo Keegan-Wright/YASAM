@@ -76,37 +76,56 @@ public class SteamWorksService : ISteamWorksService
 
     private Process InvokeSteamCommand(ulong appId, SteamUtilityCommandType commandType, string arguments = null!)
     {
-        Process proc = new Process ();
-        proc.StartInfo.FileName = "/bin/bash";
-        proc.StartInfo.UseShellExecute = false;
-        var baseCommandPath = "./YASAM.SteamInterface.Executor";
-        switch (commandType)
+        try
         {
-            case SteamUtilityCommandType.Idle:
-            {
-                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} idle {appId} \"";
-                break;
-            }
-            case SteamUtilityCommandType.UnlockAchievements:
-            {
-                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} unlockAchievements {appId} {arguments} \"";
-                break;
-            }
-            case SteamUtilityCommandType.LockAchievements:
-                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} lockAchievements {appId} {arguments} \"";
-                break;
-            case SteamUtilityCommandType.LockAllAchievements:
-                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} lockAllAchievement {appId} \"";
-                break;
+            Process proc = new Process();
+            proc.StartInfo.CreateNoWindow = true;
+            proc.StartInfo.UseShellExecute = false;
 
-            case SteamUtilityCommandType.UnlockAllAchievements:
-                proc.StartInfo.Arguments = $"-c \" {baseCommandPath} unlockAllAchievements {appId} \"";
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(commandType), commandType, null);
+            var executableName = "YASAM.SteamInterface.Executor";
+
+            if(OperatingSystem.IsWindows())
+            {
+                executableName += ".exe";
+            }
+
+
+            proc.StartInfo.FileName = $"{AppDomain.CurrentDomain.BaseDirectory}\\{executableName}";
+
+            switch (commandType)
+            {
+                case SteamUtilityCommandType.Idle:
+                    {
+                        proc.StartInfo.Arguments = $"idle {appId}";
+                        break;
+                    }
+                case SteamUtilityCommandType.UnlockAchievements:
+                    {
+                        proc.StartInfo.Arguments = $"unlockAchievements {appId} {arguments}";
+                        break;
+                    }
+                case SteamUtilityCommandType.LockAchievements:
+                    proc.StartInfo.Arguments = $"unlockAchievements {appId} {arguments}";
+                    break;
+                case SteamUtilityCommandType.LockAllAchievements:
+                    proc.StartInfo.Arguments = $"lockAllAchievement {appId}";
+                    break;
+
+                case SteamUtilityCommandType.UnlockAllAchievements:
+                    proc.StartInfo.Arguments = $"unlockAllAchievements {appId}";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(commandType), commandType, null);
+            }
+            proc.Start();
+            return proc;
+
         }
-        proc.Start();
-        return proc;
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
     }
 
     public bool StopIdleGame(GameToInvoke gameToInvoke)

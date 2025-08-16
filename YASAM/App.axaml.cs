@@ -18,6 +18,7 @@ using YASAM.Services.Client;
 using YASAM.ViewModels;
 using YASAM.Views;
 using YASAM.SteamInterface;
+using System.Diagnostics;
 
 namespace YASAM;
 
@@ -32,6 +33,7 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+
             var services = new ServiceCollection();
             services.AddSingleton(desktop);
 
@@ -73,6 +75,19 @@ public partial class App : Application
             var PurpleTheme = new SukiColorTheme("Purple", Colors.SlateBlue, Colors.DarkBlue);
             SukiTheme.GetInstance().AddColorTheme(PurpleTheme);
             SukiTheme.GetInstance().ChangeColorTheme(PurpleTheme);
+
+
+            ((IClassicDesktopStyleApplicationLifetime)ApplicationLifetime).ShutdownRequested += delegate (object? sender, ShutdownRequestedEventArgs e) {
+                // Perform any necessary cleanup here before the application shuts down.
+                // For example, you might want to save user settings or close database connections.
+                var dbContext = Ioc.Default.GetRequiredService<ISteamWorksService>();
+
+
+                foreach (var game in dbContext.GetIdlingGames())
+                {
+                    Process.GetProcessById(game.ProcessId).Kill();
+                }
+            };
         }
 
         base.OnFrameworkInitializationCompleted();
