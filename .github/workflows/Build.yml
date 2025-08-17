@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      Solution_Name: YASAM
+      Solution_Name: YASAM.sln
  
     steps:
     - name: Checkout Latest
