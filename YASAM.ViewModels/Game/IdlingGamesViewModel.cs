@@ -23,7 +23,7 @@ public partial class IdlingGamesViewModel : PageViewModelBase, IGameCardConsumer
     }
 
     [RelayCommand]
-    private async Task LoadAsync()
+    private Task LoadAsync()
     {
         Loading = true;
         IdlingGames.Clear();
@@ -34,6 +34,8 @@ public partial class IdlingGamesViewModel : PageViewModelBase, IGameCardConsumer
 
 
         Loading = false;
+
+        return Task.CompletedTask;
     }
 
     public void IdleActionClicked(GameViewModel vm)
@@ -44,6 +46,6 @@ public partial class IdlingGamesViewModel : PageViewModelBase, IGameCardConsumer
 
     public void ShowAchievements(GameViewModel vm)
     {
-        var a = 1;
+
     }
 }

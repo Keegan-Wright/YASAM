@@ -59,19 +59,19 @@ public class SteamWorksService : ISteamWorksService
         return Task.FromResult(result);
     }
     
-    public async Task<bool> IdleGame(GameToInvoke gameToInvoke)
+    public Task<bool> IdleGame(GameToInvoke gameToInvoke)
     {
         if (_idlingGames.ContainsKey(gameToInvoke.AppId))
         {
-            return true;
+            return Task.FromResult(true);
         }
 
         var process = InvokeSteamCommand(gameToInvoke.AppId,SteamUtilityCommandType.Idle);
 
         _idlingGames.Add(gameToInvoke.AppId, new IdlingGame(process.Id, gameToInvoke.AppId, gameToInvoke.GameName));
-        
 
-        return true;
+
+        return Task.FromResult(true);
     }
 
     private Process InvokeSteamCommand(ulong appId, SteamUtilityCommandType commandType, string arguments = null!)

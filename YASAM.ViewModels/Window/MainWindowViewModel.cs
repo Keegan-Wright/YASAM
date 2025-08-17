@@ -34,6 +34,7 @@ public partial class MainWindowViewModel : ViewModelBase
             Ioc.Default.GetRequiredService<LandingViewModel>(),
         ];
 
+        _activePage = Ioc.Default.GetRequiredService<LandingViewModel>();
         _selectedUserViewModel.SelectedUserUpdated += SelectUser;
     }
 

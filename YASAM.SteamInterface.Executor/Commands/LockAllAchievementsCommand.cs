@@ -14,7 +14,7 @@ public class LockAllAchievementsCommand : AsyncCommand<LockAllAchievementsComman
     {
         AnsiConsole.MarkupLine($"[green]Locking all achievements for app id: {settings.AppId}[/]");
 
-        SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
+        await SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
         SteamProcessHelpers.SetEnvionmentVariable(settings.AppId);
 
         SteamClient.Init(settings.AppId,true);

@@ -16,13 +16,13 @@ public class IdleGameCommand : AsyncCommand<IdleGameCommand.Settings>
     {
         AnsiConsole.MarkupLine($"[grey]IdleGameCommand for app id: {settings.AppId}[/]");
 
-        SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
+        await SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
         SteamProcessHelpers.SetEnvionmentVariable(settings.AppId);
         SteamClient.Init(settings.AppId, true);
 
         AnsiConsole.MarkupLine("[green] Successfully idling game[/]");
         
-        while (true) Thread.Sleep(1000);
+        while (true) await Task.Delay(1000);
     }
     
 }

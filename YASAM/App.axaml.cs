@@ -60,9 +60,9 @@ public partial class App : Application
             {
                 db.Database.Migrate();
             }
-            catch (Exception ex)
+            catch
             {
-                _ = db.Database.EnsureCreated();
+                db.Database.EnsureCreated();
             }
             
             
@@ -70,7 +70,7 @@ public partial class App : Application
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = Ioc.Default.GetService<MainWindow>();
-            desktop.MainWindow.DataContext = Ioc.Default.GetService<MainWindowViewModel>();
+            desktop.MainWindow.DataContext = Ioc.Default.GetRequiredService<MainWindowViewModel>();
             
             var PurpleTheme = new SukiColorTheme("Purple", Colors.SlateBlue, Colors.DarkBlue);
             SukiTheme.GetInstance().AddColorTheme(PurpleTheme);

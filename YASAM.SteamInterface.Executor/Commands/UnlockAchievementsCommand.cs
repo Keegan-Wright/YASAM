@@ -20,7 +20,7 @@ public class UnlockAchievementsCommand : AsyncCommand<UnlockAchievementsCommand.
         {
             AnsiConsole.MarkupLine($"[green]Unlocking achievement {achievementId} for app id: {settings.AppId}[/]");
 
-            SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
+            await SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
             SteamProcessHelpers.SetEnvionmentVariable(settings.AppId);
 
             SteamClient.Init(settings.AppId,true);

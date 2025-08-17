@@ -38,7 +38,7 @@ public partial class GameAchievementViewModel : ViewModelBase
     public GameAchievementViewModel(string? achievementApiName, string achievementName, string achievementDescription, bool achievementAchieved, bool achievementHidden, string lockedIcon, string icon, DateTimeOffset? unlockTime)
     {
         _unlockTime = unlockTime;
-        Id = achievementApiName;
+        Id = achievementApiName ?? "Unknown Name";
         DisplayName =  achievementName;
         Description = achievementDescription;
         Achieved = achievementAchieved;

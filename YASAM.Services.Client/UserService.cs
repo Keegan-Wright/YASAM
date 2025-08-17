@@ -15,7 +15,7 @@ public class UserService : IUserService
 
     public async Task<TrackedSteamUser> GetSteamUserAsync(Guid id)
     {
-        return await _db.Users.FindAsync(id);
+        return await _db.Users.FindAsync(id) ?? throw new NullReferenceException("User not found");
     }
 
     public IAsyncEnumerable<TrackedSteamUser> GetTrackedUsersAsync()
