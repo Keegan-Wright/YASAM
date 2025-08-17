@@ -8,16 +8,13 @@ on:
 
 jobs:
   Build:
-    name: Build
-    
+    name: Build    
     strategy:
       matrix:
         configuration: [Release]
 
     runs-on: ubuntu-latest
 
-    env:
-      Solution_Name: YASAM
  
     steps:
     - name: Checkout Latest
@@ -33,12 +30,8 @@ jobs:
       with:
         url: https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json
 
-
-    - name: Restore workloads
-      run: dotnet workload restore
-
     - name: Restore the application
-      run: dotnet restore $env:Solution_Name
+      run: dotnet restore YASAM.sln
 
     - name: Build Solution
       run: dotnet build -c=release
