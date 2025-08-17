@@ -15,8 +15,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-      Solution_Name: YASAM.sln
  
     steps:
     - name: Checkout Latest
@@ -32,12 +30,8 @@ jobs:
       with:
         url: https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json
 
-    - name: CheckDir
-      run: ls
-
-
     - name: Restore the application
-      run: dotnet restore $env:Solution_Name
+      run: dotnet restore YASAM.sln
 
     - name: Build Solution
       run: dotnet build -c=release
