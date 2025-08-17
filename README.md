@@ -37,7 +37,7 @@ cd YASAM
 3. Use the interface to idle games or manage achievements
 
 ## Platform Compatibility
-**Note:** This application has been developed on **Linux** and has **not yet been tested** on **Windows** or **macOS**. While the tooling used within YASAM is cross-platform there are extra factors at play with how processes are invoked on a platform-by-platform basis so expect some things not to work until future updates when running on a non linux system.
+**Note:** This application has been developed on **Linux**. **Windows** has had limited testing but everything is functional. **Not yet tested on macOS**. While the tooling used within YASAM is cross-platform there are extra factors at play with how processes are invoked on a platform-by-platform basis so expect some things not to work until future updates when running on a non linux system.
 
 ## Contributing
 
