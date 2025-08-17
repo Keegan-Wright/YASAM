@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      Solution_Name: YASAM
+      Solution_Name: YASAM.sln
  
     steps:
     - name: Checkout Latest
@@ -32,10 +32,6 @@ jobs:
       uses: deitry/add-nuget-source-action@v2
       with:
         url: https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json
-
-
-    - name: Restore workloads
-      run: dotnet workload restore
 
     - name: Restore the application
       run: dotnet restore $env:Solution_Name
