@@ -1,0 +1,44 @@
+name: .NET Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  Build:
+    name: Build
+    
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    runs-on: ubuntu-latest
+
+    env:
+      Solution_Name: YASAM
+ 
+    steps:
+    - name: Checkout Latest
+      uses: actions/checkout@v4.1.7
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Add community toolset nuget
+      uses: deitry/add-nuget-source-action@v2
+      with:
+        url: https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json
+
+
+    - name: Restore workloads
+      run: dotnet workload restore
+
+    - name: Restore the application
+      run: dotnet restore $env:Solution_Name
+
+    - name: Build Solution
+      run: dotnet build -c=release
