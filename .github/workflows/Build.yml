@@ -8,13 +8,12 @@ on:
 
 jobs:
   Build:
-    name: Build
-    
+    name: Build    
     strategy:
       matrix:
         configuration: [Release]
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     env:
       Solution_Name: YASAM
@@ -32,6 +31,10 @@ jobs:
       uses: deitry/add-nuget-source-action@v2
       with:
         url: https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json
+
+    - name: CheckDir
+      run: ls
+
 
     - name: Restore the application
       run: dotnet restore $env:Solution_Name
