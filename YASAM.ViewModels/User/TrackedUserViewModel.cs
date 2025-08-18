@@ -5,14 +5,14 @@ namespace YASAM.ViewModels;
 public partial class TrackedUserViewModel : ViewModelBase
 {
     [ObservableProperty]
-    private string _name;
+    private string? _name;
     
     [ObservableProperty]
-    private ulong _steamUserId;
+    private ulong? _steamUserId;
     
     [ObservableProperty]
-    private string _apiKey;
+    private string? _apiKey;
 
     [ObservableProperty]
-    private Guid _id;
+    private Guid? _id;
 }

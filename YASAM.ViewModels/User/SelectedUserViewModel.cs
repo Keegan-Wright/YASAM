@@ -5,16 +5,16 @@ namespace YASAM.ViewModels;
 public partial class SelectedUserViewModel : ViewModelBase
 {
     [ObservableProperty]
-    private Guid _id;
+    private Guid? _id;
     
     [ObservableProperty]
-    private string _name;
+    private string? _name;
     
     [ObservableProperty]
-    private ulong _steamUserId;
+    private ulong? _steamUserId;
 
     [ObservableProperty]
-    private string _apiKey;
+    private string? _apiKey;
 
     public event EventHandler? SelectedUserUpdated;
 

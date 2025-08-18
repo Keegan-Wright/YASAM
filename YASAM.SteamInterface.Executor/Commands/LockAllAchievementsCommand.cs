@@ -3,6 +3,8 @@ using Spectre.Console.Cli;
 using Steamworks;
 using YASAM.SteamInterface.Executor.Helpers;
 
+namespace YASAM.SteamInterface.Executor.Commands;
+
 public class LockAllAchievementsCommand : AsyncCommand<LockAllAchievementsCommand.Settings>
 {
     public class Settings : CommandSettings
@@ -17,7 +19,7 @@ public class LockAllAchievementsCommand : AsyncCommand<LockAllAchievementsComman
         await SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
         SteamProcessHelpers.SetEnvionmentVariable(settings.AppId);
 
-        SteamClient.Init(settings.AppId,true);
+        SteamClient.Init(settings.AppId);
 
         foreach (var achievement in SteamUserStats.Achievements)
         {

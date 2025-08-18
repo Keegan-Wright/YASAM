@@ -1,5 +1,5 @@
 using System.Net.Http.Json;
-using YASAM.SteamInterface.Api;
+using YASAM.SteamInterface.Models.Api;
 
 namespace YASAM.SteamInterface;
 
@@ -18,7 +18,7 @@ public class SteamApiClient : HttpClient, ISteamApiClient
         
         var apiResponse =  await _client.GetFromJsonAsync<ApiGetOwnedGames?>($"/IPlayerService/GetOwnedGames/v0001/?key={steamApiKey}&steamid={steamUserId}&include_played_free_games=true&include_appinfo=true");
 
-        foreach (var game in apiResponse.Response.Games)
+        foreach (var game in apiResponse?.Response?.Games!)
         {
             yield return game;
         }
@@ -35,13 +35,18 @@ public class SteamApiClient : HttpClient, ISteamApiClient
 
         await Task.WhenAll(gameSchemaApiTask, achievementsApiTask);
         
-        foreach (var achievement in achievementsApiTask.Result.PlayerStats.Achievements)
+        foreach (var achievement in achievementsApiTask.Result?.PlayerStats?.Achievements!)
         {
-            var matchingSchemaItem = gameSchemaApiTask.Result.Game.AvailableGameStats.Achievements.FirstOrDefault(x => x.Name == achievement.ApiName);
+            var matchingSchemaItem = (gameSchemaApiTask.Result?.Game?.AvailableGameStats?.Achievements!).FirstOrDefault(x => x.Name == achievement.ApiName);
+
+            if (matchingSchemaItem != null)
+            {
+                achievement.Hidden = matchingSchemaItem.Hidden;
+                achievement.AchievedIcon = matchingSchemaItem.Icon;
+                achievement.NotAchievedIcon = matchingSchemaItem.Icongray;
+            }
             
-            achievement.Hidden = matchingSchemaItem.Hidden;
-            achievement.AchievedIcon = matchingSchemaItem.Icon;
-            achievement.NotAchievedIcon = matchingSchemaItem.Icongray;
+
             
             yield return achievement;
         }

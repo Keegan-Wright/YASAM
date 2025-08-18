@@ -71,7 +71,7 @@ public sealed partial class LandingViewModel : PageViewModelBase
     private void SelectUser(TrackedUserViewModel user)
     {
         var selectedUser = Ioc.Default.GetRequiredService<SelectedUserViewModel>();
-        selectedUser.UpdateSelectedUser(user.Id, user.Name, user.SteamUserId, user.ApiKey);
+        selectedUser.UpdateSelectedUser(user.Id!.Value, user.Name!, user.SteamUserId!.Value, user.ApiKey!);
 
     }
 

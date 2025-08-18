@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using SukiUI.Dialogs;
 using YASAM.SteamInterface;
-using YASAM.SteamInterface.Internal;
+using YASAM.SteamInterface.Models.Internal;
 
 namespace YASAM.ViewModels;
 
@@ -45,11 +45,11 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
         if (!LastUpdated.HasValue || (DateTimeOffset.UtcNow - LastUpdated?.UtcDateTime > TimeSpan.FromMinutes(5)))
         {
             Loading = true;
-            var games  = _steamApiClient.GetGames(_selectedUser.SteamUserId, _selectedUser.ApiKey);
+            var games  = _steamApiClient.GetGames(_selectedUser!.SteamUserId!.Value, _selectedUser!.ApiKey!);
            var gameVMs = new List<GameViewModel>();
             await foreach (var game in games)
             {
-                gameVMs.Add(new(game.AppId, game.Name, game.PlaytimeForever));
+                gameVMs.Add(new(game.AppId!.Value, game.Name!, game.PlaytimeForever!.Value));
             }
             Games = new ObservableCollection<GameViewModel>(gameVMs.OrderBy(x => x.Name));
             LastUpdated = DateTimeOffset.UtcNow;

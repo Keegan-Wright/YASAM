@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace YASAM.SteamInterface.Api;
+namespace YASAM.SteamInterface.Models.Api;
 
 internal record ApiGetOwnedGames
 {

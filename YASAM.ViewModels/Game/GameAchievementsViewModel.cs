@@ -35,12 +35,12 @@ public partial class GameAchievementsViewModel : ViewModelBase
     {
         Loading = true;
         
-        var achievements  = _steamApiClient.GetAchievements(_selectedUserViewModel.SteamUserId, _selectedUserViewModel.ApiKey, AppId);
+        var achievements  = _steamApiClient.GetAchievements(_selectedUserViewModel.SteamUserId!.Value, _selectedUserViewModel.ApiKey!, AppId);
         var achievementsVMs = new List<GameAchievementViewModel>();
         
         await foreach (var achievement in achievements)
         {
-            achievementsVMs.Add(new(achievement.ApiName, achievement.Name, achievement.Description, achievement.Achieved == 1, achievement.Hidden == 1, achievement.NotAchievedIcon, achievement.AchievedIcon, achievement.Achieved == 1 ? DateTimeOffset.FromUnixTimeSeconds(achievement.UnlockTime).Date : null));
+            achievementsVMs.Add(new(achievement.ApiName, achievement.Name!, achievement.Description!, achievement.Achieved == 1, achievement.Hidden == 1, achievement.NotAchievedIcon!, achievement.AchievedIcon!, achievement.Achieved == 1 ? DateTimeOffset.FromUnixTimeSeconds(achievement.UnlockTime!.Value).Date : null));
         }
         
         Achievements = new ObservableCollection<GameAchievementViewModel>(achievementsVMs.OrderBy(x => x.DisplayName));

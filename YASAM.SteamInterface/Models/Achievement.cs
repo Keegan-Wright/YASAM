@@ -1,4 +1,4 @@
-﻿namespace YASAM.SteamInterface;
+﻿namespace YASAM.SteamInterface.Models;
 
 public record Achievement
 {

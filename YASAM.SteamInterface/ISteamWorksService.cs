@@ -1,5 +1,5 @@
 using System.Collections.Frozen;
-using YASAM.SteamInterface.Internal;
+using YASAM.SteamInterface.Models.Internal;
 
 namespace YASAM.SteamInterface;
 

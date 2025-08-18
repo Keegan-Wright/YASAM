@@ -1,3 +1,5 @@
+namespace YASAM.SteamInterface.Executor;
+
 public enum SteamUtilityCommandType
 {
     Idle = 0,

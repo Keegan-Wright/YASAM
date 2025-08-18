@@ -3,6 +3,8 @@ using Spectre.Console.Cli;
 using Steamworks;
 using YASAM.SteamInterface.Executor.Helpers;
 
+namespace YASAM.SteamInterface.Executor.Commands;
+
 public class LockAchievementsCommand : AsyncCommand<LockAchievementsCommand.Settings>
 {
     public class Settings : CommandSettings
@@ -21,10 +23,10 @@ public class LockAchievementsCommand : AsyncCommand<LockAchievementsCommand.Sett
         {
             AnsiConsole.MarkupLine($"[green]Locking achievement {achievementId} for app id: {settings.AppId}[/]");
 
-             await SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
-             SteamProcessHelpers.SetEnvionmentVariable(settings.AppId);
+            await SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
+            SteamProcessHelpers.SetEnvionmentVariable(settings.AppId);
             
-             SteamClient.Init(settings.AppId,true);
+            SteamClient.Init(settings.AppId);
             
         
             var achievement = SteamUserStats.Achievements.First(x => x.Identifier == achievementId);

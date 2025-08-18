@@ -1,8 +1,9 @@
 using Spectre.Console;
 using Spectre.Console.Cli;
 using Steamworks;
-using Steamworks.Data;
 using YASAM.SteamInterface.Executor.Helpers;
+
+namespace YASAM.SteamInterface.Executor.Commands;
 
 public class UnlockAchievementsCommand : AsyncCommand<UnlockAchievementsCommand.Settings>
 {
@@ -23,7 +24,7 @@ public class UnlockAchievementsCommand : AsyncCommand<UnlockAchievementsCommand.
             await SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
             SteamProcessHelpers.SetEnvionmentVariable(settings.AppId);
 
-            SteamClient.Init(settings.AppId,true);
+            SteamClient.Init(settings.AppId);
         
         
             var achievement = SteamUserStats.Achievements.First(x => x.Identifier == achievementId);

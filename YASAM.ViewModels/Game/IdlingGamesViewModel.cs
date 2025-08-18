@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using YASAM.SteamInterface;
-using YASAM.SteamInterface.Internal;
+using YASAM.SteamInterface.Models.Internal;
 
 namespace YASAM.ViewModels;
 
