@@ -10,27 +10,26 @@
                    Icon="/Assets/avalonia-logo.ico"
                    BackgroundStyle="GradientDarker"
                    Title="YASAM">
-    
+
     <sukiUi:SukiWindow.Hosts>
-        <sukiUi:SukiDialogHost Manager="{Binding DialogManager}"/>
+        <sukiUi:SukiDialogHost Manager="{Binding DialogManager}" />
     </sukiUi:SukiWindow.Hosts>
-    
+
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
-    
+
     <sukiUi:SukiSideMenu
         ItemsSource="{Binding PageList}"
         SelectedItem="{Binding ActivePage}"
         IsSearchEnabled="False">
         <sukiUi:SukiSideMenu.ItemTemplate>
             <DataTemplate>
-                <sukiUi:SukiSideMenuItem Classes="Compact" Header="{Binding DisplayName}">
-                </sukiUi:SukiSideMenuItem>
+                <sukiUi:SukiSideMenuItem Classes="Compact" Header="{Binding DisplayName}" />
             </DataTemplate>
         </sukiUi:SukiSideMenu.ItemTemplate>
     </sukiUi:SukiSideMenu>
-    
+
 </sukiUi:SukiWindow>

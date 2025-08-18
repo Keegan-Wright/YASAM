@@ -1,28 +1,28 @@
 using System;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using SQLitePCL;
 using SukiUI;
 using SukiUI.Dialogs;
 using SukiUI.Models;
 using YASAM.Data;
 using YASAM.Services.Client;
+using YASAM.SteamInterface;
 using YASAM.ViewModels;
 using YASAM.Views;
-using YASAM.SteamInterface;
-using System.Diagnostics;
 
 namespace YASAM;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {
@@ -33,27 +33,25 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-
             var services = new ServiceCollection();
             services.AddSingleton(desktop);
 
-            SQLitePCL.Batteries.Init();
+            Batteries.Init();
             services.AddDbContext<YasamDbContext>();
-            
-            
+
+
             AddWindows(services);
             AddViews(services);
             AddViewModels(services);
             AddServices(services);
-            
-            services.AddSingleton<ISukiDialogManager, SukiDialogManager>(x => new SukiDialogManager());
-            
+
+            services.AddSingleton<ISukiDialogManager, SukiDialogManager>(_ => new SukiDialogManager());
+
             var provider = services.BuildServiceProvider();
 
             Ioc.Default.ConfigureServices(provider);
-            
-            
-            
+
+
             var db = Ioc.Default.GetRequiredService<YasamDbContext>();
 
             try
@@ -64,29 +62,27 @@ public partial class App : Application
             {
                 db.Database.EnsureCreated();
             }
-            
-            
+
+
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = Ioc.Default.GetRequiredService<MainWindow>();
             desktop.MainWindow.DataContext = Ioc.Default.GetRequiredService<MainWindowViewModel>();
-            
+
             var PurpleTheme = new SukiColorTheme("Purple", Colors.SlateBlue, Colors.DarkBlue);
             SukiTheme.GetInstance().AddColorTheme(PurpleTheme);
             SukiTheme.GetInstance().ChangeColorTheme(PurpleTheme);
 
 
-            ((IClassicDesktopStyleApplicationLifetime)ApplicationLifetime).ShutdownRequested += delegate (object? sender, ShutdownRequestedEventArgs e) {
+            ((IClassicDesktopStyleApplicationLifetime)ApplicationLifetime).ShutdownRequested += delegate
+            {
                 // Perform any necessary cleanup here before the application shuts down.
                 // For example, you might want to save user settings or close database connections.
                 var dbContext = Ioc.Default.GetRequiredService<ISteamWorksService>();
 
 
-                foreach (var game in dbContext.GetIdlingGames())
-                {
-                    Process.GetProcessById(game.ProcessId).Kill();
-                }
+                foreach (var game in dbContext.GetIdlingGames()) Process.GetProcessById(game.ProcessId).Kill();
             };
         }
 
@@ -107,7 +103,7 @@ public partial class App : Application
     {
         services.AddSingleton<MainWindow>();
     }
-    
+
     private static void AddViews(ServiceCollection services)
     {
         services.AddSingleton<YourGamesView>();
@@ -123,7 +119,6 @@ public partial class App : Application
         {
             client.BaseAddress = new Uri("http://api.steampowered.com/");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
         });
         services.AddSingleton<ISteamWorksService, SteamWorksService>();
     }
@@ -135,9 +130,6 @@ public partial class App : Application
             BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
 
         // remove each entry found
-        foreach (var plugin in dataValidationPluginsToRemove)
-        {
-            BindingPlugins.DataValidators.Remove(plugin);
-        }
+        foreach (var plugin in dataValidationPluginsToRemove) BindingPlugins.DataValidators.Remove(plugin);
     }
 }

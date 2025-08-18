@@ -10,8 +10,6 @@ public partial class IdlingGamesViewModel : PageViewModelBase, IGameCardConsumer
 {
     private readonly ISteamWorksService _steamWorksService;
 
-    public override string DisplayName { get; init; }
-
     [ObservableProperty] private ObservableCollection<GameViewModel> _idlingGames = [];
 
     [ObservableProperty] private bool _loading;
@@ -22,21 +20,7 @@ public partial class IdlingGamesViewModel : PageViewModelBase, IGameCardConsumer
         DisplayName = "Idling Games";
     }
 
-    [RelayCommand]
-    private Task LoadAsync()
-    {
-        Loading = true;
-        IdlingGames.Clear();
-
-        var gameVMs = new List<GameViewModel>();
-        foreach (var game in _steamWorksService.GetIdlingGames()) gameVMs.Add(new GameViewModel(game.AppId, game.GameName, 0));
-        IdlingGames = new ObservableCollection<GameViewModel>(gameVMs);
-
-
-        Loading = false;
-
-        return Task.CompletedTask;
-    }
+    public sealed override string DisplayName { get; init; }
 
     public void IdleActionClicked(GameViewModel vm)
     {
@@ -46,6 +30,22 @@ public partial class IdlingGamesViewModel : PageViewModelBase, IGameCardConsumer
 
     public void ShowAchievements(GameViewModel vm)
     {
+    }
 
+    [RelayCommand]
+    private Task LoadAsync()
+    {
+        Loading = true;
+        IdlingGames.Clear();
+
+        var gameVMs = new List<GameViewModel>();
+        foreach (var game in _steamWorksService.GetIdlingGames())
+            gameVMs.Add(new GameViewModel(game.AppId, game.GameName, 0));
+        IdlingGames = new ObservableCollection<GameViewModel>(gameVMs);
+
+
+        Loading = false;
+
+        return Task.CompletedTask;
     }
 }

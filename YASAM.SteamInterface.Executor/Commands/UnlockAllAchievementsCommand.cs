@@ -7,11 +7,6 @@ namespace YASAM.SteamInterface.Executor.Commands;
 
 public class UnlockAllAchievementsCommand : AsyncCommand<UnlockAllAchievementsCommand.Settings>
 {
-    public class Settings : CommandSettings
-    {
-        [CommandArgument(0, "<AppId>")] public uint AppId { get; set; }
-    }
-
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
         AnsiConsole.MarkupLine($"[green]unlocking all achievements for app id: {settings.AppId}[/]");
@@ -22,13 +17,14 @@ public class UnlockAllAchievementsCommand : AsyncCommand<UnlockAllAchievementsCo
         SteamClient.Init(settings.AppId);
 
         foreach (var achievement in SteamUserStats.Achievements)
-        {
             if (!achievement.State)
-            {
                 achievement.Trigger();
-            }
-        }
-        
+
         return 0;
+    }
+
+    public class Settings : CommandSettings
+    {
+        [CommandArgument(0, "<AppId>")] public uint AppId { get; set; }
     }
 }

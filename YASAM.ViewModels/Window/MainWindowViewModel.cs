@@ -8,46 +8,41 @@ namespace YASAM.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase
 {
     private readonly SelectedUserViewModel _selectedUserViewModel;
-    
-    [ObservableProperty]
-    private ViewModelBase _activePage;
-    
-    [ObservableProperty]
-    private ObservableCollection<PageViewModelBase> _pageList;
 
-    [ObservableProperty]
-    private bool _hasSelectedUser;
-    
-    
-    public ISukiDialogManager DialogManager { get; init; }
-    
+    [ObservableProperty] private ViewModelBase _activePage;
+
+    [ObservableProperty] private bool _hasSelectedUser;
+
+    [ObservableProperty] private ObservableCollection<PageViewModelBase> _pageList;
+
     public MainWindowViewModel(SelectedUserViewModel selectedUser)
     {
         DialogManager = Ioc.Default.GetRequiredService<ISukiDialogManager>();
-        
+
         _selectedUserViewModel = selectedUser;
-        HasSelectedUser = _selectedUserViewModel.Id != Guid.Empty;
+        HasSelectedUser = _selectedUserViewModel.Id != null;
 
         PageList =
         [
-            Ioc.Default.GetRequiredService<LandingViewModel>(),
+            Ioc.Default.GetRequiredService<LandingViewModel>()
         ];
 
         _activePage = Ioc.Default.GetRequiredService<LandingViewModel>();
         _selectedUserViewModel.SelectedUserUpdated += SelectUser;
     }
 
+
+    public ISukiDialogManager DialogManager { get; init; }
+
     private void SelectUser(object? sender, EventArgs e)
     {
         if (!HasSelectedUser)
-        {
             PageList =
             [
                 Ioc.Default.GetRequiredService<LandingViewModel>(),
                 Ioc.Default.GetRequiredService<YourGamesViewModel>(),
-                Ioc.Default.GetRequiredService<IdlingGamesViewModel>(),
+                Ioc.Default.GetRequiredService<IdlingGamesViewModel>()
             ];
-        }
         HasSelectedUser = true;
         ActivePage = Ioc.Default.GetRequiredService<YourGamesViewModel>();
     }

@@ -27,5 +27,4 @@ internal class Program
 
         await app.RunAsync(args);
     }
-    
 }

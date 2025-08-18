@@ -4,42 +4,32 @@ namespace YASAM.ViewModels;
 
 public partial class GameAchievementViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    private bool _achieved;
-    
-    [ObservableProperty]
-    private bool _hidden;
-    
-    
-    [ObservableProperty]
-    private string _id;
-    
-    
-    [ObservableProperty]
-    private string _displayName;
-    
-    [ObservableProperty]
-    private string _description;
-    
-    [ObservableProperty]
-    private string _icon;
+    [ObservableProperty] private bool _achieved;
 
-    [ObservableProperty]
-    private string _icongray;
+    [ObservableProperty] private string _description;
 
-    [ObservableProperty]
-    private bool _shouldToggle;
 
-    [ObservableProperty] 
-    private DateTimeOffset? _unlockTime;
-    
-    public string CheckboxMessage => Achieved ? "Lock" : "Unlock";
-    
-    public GameAchievementViewModel(string? achievementApiName, string achievementName, string achievementDescription, bool achievementAchieved, bool achievementHidden, string lockedIcon, string icon, DateTimeOffset? unlockTime)
+    [ObservableProperty] private string _displayName;
+
+    [ObservableProperty] private bool _hidden;
+
+    [ObservableProperty] private string _icon;
+
+    [ObservableProperty] private string _icongray;
+
+
+    [ObservableProperty] private string _id;
+
+    [ObservableProperty] private bool _shouldToggle;
+
+    [ObservableProperty] private DateTimeOffset? _unlockTime;
+
+    public GameAchievementViewModel(string? achievementApiName, string achievementName, string achievementDescription,
+        bool achievementAchieved, bool achievementHidden, string lockedIcon, string icon, DateTimeOffset? unlockTime)
     {
         _unlockTime = unlockTime;
         Id = achievementApiName ?? "Unknown Name";
-        DisplayName =  achievementName;
+        DisplayName = achievementName;
         Description = achievementDescription;
         Achieved = achievementAchieved;
         Achieved = achievementAchieved;
@@ -47,4 +37,6 @@ public partial class GameAchievementViewModel : ViewModelBase
         Icongray = lockedIcon;
         Icon = icon;
     }
+
+    public string CheckboxMessage => Achieved ? "Lock" : "Unlock";
 }

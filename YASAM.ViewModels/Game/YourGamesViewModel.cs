@@ -10,27 +10,21 @@ namespace YASAM.ViewModels;
 
 public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardConsumer
 {
-    
     private readonly SelectedUserViewModel _selectedUser;
-    public override string DisplayName { get; init; }
 
     private readonly ISteamApiClient _steamApiClient;
     private readonly ISteamWorksService _steamWorksService;
-    
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(OwnedGames))]
+
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(OwnedGames))]
     private ObservableCollection<GameViewModel> _games = [];
 
-    [ObservableProperty]
-    private bool _loading;
-    
-    public int OwnedGames => Games.Count;
-    
-    [ObservableProperty]
-    private DateTimeOffset? _lastUpdated;
+    [ObservableProperty] private DateTimeOffset? _lastUpdated;
 
-    public YourGamesViewModel(ISteamApiClient steamApiClient, SelectedUserViewModel selectedUser, ISteamWorksService steamWorksService)
+    [ObservableProperty] private bool _loading;
+
+    public YourGamesViewModel(ISteamApiClient steamApiClient, SelectedUserViewModel selectedUser,
+        ISteamWorksService steamWorksService)
     {
         _selectedUser = selectedUser;
         _steamWorksService = steamWorksService;
@@ -38,24 +32,9 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
         DisplayName = "Your Games";
     }
 
+    public override string DisplayName { get; init; }
 
-    [RelayCommand]
-    private async Task LoadAsync()
-    {
-        if (!LastUpdated.HasValue || (DateTimeOffset.UtcNow - LastUpdated?.UtcDateTime > TimeSpan.FromMinutes(5)))
-        {
-            Loading = true;
-            var games  = _steamApiClient.GetGames(_selectedUser!.SteamUserId!.Value, _selectedUser!.ApiKey!);
-           var gameVMs = new List<GameViewModel>();
-            await foreach (var game in games)
-            {
-                gameVMs.Add(new(game.AppId!.Value, game.Name!, game.PlaytimeForever!.Value));
-            }
-            Games = new ObservableCollection<GameViewModel>(gameVMs.OrderBy(x => x.Name));
-            LastUpdated = DateTimeOffset.UtcNow;
-            Loading = false;
-        }
-    }
+    public int OwnedGames => Games.Count;
 
     public void IdleActionClicked(GameViewModel vm)
     {
@@ -70,14 +49,29 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
 
         var dialogManager = Ioc.Default.GetRequiredService<ISukiDialogManager>();
         dialogManager.CreateDialog()
-            .WithViewModel((s) =>
+            .WithViewModel(s =>
             {
                 s.ShowCardBackground = true;
                 s.CanDismissWithBackgroundClick = true;
                 return achievementsViewModel;
             })
             .TryShow();
-
     }
 
+
+    [RelayCommand]
+    private async Task LoadAsync()
+    {
+        if (!LastUpdated.HasValue || DateTimeOffset.UtcNow - LastUpdated?.UtcDateTime > TimeSpan.FromMinutes(5))
+        {
+            Loading = true;
+            var games = _steamApiClient.GetGames(_selectedUser.SteamUserId!.Value, _selectedUser.ApiKey!);
+            var gameVMs = new List<GameViewModel>();
+            await foreach (var game in games)
+                gameVMs.Add(new GameViewModel(game.AppId!.Value, game.Name!, game.PlaytimeForever!.Value));
+            Games = new ObservableCollection<GameViewModel>(gameVMs.OrderBy(x => x.Name));
+            LastUpdated = DateTimeOffset.UtcNow;
+            Loading = false;
+        }
+    }
 }

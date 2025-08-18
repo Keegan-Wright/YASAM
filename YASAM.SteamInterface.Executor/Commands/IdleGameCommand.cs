@@ -7,11 +7,6 @@ namespace YASAM.SteamInterface.Executor.Commands;
 
 public class IdleGameCommand : AsyncCommand<IdleGameCommand.Settings>
 {
-    public class Settings : CommandSettings
-    {
-        [CommandArgument(0, "<AppId>")] public uint AppId { get; set; }
-    }
-
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
         AnsiConsole.MarkupLine($"[grey]IdleGameCommand for app id: {settings.AppId}[/]");
@@ -21,10 +16,14 @@ public class IdleGameCommand : AsyncCommand<IdleGameCommand.Settings>
         SteamClient.Init(settings.AppId);
 
         AnsiConsole.MarkupLine("[green] Successfully idling game[/]");
-        
+
         while (true) await Task.Delay(1000);
         // ReSharper disable once FunctionNeverReturns
         // This is intentional and used in a fire and forget manner
     }
-    
+
+    public class Settings : CommandSettings
+    {
+        [CommandArgument(0, "<AppId>")] public uint AppId { get; set; }
+    }
 }

@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\YASAM.SteamInterface.Executor\YASAM.SteamInterface.Executor.csproj" />
+        <ProjectReference Include="..\YASAM.SteamInterface.Executor\YASAM.SteamInterface.Executor.csproj"/>
     </ItemGroup>
 
 </Project>

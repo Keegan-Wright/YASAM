@@ -8,27 +8,23 @@ namespace YASAM.ViewModels;
 
 public sealed partial class LandingViewModel : PageViewModelBase
 {
-
     private readonly IUserService _userService;
 
-    [ObservableProperty]
-    private ObservableCollection<TrackedUserViewModel> _trackedUsers = [];
+    [ObservableProperty] private string? _newUserName;
 
-    [ObservableProperty]
-    private string? _newUserName;
+    [ObservableProperty] private string? _newUserSteamApiKey;
 
-    [ObservableProperty]
-    private ulong? _newUserSteamId;
+    [ObservableProperty] private ulong? _newUserSteamId;
 
-    [ObservableProperty]
-    private string? _newUserSteamApiKey;
-    public override string DisplayName { get; init; }
+    [ObservableProperty] private ObservableCollection<TrackedUserViewModel> _trackedUsers = [];
 
     public LandingViewModel(IUserService userService)
     {
         _userService = userService;
         DisplayName = "Landing Page";
     }
+
+    public override string DisplayName { get; init; }
 
     [RelayCommand]
     private async Task LoadAsync()
@@ -37,15 +33,13 @@ public sealed partial class LandingViewModel : PageViewModelBase
             return;
 
         await foreach (var user in _userService.GetTrackedUsersAsync())
-        {
-            TrackedUsers.Add(new TrackedUserViewModel()
+            TrackedUsers.Add(new TrackedUserViewModel
             {
                 Id = user.Id,
                 Name = user.Name,
                 SteamUserId = user.SteamId,
-                ApiKey = user.ApiKey,
+                ApiKey = user.ApiKey
             });
-        }
     }
 
     [RelayCommand]
@@ -53,17 +47,14 @@ public sealed partial class LandingViewModel : PageViewModelBase
     {
         if (!string.IsNullOrEmpty(NewUserName) && NewUserSteamId.HasValue && !string.IsNullOrEmpty(NewUserSteamApiKey))
         {
-
-
-
             var newUser = await _userService.AddTrackedUserAsync(NewUserName, NewUserSteamId.Value, NewUserSteamApiKey);
 
-            TrackedUsers.Add(new TrackedUserViewModel() { Id = newUser.Id, Name = newUser.Name, SteamUserId = newUser.SteamId, ApiKey = newUser.ApiKey });
+            TrackedUsers.Add(new TrackedUserViewModel
+                { Id = newUser.Id, Name = newUser.Name, SteamUserId = newUser.SteamId, ApiKey = newUser.ApiKey });
 
             NewUserName = string.Empty;
             NewUserSteamApiKey = string.Empty;
             NewUserSteamId = null;
-
         }
     }
 
@@ -72,7 +63,5 @@ public sealed partial class LandingViewModel : PageViewModelBase
     {
         var selectedUser = Ioc.Default.GetRequiredService<SelectedUserViewModel>();
         selectedUser.UpdateSelectedUser(user.Id!.Value, user.Name!, user.SteamUserId!.Value, user.ApiKey!);
-
     }
-
 }

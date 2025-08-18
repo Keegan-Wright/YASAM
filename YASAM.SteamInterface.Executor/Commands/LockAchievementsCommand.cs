@@ -7,16 +7,6 @@ namespace YASAM.SteamInterface.Executor.Commands;
 
 public class LockAchievementsCommand : AsyncCommand<LockAchievementsCommand.Settings>
 {
-    public class Settings : CommandSettings
-    {
-
-        [CommandArgument(0, "<AppId>")] 
-        public uint AppId { get; set; }
-        
-        [CommandArgument(1, "<AchievementIds>")]
-        public string[] AchievementIds { get; set; } = [];
-    }
-
     public override async Task<int> ExecuteAsync(CommandContext context, Settings settings)
     {
         foreach (var achievementId in settings.AchievementIds)
@@ -25,18 +15,23 @@ public class LockAchievementsCommand : AsyncCommand<LockAchievementsCommand.Sett
 
             await SteamProcessHelpers.SetupSteamAppIdTextFile(settings.AppId);
             SteamProcessHelpers.SetEnvionmentVariable(settings.AppId);
-            
+
             SteamClient.Init(settings.AppId);
-            
-        
+
+
             var achievement = SteamUserStats.Achievements.First(x => x.Identifier == achievementId);
-            if (achievement.State)
-            {
-                achievement.Trigger();
-            }
+            if (achievement.State) achievement.Trigger();
         }
 
-        
+
         return 0;
+    }
+
+    public class Settings : CommandSettings
+    {
+        [CommandArgument(0, "<AppId>")] public uint AppId { get; set; }
+
+        [CommandArgument(1, "<AchievementIds>")]
+        public string[] AchievementIds { get; set; } = [];
     }
 }

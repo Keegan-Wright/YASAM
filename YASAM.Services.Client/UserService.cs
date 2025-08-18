@@ -5,7 +5,7 @@ namespace YASAM.Services.Client;
 
 public class UserService : IUserService
 {
-    private readonly YasamDbContext  _db;
+    private readonly YasamDbContext _db;
 
     public UserService(YasamDbContext db)
     {

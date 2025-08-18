@@ -1,5 +1,3 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-
 namespace YASAM.ViewModels;
 
 public abstract class PageViewModelBase : ViewModelBase
