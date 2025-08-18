@@ -7,22 +7,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Reference Include="CommunityToolkit.Mvvm">
-        <HintPath>..\..\..\.nuget\packages\communitytoolkit.mvvm\8.2.1\lib\net6.0\CommunityToolkit.Mvvm.dll</HintPath>
-      </Reference>
-      <Reference Include="SukiUI">
-        <HintPath>..\..\..\.nuget\packages\sukiui\6.0.2\lib\netstandard2.0\SukiUI.dll</HintPath>
-      </Reference>
+        <Reference Include="CommunityToolkit.Mvvm">
+            <HintPath>..\..\..\.nuget\packages\communitytoolkit.mvvm\8.2.1\lib\net6.0\CommunityToolkit.Mvvm.dll</HintPath>
+        </Reference>
+        <Reference Include="SukiUI">
+            <HintPath>..\..\..\.nuget\packages\sukiui\6.0.2\lib\netstandard2.0\SukiUI.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-      <PackageReference Include="SukiUI" Version="6.0.2" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
+        <PackageReference Include="SukiUI" Version="6.0.2"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\YASAM.Services.Client\YASAM.Services.Client.csproj" />
-      <ProjectReference Include="..\YASAM.SteamInterface\YASAM.SteamInterface.csproj" />
+        <ProjectReference Include="..\YASAM.Services.Client\YASAM.Services.Client.csproj"/>
+        <ProjectReference Include="..\YASAM.SteamInterface\YASAM.SteamInterface.csproj"/>
     </ItemGroup>
 
 </Project>

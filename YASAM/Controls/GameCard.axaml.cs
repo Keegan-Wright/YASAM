@@ -1,8 +1,6 @@
 using System;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 
 namespace YASAM.Controls;
 
@@ -12,28 +10,28 @@ public partial class GameCard : UserControl
         RoutedEvent.Register<Control, RoutedEventArgs>(
             nameof(Idle),
             RoutingStrategies.Direct);
-    
+
     public static readonly RoutedEvent<RoutedEventArgs> ShowAchievementsEvent =
         RoutedEvent.Register<Control, RoutedEventArgs>(
             nameof(Idle),
             RoutingStrategies.Direct);
 
-    public event EventHandler<RoutedEventArgs> Idle
-    { 
-        add => AddHandler(IdleEvent, value);
-        remove => RemoveHandler(IdleEvent, value);
-    }
-    
-    public event EventHandler<RoutedEventArgs> ShowAchievements
-    { 
-        add => AddHandler(ShowAchievementsEvent, value);
-        remove => RemoveHandler(ShowAchievementsEvent, value);
-    }
 
-    
     public GameCard()
     {
         InitializeComponent();
+    }
+
+    public event EventHandler<RoutedEventArgs> Idle
+    {
+        add => AddHandler(IdleEvent, value);
+        remove => RemoveHandler(IdleEvent, value);
+    }
+
+    public event EventHandler<RoutedEventArgs> ShowAchievements
+    {
+        add => AddHandler(ShowAchievementsEvent, value);
+        remove => RemoveHandler(ShowAchievementsEvent, value);
     }
 
     private void IdleGameClicked(object? sender, RoutedEventArgs e)

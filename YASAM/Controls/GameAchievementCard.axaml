@@ -5,39 +5,38 @@
              xmlns:vm="clr-namespace:YASAM.ViewModels;assembly=YASAM.ViewModels"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
-             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="vm:GameAchievementViewModel"
              x:Class="YASAM.Controls.GameAchievementCard">
-    
+
     <sukiUi:GlassCard>
         <Grid
             ColumnDefinitions="auto,*, Auto"
-            Width="300" 
+            Width="300"
             RowSpacing="10"
             ColumnSpacing="10">
-            
+
             <Border ClipToBounds="True" CornerRadius="10">
-                
+
                 <Panel>
-                    
+
                     <Image IsVisible="{Binding Achieved}"
-                           asyncImageLoader:ImageLoader.Source="{Binding Icon }"></Image>
-                    
-                    
+                           asyncImageLoader:ImageLoader.Source="{Binding Icon }" />
+
+
                     <Image IsVisible="{Binding !Achieved}"
-                           asyncImageLoader:ImageLoader.Source="{Binding Icongray }"></Image>
+                           asyncImageLoader:ImageLoader.Source="{Binding Icongray }" />
                 </Panel>
-                
-                
+
+
             </Border>
             <StackPanel Grid.Column="1">
-                <TextBlock Text="{Binding DisplayName}"></TextBlock>
-                <TextBlock Text="{Binding Description}" TextWrapping="Wrap"></TextBlock>
-                <TextBlock IsVisible="{Binding Achieved}" Text="{Binding UnlockTime, StringFormat=d}"></TextBlock>
+                <TextBlock Text="{Binding DisplayName}" />
+                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" />
+                <TextBlock IsVisible="{Binding Achieved}" Text="{Binding UnlockTime, StringFormat=d}" />
             </StackPanel>
-            
-            
+
+
             <StackPanel Grid.Column="2">
                 <CheckBox Content="{Binding CheckboxMessage}" IsChecked="{Binding ShouldToggle}" />
             </StackPanel>

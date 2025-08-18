@@ -8,21 +8,15 @@ namespace YASAM.ViewModels;
 
 public sealed partial class LandingViewModel : PageViewModelBase
 {
-    
     private readonly IUserService _userService;
-    
-    [ObservableProperty]
-    private ObservableCollection<TrackedUserViewModel> _trackedUsers = [];
-    
-    [ObservableProperty]
-    private string _newUserName;
-    
-    [ObservableProperty]
-    private ulong _newUserSteamId;
-    
-    [ObservableProperty]
-    private string _newUserSteamApiKey;
-    public override string DisplayName { get; init; }
+
+    [ObservableProperty] private string? _newUserName;
+
+    [ObservableProperty] private string? _newUserSteamApiKey;
+
+    [ObservableProperty] private ulong? _newUserSteamId;
+
+    [ObservableProperty] private ObservableCollection<TrackedUserViewModel> _trackedUsers = [];
 
     public LandingViewModel(IUserService userService)
     {
@@ -30,42 +24,44 @@ public sealed partial class LandingViewModel : PageViewModelBase
         DisplayName = "Landing Page";
     }
 
+    public override string DisplayName { get; init; }
+
     [RelayCommand]
     private async Task LoadAsync()
     {
         if (TrackedUsers.Any())
             return;
-        
+
         await foreach (var user in _userService.GetTrackedUsersAsync())
-        {
-            TrackedUsers.Add(new TrackedUserViewModel()
+            TrackedUsers.Add(new TrackedUserViewModel
             {
                 Id = user.Id,
                 Name = user.Name,
                 SteamUserId = user.SteamId,
-                ApiKey = user.ApiKey,
+                ApiKey = user.ApiKey
             });
-        }
     }
-    
+
     [RelayCommand]
     private async Task AddTrackedUserAsync()
     {
-        var newUser = await _userService.AddTrackedUserAsync(NewUserName, NewUserSteamId, NewUserSteamApiKey);
-        
-        TrackedUsers.Add(new TrackedUserViewModel(){ Id = newUser.Id, Name = newUser.Name, SteamUserId = newUser.SteamId, ApiKey = newUser.ApiKey });
-        
-        NewUserName = string.Empty;
-        NewUserSteamApiKey = string.Empty;
-        NewUserSteamId = 0;
+        if (!string.IsNullOrEmpty(NewUserName) && NewUserSteamId.HasValue && !string.IsNullOrEmpty(NewUserSteamApiKey))
+        {
+            var newUser = await _userService.AddTrackedUserAsync(NewUserName, NewUserSteamId.Value, NewUserSteamApiKey);
+
+            TrackedUsers.Add(new TrackedUserViewModel
+                { Id = newUser.Id, Name = newUser.Name, SteamUserId = newUser.SteamId, ApiKey = newUser.ApiKey });
+
+            NewUserName = string.Empty;
+            NewUserSteamApiKey = string.Empty;
+            NewUserSteamId = null;
+        }
     }
 
     [RelayCommand]
     private void SelectUser(TrackedUserViewModel user)
     {
         var selectedUser = Ioc.Default.GetRequiredService<SelectedUserViewModel>();
-        selectedUser.UpdateSelectedUser(user.Id, user.Name, user.SteamUserId, user.ApiKey);
-        
+        selectedUser.UpdateSelectedUser(user.Id!.Value, user.Name!, user.SteamUserId!.Value, user.ApiKey!);
     }
-
 }

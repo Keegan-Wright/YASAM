@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.3.0" />
+        <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.3.0"/>
         <PackageReference Include="Avalonia" Version="11.3.2"/>
         <PackageReference Include="Avalonia.Desktop" Version="11.3.2"/>
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.2"/>
@@ -23,43 +23,43 @@
             <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.3.0.6" />
+        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.3.0.6"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
-        <PackageReference Include="Material.Icons.Avalonia" Version="2.4.1" />
+        <PackageReference Include="Material.Icons.Avalonia" Version="2.4.1"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.7">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.7" />
-        <PackageReference Include="SukiUI" Version="6.0.2" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.7"/>
+        <PackageReference Include="SukiUI" Version="6.0.2"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\YASAM.Data\YASAM.Data.csproj" />
-      <ProjectReference Include="..\YASAM.Services.Client\YASAM.Services.Client.csproj" />
-      <ProjectReference Include="..\YASAM.ViewModels\YASAM.ViewModels.csproj" />
+        <ProjectReference Include="..\YASAM.Data\YASAM.Data.csproj"/>
+        <ProjectReference Include="..\YASAM.Services.Client\YASAM.Services.Client.csproj"/>
+        <ProjectReference Include="..\YASAM.ViewModels\YASAM.ViewModels.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Views\IdlingGamesView.axaml.cs">
-        <DependentUpon>IdlingGames.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Controls\GameAchievementCard.axaml.cs">
-        <DependentUpon>GameAchievementCard.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
+        <Compile Update="Views\IdlingGamesView.axaml.cs">
+            <DependentUpon>IdlingGames.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Controls\GameAchievementCard.axaml.cs">
+            <DependentUpon>GameAchievementCard.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\README.md">
-        <Link>README.md</Link>
-      </Content>
+        <Content Include="..\README.md">
+            <Link>README.md</Link>
+        </Content>
     </ItemGroup>
 </Project>

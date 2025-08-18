@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\YASAM.Data\YASAM.Data.csproj" />
+        <ProjectReference Include="..\YASAM.Data\YASAM.Data.csproj"/>
     </ItemGroup>
 
 </Project>

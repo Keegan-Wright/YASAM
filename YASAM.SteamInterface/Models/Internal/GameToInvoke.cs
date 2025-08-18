@@ -1,5 +1,3 @@
-namespace YASAM.SteamInterface.Internal;
+namespace YASAM.SteamInterface.Models.Internal;
 
 public record GameToInvoke(ulong AppId, string GameName);
-
-public record IdlingGame(int ProcessId, ulong AppId, string GameName) : GameToInvoke(AppId, GameName);

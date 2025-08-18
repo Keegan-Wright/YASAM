@@ -8,7 +8,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="YASAM.Views.YourGamesView"
              x:DataType="vm:YourGamesViewModel">
-    
+
     <Interaction.Behaviors>
         <RoutedEventTriggerBehavior
             RoutedEvent="{x:Static  Control.LoadedEvent}">
@@ -16,45 +16,44 @@
                 Command="{Binding LoadCommand}" />
         </RoutedEventTriggerBehavior>
     </Interaction.Behaviors>
-    
+
     <sukiUi:GlassCard Margin="10">
         <Grid RowDefinitions="Auto, *" RowSpacing="10">
             <StackPanel>
                 <TextBlock Classes="h1">Your Games</TextBlock>
-                
+
                 <TextBlock Classes="caption" IsVisible="{Binding !Loading}">
-                    <Run Text="{Binding OwnedGames}"></Run>
+                    <Run Text="{Binding OwnedGames}" />
                     <Run>Owned Games</Run>
                 </TextBlock>
             </StackPanel>
-            
 
-                
-                <ScrollViewer Grid.Row="1" AllowAutoHide="True">
-                    <sukiUi:BusyArea BusyText="Loading Your Games" IsBusy="{Binding Loading}">
+
+            <ScrollViewer Grid.Row="1" AllowAutoHide="True">
+                <sukiUi:BusyArea BusyText="Loading Your Games" IsBusy="{Binding Loading}">
                     <StackPanel>
                         <ItemsControl ItemsSource="{Binding Games}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel ItemSpacing="10" LineSpacing="10"/>
+                                    <WrapPanel ItemSpacing="10" LineSpacing="10" />
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <controls:GameCard> 
+                                    <controls:GameCard>
                                         <Interaction.Behaviors>
                                             <RoutedEventTriggerBehavior
                                                 RoutedEvent="{x:Static  controls:GameCard.IdleEvent}">
                                                 <InvokeCommandAction
                                                     Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).IdleActionClicked, Mode=OneTime}"
-                                                    CommandParameter="{Binding }"/>
+                                                    CommandParameter="{Binding }" />
                                             </RoutedEventTriggerBehavior>
-                                            
+
                                             <RoutedEventTriggerBehavior
                                                 RoutedEvent="{x:Static  controls:GameCard.ShowAchievementsEvent}">
                                                 <InvokeCommandAction
                                                     Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).ShowAchievements, Mode=OneTime}"
-                                                    CommandParameter="{Binding }"/>
+                                                    CommandParameter="{Binding }" />
                                             </RoutedEventTriggerBehavior>
                                         </Interaction.Behaviors>
                                     </controls:GameCard>
@@ -62,10 +61,10 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
-                    </sukiUi:BusyArea>
-                </ScrollViewer>
+                </sukiUi:BusyArea>
+            </ScrollViewer>
 
-        
+
         </Grid>
     </sukiUi:GlassCard>
 

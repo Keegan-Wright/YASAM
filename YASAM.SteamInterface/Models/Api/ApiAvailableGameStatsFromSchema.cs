@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace YASAM.SteamInterface.Api;
+namespace YASAM.SteamInterface.Models.Api;
 
 public class ApiAvailableGameStatsFromSchema
 {
-    [JsonPropertyName("achievements")] public List<ApiAchievementFromSchema> Achievements { get; set; }
+    [JsonPropertyName("achievements")] public IEnumerable<ApiAchievementFromSchema>? Achievements { get; set; }
 }

@@ -1,6 +1,9 @@
 ﻿using Spectre.Console;
 using Spectre.Console.Cli;
 using Steamworks;
+using YASAM.SteamInterface.Executor.Commands;
+
+namespace YASAM.SteamInterface.Executor;
 
 internal class Program
 {
@@ -16,7 +19,7 @@ internal class Program
             config.AddCommand<LockAllAchievementsCommand>("lockAllAchievements");
         });
 
-        AppDomain.CurrentDomain.ProcessExit += (_, __) =>
+        AppDomain.CurrentDomain.ProcessExit += (_, _) =>
         {
             AnsiConsole.MarkupLine("[red] Exiting[/]");
             SteamClient.Shutdown();
@@ -24,5 +27,4 @@ internal class Program
 
         await app.RunAsync(args);
     }
-    
 }

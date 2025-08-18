@@ -5,18 +5,19 @@ namespace YASAM.SteamInterface.Executor.Helpers;
 
 public static class SteamProcessHelpers
 {
-    internal static void SetupSteamAppIdTextFile(ulong appId)
+    internal static async Task SetupSteamAppIdTextFile(ulong appId)
     {
-        var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location);
         var fileName = "steam_appid.txt";
 
-        var combinedPath = Path.Combine(appPath, fileName);
+        var combinedPath = Path.Combine(appPath!, fileName);
         if (File.Exists(combinedPath)) File.Delete(combinedPath);
 
         using var filestream = new FileStream(combinedPath, FileMode.CreateNew);
         using var writer = new StreamWriter(filestream, Encoding.ASCII);
-        writer.Write(appId);
-        writer.Flush();
+
+        await writer.WriteAsync(appId.ToString());
+        await writer.FlushAsync();
         writer.Close();
     }
 

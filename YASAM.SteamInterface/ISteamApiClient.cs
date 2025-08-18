@@ -1,4 +1,4 @@
-using YASAM.SteamInterface.Api;
+using YASAM.SteamInterface.Models.Api;
 
 namespace YASAM.SteamInterface;
 

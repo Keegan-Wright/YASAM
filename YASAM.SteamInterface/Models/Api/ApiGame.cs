@@ -1,33 +1,28 @@
 using System.Text.Json.Serialization;
 
-namespace YASAM.SteamInterface.Api;
+namespace YASAM.SteamInterface.Models.Api;
 
 public record ApiGame
 {
-    [JsonPropertyName("appid")]
-    public ulong AppId { get; set; }
+    [JsonPropertyName("appid")] public ulong? AppId { get; set; }
 
-    [JsonPropertyName("name")]
-    public string Name { get; set; }
+    [JsonPropertyName("name")] public string? Name { get; set; }
 
-    [JsonPropertyName("playtime_forever")]
-    public int PlaytimeForever { get; set; }
+    [JsonPropertyName("playtime_forever")] public int? PlaytimeForever { get; set; }
 
-    [JsonPropertyName("img_icon_url")]
-    public string ImgIconUrl { get; set; }
+    [JsonPropertyName("img_icon_url")] public string? ImgIconUrl { get; set; }
 
     [JsonPropertyName("has_community_visible_stats")]
-    public bool HasCommunityVisibleStats { get; set; }
+    public bool? HasCommunityVisibleStats { get; set; }
 
     [JsonPropertyName("playtime_windows_forever")]
-    public int PlaytimeWindowsForever { get; set; }
+    public int? PlaytimeWindowsForever { get; set; }
 
     [JsonPropertyName("playtime_mac_forever")]
-    public int PlaytimeMacForever { get; set; }
+    public int? PlaytimeMacForever { get; set; }
 
     [JsonPropertyName("playtime_linux_forever")]
-    public int PlaytimeLinuxForever { get; set; }
+    public int? PlaytimeLinuxForever { get; set; }
 
-    [JsonPropertyName("playtime_2weeks")]
-    public int? PlaytimeTwoWeeks { get; set; }
+    [JsonPropertyName("playtime_2weeks")] public int? PlaytimeTwoWeeks { get; set; }
 }

@@ -9,65 +9,65 @@
              x:Class="YASAM.Views.GameAchievementsView"
              x:DataType="vm:GameAchievementsViewModel">
 
-     <Interaction.Behaviors>
+    <Interaction.Behaviors>
         <RoutedEventTriggerBehavior
             RoutedEvent="{x:Static  Control.LoadedEvent}">
             <InvokeCommandAction
                 Command="{Binding LoadCommand, Mode=OneTime}" />
         </RoutedEventTriggerBehavior>
     </Interaction.Behaviors>
-    
-    
+
+
     <sukiUi:GlassCard Margin="10">
         <Grid RowDefinitions="Auto, *, Auto" RowSpacing="10">
             <StackPanel>
                 <TextBlock Classes="h1">Achievement Management</TextBlock>
             </StackPanel>
-            
-                <ScrollViewer Grid.Row="1" AllowAutoHide="True">
-                    <sukiUi:BusyArea BusyText="Loading Your Achievements" IsBusy="{Binding Loading}">
+
+            <ScrollViewer Grid.Row="1" AllowAutoHide="True">
+                <sukiUi:BusyArea BusyText="Loading Your Achievements" IsBusy="{Binding Loading}">
                     <StackPanel>
                         <ItemsControl ItemsSource="{Binding Achievements}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel ItemSpacing="10" LineSpacing="10"/>
+                                    <WrapPanel ItemSpacing="10" LineSpacing="10" />
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <controls:GameAchievementCard></controls:GameAchievementCard>
+                                    <controls:GameAchievementCard />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
-                    </sukiUi:BusyArea>
-                </ScrollViewer>
-            
+                </sukiUi:BusyArea>
+            </ScrollViewer>
+
             <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="10">
-                <Button 
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        Classes="Flat Rounded"
-                        Command="{Binding UnlockAllAchievementsCommand}"
-                        FontWeight="DemiBold">
+                <Button
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Classes="Flat Rounded"
+                    Command="{Binding UnlockAllAchievementsCommand}"
+                    FontWeight="DemiBold">
                     Unlock All
                 </Button>
-                
+
                 <Button
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        Classes="Flat Rounded"
-                        Command="{Binding LockAllAchievementsCommand}"
-                        FontWeight="DemiBold">
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Classes="Flat Rounded"
+                    Command="{Binding LockAllAchievementsCommand}"
+                    FontWeight="DemiBold">
                     Lock All
                 </Button>
-                
+
                 <Button
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"
-                        Classes="Flat Rounded"
-                        Command="{Binding SaveChangesCommand}"
-                        FontWeight="DemiBold">
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Classes="Flat Rounded"
+                    Command="{Binding SaveChangesCommand}"
+                    FontWeight="DemiBold">
                     Save Changes
                 </Button>
             </StackPanel>
