@@ -1,7 +1,10 @@
 using System.Collections.Frozen;
 using System.Collections.ObjectModel;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
+using SukiUI.Toasts;
 using YASAM.SteamInterface;
 
 namespace YASAM.ViewModels;
@@ -55,23 +58,50 @@ public partial class GameAchievementsViewModel : ViewModelBase
         var achievementsToToggle = Achievements.Where(x => x.ShouldToggle).ToFrozenSet();
         if (achievementsToToggle.Any())
         {
-            await _steamWorksService.LockAchievements(AppId,
+            var lockSuccess = await _steamWorksService.LockAchievements(AppId,
                 achievementsToToggle.Where(x => x.Achieved).Select(x => x.Id));
-            await _steamWorksService.UnlockAchievements(AppId,
+            var unlockSuccess = await _steamWorksService.UnlockAchievements(AppId,
                 achievementsToToggle.Where(x => !x.Achieved).Select(x => x.Id));
+            
+            await ReloadAndNotifyUser(lockSuccess && unlockSuccess);
         }
     }
 
     [RelayCommand]
     private async Task UnlockAllAchievementsAsync()
     {
-        await _steamWorksService.UnlockAllAchievements(AppId);
+        var success = await _steamWorksService.UnlockAllAchievements(AppId);
+        await ReloadAndNotifyUser(success);
     }
 
 
     [RelayCommand]
     private async Task LockAllAchievementsAsync()
     {
-        await _steamWorksService.LockAllAchievements(AppId);
+       var success =  await _steamWorksService.LockAllAchievements(AppId);
+
+       await ReloadAndNotifyUser(success);
+       
+    }
+
+    private async Task ReloadAndNotifyUser(bool success)
+    {
+        var toastManager = Ioc.Default.GetRequiredService<ISukiToastManager>();
+        if (!success)
+            toastManager.CreateToast()
+                .OfType(NotificationType.Error)
+                .WithTitle("Error").WithContent("Failed to save achievements.")
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .Dismiss().ByClicking()
+                .Queue();
+        else
+            toastManager.CreateToast()
+                .OfType(NotificationType.Success)
+                .WithTitle("Success").WithContent("Achievements saved.")
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .Dismiss().ByClicking()
+                .Queue();
+        
+        await LoadAsync();
     }
 }
