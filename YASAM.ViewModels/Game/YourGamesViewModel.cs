@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
@@ -16,12 +17,20 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
     private readonly ISteamWorksService _steamWorksService;
 
 
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(OwnedGames))]
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(OwnedGames))] 
+    [NotifyPropertyChangedFor(nameof(GameNames))]
     private ObservableCollection<GameViewModel> _games = [];
+
+    [ObservableProperty] private ObservableCollection<GameViewModel> _gamesToDisplay = [];
+    
+
 
     [ObservableProperty] private DateTimeOffset? _lastUpdated;
 
     [ObservableProperty] private bool _loading;
+    
+    [ObservableProperty] private string? _gamesFilterText;
 
     public YourGamesViewModel(ISteamApiClient steamApiClient, SelectedUserViewModel selectedUser,
         ISteamWorksService steamWorksService)
@@ -35,6 +44,8 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
     public override string DisplayName { get; init; }
 
     public int OwnedGames => Games.Count;
+    public IEnumerable<string> GameNames => Games.Select(x => x.Name);
+    
 
     public void IdleActionClicked(GameViewModel vm)
     {
@@ -71,7 +82,20 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
                 gameVMs.Add(new GameViewModel(game.AppId!.Value, game.Name!, game.PlaytimeForever!.Value));
             Games = new ObservableCollection<GameViewModel>(gameVMs.OrderBy(x => x.Name));
             LastUpdated = DateTimeOffset.UtcNow;
+            GamesToDisplay = Games;
+            
             Loading = false;
         }
+    }
+
+    [RelayCommand]
+    private void UpdateFilteredGames(string filter)
+    {
+        if (string.IsNullOrEmpty(filter))
+        {
+            GamesToDisplay = Games;
+        }
+        var filteredGames = Games.Where(x => x.Name.Contains(filter, StringComparison.OrdinalIgnoreCase));
+        GamesToDisplay = new ObservableCollection<GameViewModel>(filteredGames);
     }
 }
