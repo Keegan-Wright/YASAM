@@ -16,12 +16,20 @@ public partial class GameAchievementsViewModel : ViewModelBase
     private readonly ISteamApiClient _steamApiClient;
     private readonly ISteamWorksService _steamWorksService;
 
+    [NotifyPropertyChangedFor(nameof(AchievementNames))]
     [ObservableProperty] private ObservableCollection<GameAchievementViewModel> _achievements = [];
 
     [ObservableProperty] private ulong _appId;
 
     [ObservableProperty] private bool _loading;
+    
+    [ObservableProperty] private ObservableCollection<GameAchievementViewModel> _achievementsToDisplay = [];
+    
+    
+    [ObservableProperty] private string? _achievementsFilterText;
 
+    
+    public IEnumerable<string> AchievementNames => Achievements.Select(x => x.DisplayName);
     public GameAchievementsViewModel(ISteamApiClient steamApiClient, ISteamWorksService steamWorksService,
         SelectedUserViewModel selectedUserViewModel)
     {
@@ -49,6 +57,7 @@ public partial class GameAchievementsViewModel : ViewModelBase
                     : null));
 
         Achievements = new ObservableCollection<GameAchievementViewModel>(achievementsVMs.OrderBy(x => x.DisplayName));
+        AchievementsToDisplay = Achievements;
         Loading = false;
     }
 
@@ -82,6 +91,17 @@ public partial class GameAchievementsViewModel : ViewModelBase
 
        await ReloadAndNotifyUser(success);
        
+    }
+    
+    [RelayCommand]
+    private void UpdateFilteredAchievements(string filter)
+    {
+        if (string.IsNullOrEmpty(filter))
+        {
+            AchievementsToDisplay = Achievements;
+        }
+        var filteredAchievements = Achievements.Where(x => x.DisplayName.Contains(filter, StringComparison.OrdinalIgnoreCase));
+        AchievementsToDisplay = new ObservableCollection<GameAchievementViewModel>(filteredAchievements);
     }
 
     private async Task ReloadAndNotifyUser(bool success)
