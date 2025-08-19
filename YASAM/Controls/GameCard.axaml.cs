@@ -1,4 +1,5 @@
 using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
@@ -16,6 +17,15 @@ public partial class GameCard : UserControl
             nameof(Idle),
             RoutingStrategies.Direct);
 
+    
+    public static readonly StyledProperty<bool> IsIdleViewProperty =
+        AvaloniaProperty.Register<GameCard, bool>(nameof(IsIdleView), defaultValue: false);
+
+    public bool IsIdleView
+    {
+        get => GetValue(IsIdleViewProperty);
+        set => SetValue(IsIdleViewProperty, value);
+    }
 
     public GameCard()
     {
