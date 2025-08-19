@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using SukiUI.Dialogs;
+using SukiUI.Toasts;
 
 namespace YASAM.ViewModels;
 
@@ -18,6 +19,7 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(SelectedUserViewModel selectedUser)
     {
         DialogManager = Ioc.Default.GetRequiredService<ISukiDialogManager>();
+        ToastManager = Ioc.Default.GetRequiredService<ISukiToastManager>();
 
         _selectedUserViewModel = selectedUser;
         HasSelectedUser = _selectedUserViewModel.Id != null;
@@ -33,6 +35,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
 
     public ISukiDialogManager DialogManager { get; init; }
+    public ISukiToastManager ToastManager { get; init; }
 
     private void SelectUser(object? sender, EventArgs e)
     {

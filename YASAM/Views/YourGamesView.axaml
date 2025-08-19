@@ -27,12 +27,28 @@
                     <Run>Owned Games</Run>
                 </TextBlock>
             </StackPanel>
-
-
+            
+            <Grid Grid.Row="1"
+                  RowDefinitions="Auto, *">
+                
+                <AutoCompleteBox 
+                    Text="{Binding GamesFilterText}"
+                    Watermark="Search..."
+                    ItemsSource="{Binding GameNames}">
+                    <Interaction.Behaviors>
+                        <RoutedEventTriggerBehavior
+                            RoutedEvent="{x:Static  AutoCompleteBox.TextChangedEvent}">
+                            <InvokeCommandAction
+                                Command="{Binding UpdateFilteredGamesCommand}" CommandParameter="{Binding GamesFilterText}" />
+                        </RoutedEventTriggerBehavior>
+                    </Interaction.Behaviors>  
+                </AutoCompleteBox>
+                
+                
             <ScrollViewer Grid.Row="1" AllowAutoHide="True">
                 <sukiUi:BusyArea BusyText="Loading Your Games" IsBusy="{Binding Loading}">
                     <StackPanel>
-                        <ItemsControl ItemsSource="{Binding Games}">
+                        <ItemsControl ItemsSource="{Binding GamesToDisplay}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel ItemSpacing="10" LineSpacing="10" />
@@ -63,10 +79,7 @@
                     </StackPanel>
                 </sukiUi:BusyArea>
             </ScrollViewer>
-
-
+            </Grid>
         </Grid>
     </sukiUi:GlassCard>
-
-
 </UserControl>

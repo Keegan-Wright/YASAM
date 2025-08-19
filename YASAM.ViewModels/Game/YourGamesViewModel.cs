@@ -1,8 +1,11 @@
 using System.Collections.ObjectModel;
+using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using SukiUI.Dialogs;
+using SukiUI.Toasts;
 using YASAM.SteamInterface;
 using YASAM.SteamInterface.Models.Internal;
 
@@ -16,12 +19,20 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
     private readonly ISteamWorksService _steamWorksService;
 
 
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(OwnedGames))]
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(OwnedGames))] 
+    [NotifyPropertyChangedFor(nameof(GameNames))]
     private ObservableCollection<GameViewModel> _games = [];
+
+    [ObservableProperty] private ObservableCollection<GameViewModel> _gamesToDisplay = [];
+    
+
 
     [ObservableProperty] private DateTimeOffset? _lastUpdated;
 
     [ObservableProperty] private bool _loading;
+    
+    [ObservableProperty] private string? _gamesFilterText;
 
     public YourGamesViewModel(ISteamApiClient steamApiClient, SelectedUserViewModel selectedUser,
         ISteamWorksService steamWorksService)
@@ -35,10 +46,29 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
     public override string DisplayName { get; init; }
 
     public int OwnedGames => Games.Count;
+    public IEnumerable<string> GameNames => Games.Select(x => x.Name);
+    
 
-    public void IdleActionClicked(GameViewModel vm)
+    public async void IdleActionClicked(GameViewModel vm)
     {
-        _steamWorksService.IdleGame(new GameToInvoke(vm.AppId, vm.Name));
+        var success = await _steamWorksService.IdleGame(new GameToInvoke(vm.AppId, vm.Name));
+        
+        var toastManager = Ioc.Default.GetRequiredService<ISukiToastManager>();
+        if (!success)
+            toastManager.CreateToast()
+                .OfType(NotificationType.Error)
+                .WithTitle("Error").WithContent("Failed to idle game.")
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .Dismiss().ByClicking()
+                .Queue();
+        else
+            toastManager.CreateToast()
+                .OfType(NotificationType.Success)
+                .WithTitle("Success").WithContent("Idling game.")
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .Dismiss().ByClicking()
+                .Queue();
+
     }
 
 
@@ -71,7 +101,20 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
                 gameVMs.Add(new GameViewModel(game.AppId!.Value, game.Name!, game.PlaytimeForever!.Value));
             Games = new ObservableCollection<GameViewModel>(gameVMs.OrderBy(x => x.Name));
             LastUpdated = DateTimeOffset.UtcNow;
+            GamesToDisplay = Games;
+            
             Loading = false;
         }
+    }
+
+    [RelayCommand]
+    private void UpdateFilteredGames(string filter)
+    {
+        if (string.IsNullOrEmpty(filter))
+        {
+            GamesToDisplay = Games;
+        }
+        var filteredGames = Games.Where(x => x.Name.Contains(filter, StringComparison.OrdinalIgnoreCase));
+        GamesToDisplay = new ObservableCollection<GameViewModel>(filteredGames);
     }
 }

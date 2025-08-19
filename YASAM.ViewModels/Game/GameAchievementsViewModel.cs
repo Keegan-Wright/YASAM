@@ -1,7 +1,10 @@
 using System.Collections.Frozen;
 using System.Collections.ObjectModel;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
+using SukiUI.Toasts;
 using YASAM.SteamInterface;
 
 namespace YASAM.ViewModels;
@@ -13,12 +16,20 @@ public partial class GameAchievementsViewModel : ViewModelBase
     private readonly ISteamApiClient _steamApiClient;
     private readonly ISteamWorksService _steamWorksService;
 
+    [NotifyPropertyChangedFor(nameof(AchievementNames))]
     [ObservableProperty] private ObservableCollection<GameAchievementViewModel> _achievements = [];
 
     [ObservableProperty] private ulong _appId;
 
     [ObservableProperty] private bool _loading;
+    
+    [ObservableProperty] private ObservableCollection<GameAchievementViewModel> _achievementsToDisplay = [];
+    
+    
+    [ObservableProperty] private string? _achievementsFilterText;
 
+    
+    public IEnumerable<string> AchievementNames => Achievements.Select(x => x.DisplayName);
     public GameAchievementsViewModel(ISteamApiClient steamApiClient, ISteamWorksService steamWorksService,
         SelectedUserViewModel selectedUserViewModel)
     {
@@ -46,6 +57,7 @@ public partial class GameAchievementsViewModel : ViewModelBase
                     : null));
 
         Achievements = new ObservableCollection<GameAchievementViewModel>(achievementsVMs.OrderBy(x => x.DisplayName));
+        AchievementsToDisplay = Achievements;
         Loading = false;
     }
 
@@ -55,23 +67,61 @@ public partial class GameAchievementsViewModel : ViewModelBase
         var achievementsToToggle = Achievements.Where(x => x.ShouldToggle).ToFrozenSet();
         if (achievementsToToggle.Any())
         {
-            await _steamWorksService.LockAchievements(AppId,
+            var lockSuccess = await _steamWorksService.LockAchievements(AppId,
                 achievementsToToggle.Where(x => x.Achieved).Select(x => x.Id));
-            await _steamWorksService.UnlockAchievements(AppId,
+            var unlockSuccess = await _steamWorksService.UnlockAchievements(AppId,
                 achievementsToToggle.Where(x => !x.Achieved).Select(x => x.Id));
+            
+            await ReloadAndNotifyUser(lockSuccess && unlockSuccess);
         }
     }
 
     [RelayCommand]
     private async Task UnlockAllAchievementsAsync()
     {
-        await _steamWorksService.UnlockAllAchievements(AppId);
+        var success = await _steamWorksService.UnlockAllAchievements(AppId);
+        await ReloadAndNotifyUser(success);
     }
 
 
     [RelayCommand]
     private async Task LockAllAchievementsAsync()
     {
-        await _steamWorksService.LockAllAchievements(AppId);
+       var success =  await _steamWorksService.LockAllAchievements(AppId);
+
+       await ReloadAndNotifyUser(success);
+       
+    }
+    
+    [RelayCommand]
+    private void UpdateFilteredAchievements(string filter)
+    {
+        if (string.IsNullOrEmpty(filter))
+        {
+            AchievementsToDisplay = Achievements;
+        }
+        var filteredAchievements = Achievements.Where(x => x.DisplayName.Contains(filter, StringComparison.OrdinalIgnoreCase));
+        AchievementsToDisplay = new ObservableCollection<GameAchievementViewModel>(filteredAchievements);
+    }
+
+    private async Task ReloadAndNotifyUser(bool success)
+    {
+        var toastManager = Ioc.Default.GetRequiredService<ISukiToastManager>();
+        if (!success)
+            toastManager.CreateToast()
+                .OfType(NotificationType.Error)
+                .WithTitle("Error").WithContent("Failed to save achievements.")
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .Dismiss().ByClicking()
+                .Queue();
+        else
+            toastManager.CreateToast()
+                .OfType(NotificationType.Success)
+                .WithTitle("Success").WithContent("Achievements saved.")
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .Dismiss().ByClicking()
+                .Queue();
+        
+        await LoadAsync();
     }
 }

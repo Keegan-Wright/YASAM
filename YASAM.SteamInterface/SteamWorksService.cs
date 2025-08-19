@@ -67,7 +67,7 @@ public class SteamWorksService : ISteamWorksService
         return Task.FromResult(true);
     }
 
-    public bool StopIdleGame(GameToInvoke gameToInvoke)
+    public bool StopIdlingGame(GameToInvoke gameToInvoke)
     {
         var process = Process.GetProcessById(_idlingGames[gameToInvoke.AppId].ProcessId);
         process.Kill();

@@ -13,6 +13,7 @@
 
     <sukiUi:SukiWindow.Hosts>
         <sukiUi:SukiDialogHost Manager="{Binding DialogManager}" />
+        <sukiUi:SukiToastHost Manager="{Binding ToastManager}"/>
     </sukiUi:SukiWindow.Hosts>
 
     <Design.DataContext>
@@ -24,7 +25,8 @@
     <sukiUi:SukiSideMenu
         ItemsSource="{Binding PageList}"
         SelectedItem="{Binding ActivePage}"
-        IsSearchEnabled="False">
+        IsSearchEnabled="False"
+        SidebarToggleEnabled="False">
         <sukiUi:SukiSideMenu.ItemTemplate>
             <DataTemplate>
                 <sukiUi:SukiSideMenuItem Classes="Compact" Header="{Binding DisplayName}" />

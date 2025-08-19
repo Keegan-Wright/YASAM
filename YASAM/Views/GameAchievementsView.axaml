@@ -23,26 +23,42 @@
             <StackPanel>
                 <TextBlock Classes="h1">Achievement Management</TextBlock>
             </StackPanel>
-
-            <ScrollViewer Grid.Row="1" AllowAutoHide="True">
-                <sukiUi:BusyArea BusyText="Loading Your Achievements" IsBusy="{Binding Loading}">
-                    <StackPanel>
-                        <ItemsControl ItemsSource="{Binding Achievements}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel ItemSpacing="10" LineSpacing="10" />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <controls:GameAchievementCard />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </sukiUi:BusyArea>
-            </ScrollViewer>
-
+            
+            <Grid Grid.Row="1" RowDefinitions="Auto,*">
+                <AutoCompleteBox 
+                    Text="{Binding AchievementsFilterText}"
+                    Watermark="Search..."
+                    ItemsSource="{Binding AchievementNames}">
+                    <Interaction.Behaviors>
+                        <RoutedEventTriggerBehavior
+                            RoutedEvent="{x:Static  AutoCompleteBox.TextChangedEvent}">
+                            <InvokeCommandAction
+                                Command="{Binding UpdateFilteredAchievementsCommand}" CommandParameter="{Binding AchievementsFilterText}" />
+                        </RoutedEventTriggerBehavior>
+                    </Interaction.Behaviors>
+                </AutoCompleteBox>
+                
+                <ScrollViewer Grid.Row="1" AllowAutoHide="True">
+                    <sukiUi:BusyArea BusyText="Loading Your Achievements" IsBusy="{Binding Loading}">
+                        <StackPanel>
+                            <ItemsControl ItemsSource="{Binding AchievementsToDisplay}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel ItemSpacing="10" LineSpacing="10" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <controls:GameAchievementCard />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </sukiUi:BusyArea>
+                </ScrollViewer>
+                
+            </Grid>
+            
             <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="10">
                 <Button
                     HorizontalAlignment="Center"

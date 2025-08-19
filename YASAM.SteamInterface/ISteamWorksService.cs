@@ -10,6 +10,6 @@ public interface ISteamWorksService
     Task<bool> LockAllAchievements(ulong appId);
     Task<bool> UnlockAllAchievements(ulong appId);
     Task<bool> IdleGame(GameToInvoke gameToInvoke);
-    bool StopIdleGame(GameToInvoke gameToInvoke);
+    bool StopIdlingGame(GameToInvoke gameToInvoke);
     FrozenSet<IdlingGame> GetIdlingGames();
 }

@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:YASAM.ViewModels;assembly=YASAM.ViewModels"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:controls="clr-namespace:YASAM.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="vm:GameViewModel"
              x:Class="YASAM.Controls.GameCard">
@@ -22,14 +23,27 @@
         <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="{Binding Name}" />
 
 
-        <Button Grid.Row="1" Grid.Column="1" Name="ButtonIdle"
+        <Button
+            IsVisible="{Binding !$parent[controls:GameCard].IsIdleView}"
+            Grid.Row="1" Grid.Column="1"
 
-                HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                Classes="Flat Rounded"
-                Click="IdleGameClicked"
-                FontWeight="DemiBold"
-                Content="{materialIcons:MaterialIconExt Kind=PlayArrow}" />
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Classes="Flat Rounded"
+            Click="IdleGameClicked"
+            FontWeight="DemiBold"
+            Content="{materialIcons:MaterialIconExt Kind=PlayArrow}" />
+        
+        <Button
+            IsVisible="{Binding $parent[controls:GameCard].IsIdleView}"
+            Grid.Row="1" Grid.Column="1"
+
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Classes="Flat Rounded"
+            Click="IdleGameClicked"
+            FontWeight="DemiBold"
+            Content="{materialIcons:MaterialIconExt Kind=Stop}" />
 
         <Button Grid.Row="1" Grid.Column="2"
                 HorizontalAlignment="Center"

@@ -14,6 +14,7 @@ using SQLitePCL;
 using SukiUI;
 using SukiUI.Dialogs;
 using SukiUI.Models;
+using SukiUI.Toasts;
 using YASAM.Data;
 using YASAM.Services.Client;
 using YASAM.SteamInterface;
@@ -46,6 +47,7 @@ public class App : Application
             AddServices(services);
 
             services.AddSingleton<ISukiDialogManager, SukiDialogManager>(_ => new SukiDialogManager());
+            services.AddSingleton<ISukiToastManager, SukiToastManager>(_ => new SukiToastManager());
 
             var provider = services.BuildServiceProvider();
 
