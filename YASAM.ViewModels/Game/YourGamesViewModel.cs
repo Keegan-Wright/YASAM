@@ -1,9 +1,11 @@
 using System.Collections.ObjectModel;
 using Avalonia.Controls;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using SukiUI.Dialogs;
+using SukiUI.Toasts;
 using YASAM.SteamInterface;
 using YASAM.SteamInterface.Models.Internal;
 
@@ -47,9 +49,26 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
     public IEnumerable<string> GameNames => Games.Select(x => x.Name);
     
 
-    public void IdleActionClicked(GameViewModel vm)
+    public async void IdleActionClicked(GameViewModel vm)
     {
-        _steamWorksService.IdleGame(new GameToInvoke(vm.AppId, vm.Name));
+        var success = await _steamWorksService.IdleGame(new GameToInvoke(vm.AppId, vm.Name));
+        
+        var toastManager = Ioc.Default.GetRequiredService<ISukiToastManager>();
+        if (!success)
+            toastManager.CreateToast()
+                .OfType(NotificationType.Error)
+                .WithTitle("Error").WithContent("Failed to idle game.")
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .Dismiss().ByClicking()
+                .Queue();
+        else
+            toastManager.CreateToast()
+                .OfType(NotificationType.Success)
+                .WithTitle("Success").WithContent("Idling game.")
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .Dismiss().ByClicking()
+                .Queue();
+
     }
 
 

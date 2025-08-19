@@ -1,6 +1,9 @@
 using System.Collections.ObjectModel;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
+using SukiUI.Toasts;
 using YASAM.SteamInterface;
 using YASAM.SteamInterface.Models.Internal;
 
@@ -24,8 +27,27 @@ public partial class IdlingGamesViewModel : PageViewModelBase, IGameCardConsumer
 
     public void IdleActionClicked(GameViewModel vm)
     {
-        _steamWorksService.StopIdleGame(new GameToInvoke(vm.AppId, vm.Name));
-        IdlingGames.Remove(vm);
+        var success = _steamWorksService.StopIdlingGame(new GameToInvoke(vm.AppId, vm.Name));
+        
+        var toastManager = Ioc.Default.GetRequiredService<ISukiToastManager>();
+        if (!success)
+            toastManager.CreateToast()
+                .OfType(NotificationType.Error)
+                .WithTitle("Error").WithContent("Failed to stop idling game.")
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .Dismiss().ByClicking()
+                .Queue();
+        else
+        {
+            IdlingGames.Remove(vm);
+            toastManager.CreateToast()
+                .OfType(NotificationType.Success)
+                .WithTitle("Success").WithContent("Idling stopped.")
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .Dismiss().ByClicking()
+                .Queue();
+        }
+
     }
 
     public void ShowAchievements(GameViewModel vm)
