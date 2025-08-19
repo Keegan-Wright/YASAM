@@ -27,25 +27,27 @@
                     <Run>Owned Games</Run>
                 </TextBlock>
             </StackPanel>
-
-
+            
+            <Grid Grid.Row="1"
+                  RowDefinitions="Auto, *">
+                
+                <AutoCompleteBox 
+                    Text="{Binding GamesFilterText}"
+                    Watermark="Search..."
+                    ItemsSource="{Binding GameNames}">
+                    <Interaction.Behaviors>
+                        <RoutedEventTriggerBehavior
+                            RoutedEvent="{x:Static  AutoCompleteBox.TextChangedEvent}">
+                            <InvokeCommandAction
+                                Command="{Binding UpdateFilteredGamesCommand}" CommandParameter="{Binding GamesFilterText}" />
+                        </RoutedEventTriggerBehavior>
+                    </Interaction.Behaviors>  
+                </AutoCompleteBox>
+                
+                
             <ScrollViewer Grid.Row="1" AllowAutoHide="True">
                 <sukiUi:BusyArea BusyText="Loading Your Games" IsBusy="{Binding Loading}">
                     <StackPanel>
-                        <AutoCompleteBox 
-                            Text="{Binding GamesFilterText}"
-                            Watermark="Search..."
-                            ItemsSource="{Binding GameNames}">
-                            <Interaction.Behaviors>
-                                <RoutedEventTriggerBehavior
-                                    RoutedEvent="{x:Static  AutoCompleteBox.TextChangedEvent}">
-                                    <InvokeCommandAction
-                                        Command="{Binding UpdateFilteredGamesCommand}" CommandParameter="{Binding GamesFilterText}" />
-                                </RoutedEventTriggerBehavior>
-                            </Interaction.Behaviors>
-                            
-                        </AutoCompleteBox>
-                        
                         <ItemsControl ItemsSource="{Binding GamesToDisplay}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -77,10 +79,7 @@
                     </StackPanel>
                 </sukiUi:BusyArea>
             </ScrollViewer>
-
-
+            </Grid>
         </Grid>
     </sukiUi:GlassCard>
-
-
 </UserControl>
