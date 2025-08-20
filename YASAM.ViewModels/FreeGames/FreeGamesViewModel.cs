@@ -1,6 +1,9 @@
 using System.Collections.ObjectModel;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
+using SukiUI.Toasts;
 using YASAM.SteamInterface;
 
 namespace YASAM.ViewModels;
@@ -34,6 +37,17 @@ public partial class FreeGamesViewModel : PageViewModelBase
         }
         
         FreeGames = new ObservableCollection<GameViewModel>(freeGames);
+
+        if (freeGames.Any())
+        {
+            var toastManager = Ioc.Default.GetRequiredService<ISukiToastManager>();
+            toastManager.CreateToast()
+                .OfType(NotificationType.Information)
+                .WithContent($"{freeGames.Count} free game(s) available.")
+                .Dismiss().After(TimeSpan.FromSeconds(3))
+                .Dismiss().ByClicking()
+                .Queue();   
+        }
         
         Loading = false;
     }

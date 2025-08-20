@@ -49,5 +49,7 @@ public partial class MainWindowViewModel : ViewModelBase
             ];
         HasSelectedUser = true;
         ActivePage = Ioc.Default.GetRequiredService<YourGamesViewModel>();
+
+        Ioc.Default.GetRequiredService<FreeGamesViewModel>().LoadCommand.ExecuteAsync(null);
     }
 }

@@ -71,6 +71,7 @@ public class App : Application
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = Ioc.Default.GetRequiredService<MainWindow>();
             desktop.MainWindow.DataContext = Ioc.Default.GetRequiredService<MainWindowViewModel>();
+            
 
             var purpleTheme = new SukiColorTheme("Purple", Colors.SlateBlue, Colors.DarkBlue);
             SukiTheme.GetInstance().AddColorTheme(purpleTheme);
