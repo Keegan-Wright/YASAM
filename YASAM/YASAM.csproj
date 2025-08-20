@@ -56,6 +56,10 @@
             <DependentUpon>GameAchievementCard.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Views\FreeGamesView.axaml.cs">
+          <DependentUpon>FreeGamesView.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

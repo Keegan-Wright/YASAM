@@ -10,4 +10,8 @@
         <ProjectReference Include="..\YASAM.SteamInterface.Executor\YASAM.SteamInterface.Executor.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="HtmlAgilityPack" Version="1.12.2" />
+    </ItemGroup>
+
 </Project>

@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:YASAM.ViewModels;assembly=YASAM.ViewModels"
+             xmlns:controls="clr-namespace:YASAM.Controls"
+             xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="YASAM.Views.FreeGamesView"
+             x:DataType="vm:FreeGamesViewModel">
+
+    <Interaction.Behaviors>
+        <RoutedEventTriggerBehavior
+            RoutedEvent="{x:Static  Control.LoadedEvent}">
+            <InvokeCommandAction
+                Command="{Binding LoadCommand}" />
+        </RoutedEventTriggerBehavior>
+    </Interaction.Behaviors>
+
+    <sukiUi:GlassCard Margin="10">
+        <Grid RowDefinitions="Auto, *" RowSpacing="10">
+            <StackPanel>
+                <TextBlock Classes="h1">Free Games</TextBlock>
+            </StackPanel>
+            <ScrollViewer Grid.Row="1" AllowAutoHide="True">
+                <sukiUi:BusyArea BusyText="Loading Free Games" IsBusy="{Binding Loading}">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding FreeGames }">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="3" RowSpacing="10" ColumnSpacing="10"></UniformGrid>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <controls:GameCard HasActions="False">
+                                    </controls:GameCard>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </sukiUi:BusyArea>
+            </ScrollViewer>
+        </Grid>
+    </sukiUi:GlassCard>
+</UserControl>

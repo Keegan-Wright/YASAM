@@ -51,7 +51,7 @@
                         <ItemsControl ItemsSource="{Binding GamesToDisplay}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel ItemSpacing="10" LineSpacing="10" />
+                                    <UniformGrid Columns="3" RowSpacing="10" ColumnSpacing="10"></UniformGrid>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>

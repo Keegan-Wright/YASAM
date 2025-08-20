@@ -27,6 +27,16 @@ public partial class GameCard : UserControl
         set => SetValue(IsIdleViewProperty, value);
     }
 
+    
+    public static readonly StyledProperty<bool> HasActionsProperty =
+        AvaloniaProperty.Register<GameCard, bool>(nameof(HasActions), defaultValue: true);
+
+    public bool HasActions
+    {
+        get => GetValue(HasActionsProperty);
+        set => SetValue(HasActionsProperty, value);
+    }
+
     public GameCard()
     {
         InitializeComponent();

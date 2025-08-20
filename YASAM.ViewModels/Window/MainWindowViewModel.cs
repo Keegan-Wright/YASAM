@@ -44,7 +44,8 @@ public partial class MainWindowViewModel : ViewModelBase
             [
                 Ioc.Default.GetRequiredService<LandingViewModel>(),
                 Ioc.Default.GetRequiredService<YourGamesViewModel>(),
-                Ioc.Default.GetRequiredService<IdlingGamesViewModel>()
+                Ioc.Default.GetRequiredService<IdlingGamesViewModel>(),
+                Ioc.Default.GetRequiredService<FreeGamesViewModel>()
             ];
         HasSelectedUser = true;
         ActivePage = Ioc.Default.GetRequiredService<YourGamesViewModel>();
