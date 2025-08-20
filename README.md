@@ -12,12 +12,12 @@ with Avalonia on .NET.
     - Unlock/lock individual achievements
     - Bulk unlock/lock selected achievements
     - Unlock/lock all achievements for a game
+- Free game alerts
 
 ### Planned
 
 - Automatic trading card farming
 - Automatic card trading
-- Free game alerts
 - Task automation and scheduling via cron jobs
 
 ## Requirements
