@@ -25,6 +25,16 @@ with Avalonia on .NET.
 - .NET 9.0 runtime
 - Steam client installed and running
 
+## Installation
+
+### Pre-built Binaries
+
+Pre-built binaries are available on the [Releases](https://github.com/Keegan-Wright/YASAM/releases) page. Download the appropriate package for your platform.
+
+### Package Managers
+
+*Coming soon* - Installation via package managers like apt, dnf, pacman, etc.
+
 ## Building and Running
 
 ### Linux
@@ -70,12 +80,27 @@ YASAM.exe
 5. Add your user as a tracked user
 6. Use the interface to idle games or manage achievements
 
+## Screenshots
+
+*Coming soon* - Screenshots of the application interface will be added to showcase the main features.
+
 ## Platform Compatibility
 
 **Note:** This application has been developed on **Linux**. **Windows** has had limited testing but everything is
 functional. **Not yet tested on macOS**. While the tooling used within YASAM is cross-platform there are extra factors
 at play with how processes are invoked on a platform-by-platform basis so expect some things not to work until future
 updates when running on a non linux system.
+
+## Troubleshooting
+
+### Common Issues
+
+- **Steam not detected**: Ensure Steam is running before launching YASAM
+- **API Key Issues**: Verify your Steam API key is valid and has the correct permissions
+- **Game not showing**: Refresh your game library or check privacy settings in your Steam profile
+- **Unable to idle games**: Verify your Steam account has no restrictions and games are properly installed
+
+For more assistance, please [open an issue](https://github.com/Keegan-Wright/YASAM/issues) on the GitHub repository.
 
 ## Contributing
 
@@ -117,4 +142,26 @@ This project aims to bring functionality similar to these Windows tools to Linux
 
 This application is not affiliated with or endorsed by Valve Corporation. Use at your own risk as modification of
 achievements may violate Steam's Terms of Service.
+
+## FAQ
+
+### Is it safe to use YASAM?
+
+YASAM interacts with the Steam API in a similar way to other achievement managers. While many users have used similar tools without issues, modifying achievements or artificially accumulating playtime could potentially violate Steam's Terms of Service.
+
+### Will YASAM get my Steam account banned?
+
+There are no known cases of accounts being banned solely for using achievement managers or idlers. However, we cannot guarantee this will always be the case. Use at your own risk.
+
+### Does YASAM work with all Steam games?
+
+YASAM should work with most Steam games, but some games with special anti-cheat mechanisms or server-side achievement validation might not be compatible.
+
+### Is my Steam API key secure?
+
+Your Steam API key is stored locally on your machine. YASAM does not transmit your key to any external servers.
+
+### How do I report a bug or request a feature?
+
+Please use the [GitHub Issues](https://github.com/Keegan-Wright/YASAM/issues) page to report bugs or request features.
 
