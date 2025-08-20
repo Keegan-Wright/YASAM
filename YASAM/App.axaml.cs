@@ -72,9 +72,9 @@ public class App : Application
             desktop.MainWindow = Ioc.Default.GetRequiredService<MainWindow>();
             desktop.MainWindow.DataContext = Ioc.Default.GetRequiredService<MainWindowViewModel>();
 
-            var PurpleTheme = new SukiColorTheme("Purple", Colors.SlateBlue, Colors.DarkBlue);
-            SukiTheme.GetInstance().AddColorTheme(PurpleTheme);
-            SukiTheme.GetInstance().ChangeColorTheme(PurpleTheme);
+            var purpleTheme = new SukiColorTheme("Purple", Colors.SlateBlue, Colors.DarkBlue);
+            SukiTheme.GetInstance().AddColorTheme(purpleTheme);
+            SukiTheme.GetInstance().ChangeColorTheme(purpleTheme);
 
 
             ((IClassicDesktopStyleApplicationLifetime)ApplicationLifetime).ShutdownRequested += delegate
