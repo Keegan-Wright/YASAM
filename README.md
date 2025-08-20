@@ -25,21 +25,50 @@ with Avalonia on .NET.
 - .NET 9.0 runtime
 - Steam client installed and running
 
-## Installation
+## Building and Running
 
+### Linux
 ```bash
 # Clone the repository
 git clone https://github.com/Keegan-Wright/YASAM.git
 cd YASAM
 
-# Further expansion...
+# Build the project
+dotnet build -c Release
+
+# Navigate to the output directory
+cd YASAM/bin/Release/net9.0
+
+# Run the application
+./YASAM
 ```
+
+
+### Windows
+```shell
+# Clone the repository
+git clone https://github.com/Keegan-Wright/YASAM.git
+cd YASAM
+
+# Build the project
+dotnet build -c Release
+
+# Navigate to the output directory
+cd YASAM\bin\Release\net9.0
+
+# Run the application
+YASAM.exe
+```
+
 
 ## Usage
 
 1. Make sure Steam is running and you're logged in
 2. Launch YASAM
-3. Use the interface to idle games or manage achievements
+3. Get your Steam64Id from [Steamid.io](https://steamid.io/)
+4. Ensure you have a steam API key [Steam](https://steamcommunity.com/dev)
+5. Add your user as a tracked user
+6. Use the interface to idle games or manage achievements
 
 ## Platform Compatibility
 
