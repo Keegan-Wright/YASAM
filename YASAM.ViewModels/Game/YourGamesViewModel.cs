@@ -16,7 +16,7 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
 
     private readonly ISteamApiClient _steamApiClient;
     private readonly ISteamWorksService _steamWorksService;
-
+    private readonly ISteamStoreClient _steamStoreClient;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(OwnedGames))] 
@@ -34,10 +34,11 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
     [ObservableProperty] private string? _gamesFilterText;
 
     public YourGamesViewModel(ISteamApiClient steamApiClient, SelectedUserViewModel selectedUser,
-        ISteamWorksService steamWorksService)
+        ISteamWorksService steamWorksService, ISteamStoreClient steamStoreClient)
     {
         _selectedUser = selectedUser;
         _steamWorksService = steamWorksService;
+        _steamStoreClient = steamStoreClient;
         _steamApiClient = steamApiClient;
         DisplayName = "Your Games";
     }
