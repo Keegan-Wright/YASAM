@@ -10,13 +10,14 @@ using YASAM.SteamInterface.Models.Internal;
 
 namespace YASAM.ViewModels;
 
-public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardConsumer
+public sealed partial class YourGamesViewModel : PageViewModelBase
 {
     private readonly SelectedUserViewModel _selectedUser;
 
     private readonly ISteamApiClient _steamApiClient;
     private readonly ISteamWorksService _steamWorksService;
-
+    private readonly ISteamStoreClient _steamStoreClient;
+    private readonly ISukiDialogManager _dialogManager;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(OwnedGames))] 
@@ -34,10 +35,12 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
     [ObservableProperty] private string? _gamesFilterText;
 
     public YourGamesViewModel(ISteamApiClient steamApiClient, SelectedUserViewModel selectedUser,
-        ISteamWorksService steamWorksService)
+        ISteamWorksService steamWorksService, ISteamStoreClient steamStoreClient, ISukiDialogManager dialogManager)
     {
         _selectedUser = selectedUser;
         _steamWorksService = steamWorksService;
+        _steamStoreClient = steamStoreClient;
+        _dialogManager = dialogManager;
         _steamApiClient = steamApiClient;
         DisplayName = "Your Games";
     }
@@ -48,7 +51,8 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
     public IEnumerable<string> GameNames => Games.Select(x => x.Name);
     
 
-    public async void IdleActionClicked(GameViewModel vm)
+    [RelayCommand]
+    private async Task IdleAction(GameViewModel vm)
     {
         var success = await _steamWorksService.IdleGame(new GameToInvoke(vm.AppId, vm.Name));
         
@@ -71,13 +75,13 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
     }
 
 
-    public void ShowAchievements(GameViewModel vm)
+    [RelayCommand]
+    private void ShowAchievements(GameViewModel vm)
     {
         var achievementsViewModel = Ioc.Default.GetRequiredService<GameAchievementsViewModel>();
         achievementsViewModel.AppId = vm.AppId;
 
-        var dialogManager = Ioc.Default.GetRequiredService<ISukiDialogManager>();
-        dialogManager.CreateDialog()
+        _dialogManager.CreateDialog()
             .WithViewModel(s =>
             {
                 s.ShowCardBackground = true;
@@ -87,23 +91,28 @@ public sealed partial class YourGamesViewModel : PageViewModelBase, IGameCardCon
             .TryShow();
     }
 
+    [RelayCommand]
+    public void ShowInSteam(GameViewModel vm)
+    {
+        _steamStoreClient.OpenStorePage(vm.AppId, vm.Name);
+    }
+
 
     [RelayCommand]
     private async Task LoadAsync()
     {
+        Loading = true;
         if (!LastUpdated.HasValue || DateTimeOffset.UtcNow - LastUpdated?.UtcDateTime > TimeSpan.FromMinutes(5))
         {
-            Loading = true;
-            var games = _steamApiClient.GetGames(_selectedUser.SteamUserId!.Value, _selectedUser.ApiKey!);
+            var games = _steamApiClient.GetGamesAsync(_selectedUser.SteamUserId!.Value, _selectedUser.ApiKey!);
             var gameVMs = new List<GameViewModel>();
             await foreach (var game in games)
                 gameVMs.Add(new GameViewModel(game.AppId!.Value, game.Name!, game.PlaytimeForever!.Value));
             Games = new ObservableCollection<GameViewModel>(gameVMs.OrderBy(x => x.Name));
             LastUpdated = DateTimeOffset.UtcNow;
             GamesToDisplay = Games;
-            
-            Loading = false;
         }
+        Loading = false;
     }
 
     [RelayCommand]

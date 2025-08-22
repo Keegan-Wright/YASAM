@@ -11,8 +11,8 @@
              x:Class="YASAM.Controls.GameCard">
 
     <Grid RowDefinitions="*,*"
-          ColumnDefinitions="*,auto,auto"
-          Width="300"
+          ColumnDefinitions="*,auto"
+          Width="400"
           RowSpacing="10"
           ColumnSpacing="10">
         <Border Grid.ColumnSpan="3" ClipToBounds="True" CornerRadius="10">
@@ -21,38 +21,46 @@
         </Border>
 
         <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="{Binding Name}" />
-
-
-        <Button
-            IsVisible="{Binding !$parent[controls:GameCard].IsIdleView}"
-            Grid.Row="1" Grid.Column="1"
-
-            HorizontalAlignment="Center"
-            VerticalAlignment="Bottom"
-            Classes="Flat Rounded"
-            Click="IdleGameClicked"
-            FontWeight="DemiBold"
-            Content="{materialIcons:MaterialIconExt Kind=PlayArrow}" />
         
-        <Button
-            IsVisible="{Binding $parent[controls:GameCard].IsIdleView}"
-            Grid.Row="1" Grid.Column="1"
-
-            HorizontalAlignment="Center"
-            VerticalAlignment="Bottom"
-            Classes="Flat Rounded"
-            Click="IdleGameClicked"
-            FontWeight="DemiBold"
-            Content="{materialIcons:MaterialIconExt Kind=Stop}" />
-
-        <Button Grid.Row="1" Grid.Column="2"
+        <StackPanel Grid.Row="1" Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="10">
+            <Button
+                IsVisible="{Binding $parent[controls:GameCard].DisplayIdle}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Classes="Flat Rounded"
+                Click="IdleGameClicked"
+                FontWeight="DemiBold"
+                Content="{materialIcons:MaterialIconExt Kind=PlayArrow}" />
+        
+            <Button
+                IsVisible="{Binding $parent[controls:GameCard].DisplayStop}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Classes="Flat Rounded"
+                Click="IdleGameClicked"
+                FontWeight="DemiBold"
+                Content="{materialIcons:MaterialIconExt Kind=Stop}" />
+        
+            <Button
+                IsVisible="{Binding $parent[controls:GameCard].DisplayAchievements}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Classes="Flat Rounded"
                 Click="ShowAchivementsClicked"
                 FontWeight="DemiBold"
                 Content="{materialIcons:MaterialIconExt Kind=Medal}" />
-
+            
+            <Button
+                IsVisible="{Binding $parent[controls:GameCard].DisplaySteamStore}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Classes="Flat Rounded"
+                Click="ShowInSteamClicked"
+                FontWeight="DemiBold"
+                Content="{materialIcons:MaterialIconExt Kind=Steam}" />
+        </StackPanel>
     </Grid>
 
 </UserControl>

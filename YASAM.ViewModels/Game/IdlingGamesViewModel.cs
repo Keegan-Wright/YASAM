@@ -3,29 +3,35 @@ using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
+using SukiUI.Dialogs;
 using SukiUI.Toasts;
 using YASAM.SteamInterface;
 using YASAM.SteamInterface.Models.Internal;
 
 namespace YASAM.ViewModels;
 
-public partial class IdlingGamesViewModel : PageViewModelBase, IGameCardConsumer
+public partial class IdlingGamesViewModel : PageViewModelBase
 {
     private readonly ISteamWorksService _steamWorksService;
+    private readonly ISteamStoreClient _steamStoreClient;
+    private readonly ISukiDialogManager _dialogManager;
 
     [ObservableProperty] private ObservableCollection<GameViewModel> _idlingGames = [];
 
     [ObservableProperty] private bool _loading;
 
-    public IdlingGamesViewModel(ISteamWorksService steamWorksService)
+    public IdlingGamesViewModel(ISteamWorksService steamWorksService, ISteamStoreClient steamStoreClient, ISukiDialogManager dialogManager)
     {
         _steamWorksService = steamWorksService;
+        _steamStoreClient = steamStoreClient;
+        _dialogManager = dialogManager;
         DisplayName = "Idling Games";
     }
 
     public sealed override string DisplayName { get; init; }
 
-    public void IdleActionClicked(GameViewModel vm)
+    [RelayCommand]
+    private void  IdleAction(GameViewModel vm)
     {
         var success = _steamWorksService.StopIdlingGame(new GameToInvoke(vm.AppId, vm.Name));
         
@@ -50,8 +56,26 @@ public partial class IdlingGamesViewModel : PageViewModelBase, IGameCardConsumer
 
     }
 
-    public void ShowAchievements(GameViewModel vm)
+    [RelayCommand]
+    private void ShowAchievements(GameViewModel vm)
     {
+        var achievementsViewModel = Ioc.Default.GetRequiredService<GameAchievementsViewModel>();
+        achievementsViewModel.AppId = vm.AppId;
+
+        _dialogManager.CreateDialog()
+            .WithViewModel(s =>
+            {
+                s.ShowCardBackground = true;
+                s.CanDismissWithBackgroundClick = true;
+                return achievementsViewModel;
+            })
+            .TryShow();
+    }
+    
+    [RelayCommand]
+    private void ShowInSteam(GameViewModel vm)
+    {
+        _steamStoreClient.OpenStorePage(vm.AppId, vm.Name);
     }
 
     [RelayCommand]

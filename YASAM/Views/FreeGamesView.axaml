@@ -6,28 +6,26 @@
              xmlns:controls="clr-namespace:YASAM.Controls"
              xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="YASAM.Views.IdlingGamesView"
-             x:DataType="vm:IdlingGamesViewModel">
+             x:Class="YASAM.Views.FreeGamesView"
+             x:DataType="vm:FreeGamesViewModel">
 
     <Interaction.Behaviors>
         <RoutedEventTriggerBehavior
             RoutedEvent="{x:Static  Control.LoadedEvent}">
             <InvokeCommandAction
-                Command="{Binding LoadCommand, Mode=OneTime}" />
+                Command="{Binding LoadCommand}" />
         </RoutedEventTriggerBehavior>
     </Interaction.Behaviors>
-
 
     <sukiUi:GlassCard Margin="10">
         <Grid RowDefinitions="Auto, *" RowSpacing="10">
             <StackPanel>
-                <TextBlock Classes="h1">Your Idling Games</TextBlock>
+                <TextBlock Classes="h1">Free Games</TextBlock>
             </StackPanel>
-
             <ScrollViewer Grid.Row="1" AllowAutoHide="True">
-                <sukiUi:BusyArea BusyText="Loading Your Idling Games" IsBusy="{Binding Loading}">
+                <sukiUi:BusyArea BusyText="Loading Free Games" IsBusy="{Binding Loading}">
                     <StackPanel>
-                        <ItemsControl ItemsSource="{Binding IdlingGames}">
+                        <ItemsControl ItemsSource="{Binding FreeGames }">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel HorizontalAlignment="Center" ItemSpacing="10" LineSpacing="10" />
@@ -35,32 +33,17 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <controls:GameCard DisplayAchievements="True"
-                                                       DisplayIdle="False"
-                                                       DisplayStop="True"
-                                                       DisplaySteamStore="True">
+                                    <controls:GameCard 
+                                        DisplayIdle="False"
+                                        DisplayStop="False"
+                                        DisplayAchievements="False">
                                         <Interaction.Behaviors>
-                                            <RoutedEventTriggerBehavior
-                                                RoutedEvent="{x:Static  controls:GameCard.IdleEvent}">
-                                                <InvokeCommandAction
-                                                    Command="{Binding $parent[ItemsControl].((vm:IdlingGamesViewModel)DataContext).IdleActionCommand, Mode=OneTime}"
-                                                    CommandParameter="{Binding }" />
-                                            </RoutedEventTriggerBehavior>
-
-                                            <RoutedEventTriggerBehavior
-                                                RoutedEvent="{x:Static  controls:GameCard.ShowAchievementsEvent}">
-                                                <InvokeCommandAction
-                                                    Command="{Binding $parent[ItemsControl].((vm:IdlingGamesViewModel)DataContext).ShowAchievementsCommand, Mode=OneTime}"
-                                                    CommandParameter="{Binding }" />
-                                            </RoutedEventTriggerBehavior>
-                                            
                                             <RoutedEventTriggerBehavior
                                                 RoutedEvent="{x:Static  controls:GameCard.ShowInSteamEvent}">
                                                 <InvokeCommandAction
-                                                    Command="{Binding $parent[ItemsControl].((vm:IdlingGamesViewModel)DataContext).ShowInSteamCommand, Mode=OneTime}"
+                                                    Command="{Binding $parent[ItemsControl].((vm:FreeGamesViewModel)DataContext).ShowInSteamCommand, Mode=OneTime}"
                                                     CommandParameter="{Binding }" />
                                             </RoutedEventTriggerBehavior>
-                                            
                                         </Interaction.Behaviors>
                                     </controls:GameCard>
                                 </DataTemplate>
@@ -69,8 +52,6 @@
                     </StackPanel>
                 </sukiUi:BusyArea>
             </ScrollViewer>
-
-
         </Grid>
     </sukiUi:GlassCard>
 </UserControl>

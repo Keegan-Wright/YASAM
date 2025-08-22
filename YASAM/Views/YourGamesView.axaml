@@ -51,26 +51,34 @@
                         <ItemsControl ItemsSource="{Binding GamesToDisplay}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel ItemSpacing="10" LineSpacing="10" />
+                                    <WrapPanel HorizontalAlignment="Center" ItemSpacing="10" LineSpacing="10" />
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <controls:GameCard>
+                                    <controls:GameCard DisplayAchievements="True" DisplaySteamStore="True" DisplayIdle="True">
                                         <Interaction.Behaviors>
                                             <RoutedEventTriggerBehavior
                                                 RoutedEvent="{x:Static  controls:GameCard.IdleEvent}">
                                                 <InvokeCommandAction
-                                                    Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).IdleActionClicked, Mode=OneTime}"
+                                                    Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).IdleActionCommand, Mode=OneTime}"
                                                     CommandParameter="{Binding }" />
                                             </RoutedEventTriggerBehavior>
 
                                             <RoutedEventTriggerBehavior
                                                 RoutedEvent="{x:Static  controls:GameCard.ShowAchievementsEvent}">
                                                 <InvokeCommandAction
-                                                    Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).ShowAchievements, Mode=OneTime}"
+                                                    Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).ShowAchievementsCommand, Mode=OneTime}"
                                                     CommandParameter="{Binding }" />
                                             </RoutedEventTriggerBehavior>
+                                            
+                                            <RoutedEventTriggerBehavior
+                                                RoutedEvent="{x:Static  controls:GameCard.ShowInSteamEvent}">
+                                                <InvokeCommandAction
+                                                    Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).ShowInSteamCommand, Mode=OneTime}"
+                                                    CommandParameter="{Binding }" />
+                                            </RoutedEventTriggerBehavior>
+                                            
                                         </Interaction.Behaviors>
                                     </controls:GameCard>
                                 </DataTemplate>

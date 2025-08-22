@@ -13,7 +13,7 @@ public class SteamApiClient : HttpClient, ISteamApiClient
     }
 
 
-    public async IAsyncEnumerable<ApiGame> GetGames(ulong steamUserId, string steamApiKey)
+    public async IAsyncEnumerable<ApiGame> GetGamesAsync(ulong steamUserId, string steamApiKey)
     {
         var apiResponse = await _client.GetFromJsonAsync<ApiGetOwnedGames?>(
             $"/IPlayerService/GetOwnedGames/v0001/?key={steamApiKey}&steamid={steamUserId}&include_played_free_games=true&include_appinfo=true");
@@ -21,7 +21,7 @@ public class SteamApiClient : HttpClient, ISteamApiClient
         foreach (var game in apiResponse?.Response?.Games!) yield return game;
     }
 
-    public async IAsyncEnumerable<ApiGameAchievement> GetAchievements(ulong steamUserId, string apiKey, ulong appId)
+    public async IAsyncEnumerable<ApiGameAchievement> GetAchievementsAsync(ulong steamUserId, string apiKey, ulong appId)
     {
         var gameSchemaApiTask =
             _client.GetFromJsonAsync<ApiSchemaForGameResponse>(

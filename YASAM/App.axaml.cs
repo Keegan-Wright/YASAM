@@ -71,6 +71,7 @@ public class App : Application
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = Ioc.Default.GetRequiredService<MainWindow>();
             desktop.MainWindow.DataContext = Ioc.Default.GetRequiredService<MainWindowViewModel>();
+            
 
             var purpleTheme = new SukiColorTheme("Purple", Colors.SlateBlue, Colors.DarkBlue);
             SukiTheme.GetInstance().AddColorTheme(purpleTheme);
@@ -99,6 +100,7 @@ public class App : Application
         services.AddSingleton<LandingViewModel>();
         services.AddSingleton<SelectedUserViewModel>();
         services.AddSingleton<GameAchievementsViewModel>();
+        services.AddSingleton<FreeGamesViewModel>();
     }
 
     private static void AddWindows(ServiceCollection services)
@@ -112,6 +114,7 @@ public class App : Application
         services.AddSingleton<IdlingGamesView>();
         services.AddSingleton<LandingView>();
         services.AddSingleton<GameAchievementsView>();
+        services.AddSingleton<FreeGamesView>();
     }
 
     private static void AddServices(ServiceCollection services)
@@ -121,6 +124,11 @@ public class App : Application
         {
             client.BaseAddress = new Uri("http://api.steampowered.com/");
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        });
+        
+        services.AddHttpClient<ISteamStoreClient, SteamStoreClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://store.steampowered.com/");
         });
         services.AddSingleton<ISteamWorksService, SteamWorksService>();
     }

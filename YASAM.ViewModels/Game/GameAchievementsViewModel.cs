@@ -44,7 +44,7 @@ public partial class GameAchievementsViewModel : ViewModelBase
     {
         Loading = true;
 
-        var achievements = _steamApiClient.GetAchievements(_selectedUserViewModel.SteamUserId!.Value,
+        var achievements = _steamApiClient.GetAchievementsAsync(_selectedUserViewModel.SteamUserId!.Value,
             _selectedUserViewModel.ApiKey!, AppId);
         var achievementsVMs = new List<GameAchievementViewModel>();
 
