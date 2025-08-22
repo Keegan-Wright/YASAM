@@ -14,28 +14,52 @@ public partial class GameCard : UserControl
 
     public static readonly RoutedEvent<RoutedEventArgs> ShowAchievementsEvent =
         RoutedEvent.Register<Control, RoutedEventArgs>(
-            nameof(Idle),
+            nameof(ShowAchievements),
             RoutingStrategies.Direct);
 
-    
-    public static readonly StyledProperty<bool> IsIdleViewProperty =
-        AvaloniaProperty.Register<GameCard, bool>(nameof(IsIdleView), defaultValue: false);
+    public static readonly RoutedEvent<RoutedEventArgs> ShowInSteamEvent =
+        RoutedEvent.Register<Control, RoutedEventArgs>(
+            nameof(ShowInSteam),
+            RoutingStrategies.Direct);
 
-    public bool IsIdleView
+
+    public static readonly StyledProperty<bool> DisplayIdleProperty =
+        AvaloniaProperty.Register<GameCard, bool>(nameof(DisplayIdle), defaultValue: false);
+
+    public bool DisplayIdle
     {
-        get => GetValue(IsIdleViewProperty);
-        set => SetValue(IsIdleViewProperty, value);
+        get => GetValue(DisplayIdleProperty);
+        set => SetValue(DisplayIdleProperty, value);
     }
 
-    
-    public static readonly StyledProperty<bool> HasActionsProperty =
-        AvaloniaProperty.Register<GameCard, bool>(nameof(HasActions), defaultValue: true);
+    public static readonly StyledProperty<bool> DisplayStopProperty =
+        AvaloniaProperty.Register<GameCard, bool>(nameof(DisplayStop), defaultValue: false);
 
-    public bool HasActions
+    public bool DisplayStop
     {
-        get => GetValue(HasActionsProperty);
-        set => SetValue(HasActionsProperty, value);
+        get => GetValue(DisplayStopProperty);
+        set => SetValue(DisplayStopProperty, value);
     }
+
+
+    public static readonly StyledProperty<bool> DisplayAchievementsProperty =
+        AvaloniaProperty.Register<GameCard, bool>(nameof(DisplayAchievements), defaultValue: false);
+
+    public bool DisplayAchievements
+    {
+        get => GetValue(DisplayAchievementsProperty);
+        set => SetValue(DisplayAchievementsProperty, value);
+    }
+
+    public static readonly StyledProperty<bool> DisplaySteamStoreProperty =
+        AvaloniaProperty.Register<GameCard, bool>(nameof(DisplaySteamStore), defaultValue: false);
+
+    public bool DisplaySteamStore
+    {
+        get => GetValue(DisplaySteamStoreProperty);
+        set => SetValue(DisplaySteamStoreProperty, value);
+    }
+
 
     public GameCard()
     {
@@ -54,6 +78,13 @@ public partial class GameCard : UserControl
         remove => RemoveHandler(ShowAchievementsEvent, value);
     }
 
+    public event EventHandler<RoutedEventArgs> ShowInSteam
+    {
+        add => AddHandler(ShowInSteamEvent, value);
+        remove => RemoveHandler(ShowInSteamEvent, value);
+    }
+
+
     private void IdleGameClicked(object? sender, RoutedEventArgs e)
     {
         var args = new RoutedEventArgs(IdleEvent);
@@ -63,6 +94,12 @@ public partial class GameCard : UserControl
     private void ShowAchivementsClicked(object? sender, RoutedEventArgs e)
     {
         var args = new RoutedEventArgs(ShowAchievementsEvent);
+        RaiseEvent(args);
+    }
+
+    private void ShowInSteamClicked(object? sender, RoutedEventArgs e)
+    {
+        var args = new RoutedEventArgs(ShowInSteamEvent);
         RaiseEvent(args);
     }
 }

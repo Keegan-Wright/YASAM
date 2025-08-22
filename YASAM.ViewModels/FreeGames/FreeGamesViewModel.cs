@@ -26,6 +26,12 @@ public partial class FreeGamesViewModel : PageViewModelBase
     }
     
     [RelayCommand]
+    public void ShowInSteam(GameViewModel vm)
+    {
+        _steamStoreClient.OpenStorePage(vm.AppId, vm.Name);
+    }
+    
+    [RelayCommand]
     private async Task LoadAsync()
     {
         Loading = true;

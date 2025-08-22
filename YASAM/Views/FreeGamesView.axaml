@@ -28,12 +28,23 @@
                         <ItemsControl ItemsSource="{Binding FreeGames }">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <UniformGrid Columns="3" RowSpacing="10" ColumnSpacing="10"></UniformGrid>
+                                    <WrapPanel HorizontalAlignment="Center" ItemSpacing="10" LineSpacing="10" />
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <controls:GameCard HasActions="False">
+                                    <controls:GameCard 
+                                        DisplayIdle="False"
+                                        DisplayStop="False"
+                                        DisplayAchievements="False">
+                                        <Interaction.Behaviors>
+                                            <RoutedEventTriggerBehavior
+                                                RoutedEvent="{x:Static  controls:GameCard.ShowInSteamEvent}">
+                                                <InvokeCommandAction
+                                                    Command="{Binding $parent[ItemsControl].((vm:FreeGamesViewModel)DataContext).ShowInSteamCommand, Mode=OneTime}"
+                                                    CommandParameter="{Binding }" />
+                                            </RoutedEventTriggerBehavior>
+                                        </Interaction.Behaviors>
                                     </controls:GameCard>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

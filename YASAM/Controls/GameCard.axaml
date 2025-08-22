@@ -12,7 +12,7 @@
 
     <Grid RowDefinitions="*,*"
           ColumnDefinitions="*,auto"
-          Width="300"
+          Width="400"
           RowSpacing="10"
           ColumnSpacing="10">
         <Border Grid.ColumnSpan="3" ClipToBounds="True" CornerRadius="10">
@@ -24,10 +24,9 @@
         
         <StackPanel Grid.Row="1" Grid.Column="1"
                     Orientation="Horizontal"
-                    Spacing="10"
-                    IsVisible="{Binding $parent[controls:GameCard].HasActions}">
+                    Spacing="10">
             <Button
-                IsVisible="{Binding !$parent[controls:GameCard].IsIdleView}"
+                IsVisible="{Binding $parent[controls:GameCard].DisplayIdle}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Classes="Flat Rounded"
@@ -36,7 +35,7 @@
                 Content="{materialIcons:MaterialIconExt Kind=PlayArrow}" />
         
             <Button
-                IsVisible="{Binding $parent[controls:GameCard].IsIdleView}"
+                IsVisible="{Binding $parent[controls:GameCard].DisplayStop}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Classes="Flat Rounded"
@@ -45,12 +44,22 @@
                 Content="{materialIcons:MaterialIconExt Kind=Stop}" />
         
             <Button
+                IsVisible="{Binding $parent[controls:GameCard].DisplayAchievements}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 Classes="Flat Rounded"
                 Click="ShowAchivementsClicked"
                 FontWeight="DemiBold"
                 Content="{materialIcons:MaterialIconExt Kind=Medal}" />
+            
+            <Button
+                IsVisible="{Binding $parent[controls:GameCard].DisplaySteamStore}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Classes="Flat Rounded"
+                Click="ShowInSteamClicked"
+                FontWeight="DemiBold"
+                Content="{materialIcons:MaterialIconExt Kind=Steam}" />
         </StackPanel>
     </Grid>
 
