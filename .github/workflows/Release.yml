@@ -39,26 +39,39 @@ jobs:
       run: dotnet restore YASAM.sln
 
     - name: Build Solution
-      run: dotnet publish ./YASAM.csproj -r ${{ matrix.arch-name }} -o ./Release --self-contained
+      run: dotnet publish ./YASAM/YASAM.csproj -r ${{ matrix.arch-name }} -o ./Release --self-contained
 
+    - name: Create Archive (Linux)
+      if: runner.os == 'Linux'
+      run: zip YASAM-${{matrix.os-name}}.zip ./Release/*
+
+    - name: Create Archive (Windows)
+      if:  runner.os == 'Windows'
+      run: tar -caf YASAM-${{matrix.os-name}}.zip ./Release
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: YASAM-${{ matrix.os-name }}
-        path: ./YASAM/Release
+        path: ./YASAM-${{matrix.os-name}}.zip
 
-  release:
+  Release:
     needs: Build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+      attestations: write
+
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
+
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          files: YASAM-*/YASAM-*
-          tag_name: ${{ github.ref_name }}
-          body: "Automated release of ${{ github.ref_name }}."
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            ${{ github.workspace }}/**
+          draft: true
+          prerelease: false
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
