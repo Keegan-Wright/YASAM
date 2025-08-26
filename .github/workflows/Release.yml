@@ -65,7 +65,7 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           files: |
-            ./Artifacts/*
+            ./Artifacts/*.zip
           draft: true
           prerelease: false
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
