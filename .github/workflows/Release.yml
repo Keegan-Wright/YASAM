@@ -41,12 +41,15 @@ jobs:
     - name: Build Solution
       run: dotnet publish ./YASAM/YASAM.csproj -r ${{ matrix.arch-name }} -o ./Release --self-contained
 
+    - name: Create Archive (Linux)
+      if: ${{ matrix.os }} == 'ubuntu-latest'
+      run: zip YASAM-${{matrix.os-name}}.zip ./Release
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: YASAM-${{ matrix.os-name }}
-        path: ./Release
+        path: ./YASAM-${{matrix.os-name}}.zip
 
   Release:
     needs: Build
