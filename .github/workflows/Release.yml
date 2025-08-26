@@ -39,7 +39,7 @@ jobs:
       run: dotnet restore YASAM.sln
 
     - name: Build Solution
-      run: dotnet publish ./YASAM.csproj -r ${{ matrix.arch-name }} -o ./Release --self-contained
+      run: dotnet publish ./YASAM/YASAM.csproj -r ${{ matrix.arch-name }} -o ./Release --self-contained
 
 
     - name: Upload Artifact
