@@ -58,14 +58,13 @@ jobs:
 
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v5
-        path: ./Artifacts
+        uses: actions/download-artifact@v4
 
       - name: Create GitHub Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           files: |
-            ./Artifacts/*.zip
+            ${{ github.workspace }}/*.zip
           draft: true
           prerelease: false
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
