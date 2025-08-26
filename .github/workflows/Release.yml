@@ -45,6 +45,10 @@ jobs:
       if: ${{ matrix.os }} == 'ubuntu-latest'
       run: zip YASAM-${{matrix.os-name}}.zip ./Release
 
+    - name: Create Archive (Windows)
+      if: ${{ matrix.os }} == 'windows-latest'
+      run: tar -caf YASAM-${{matrix.os-name}}.zip ./Release
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
