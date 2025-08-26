@@ -63,7 +63,8 @@ jobs:
       - name: Create GitHub Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          files: YASAM-*
+          files: |
+            *.zip
           draft: true
           prerelease: false
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
