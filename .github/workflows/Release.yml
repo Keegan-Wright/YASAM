@@ -46,9 +46,9 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: YASAM-${{ matrix.os-name }}
-        path: ./YASAM/Release
+        path: ./Release
 
-  release:
+  Release:
     needs: Build
     runs-on: ubuntu-latest
     steps:
