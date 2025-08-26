@@ -64,7 +64,7 @@ jobs:
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           files: |
-            *.zip
+            *
           draft: true
           prerelease: false
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
