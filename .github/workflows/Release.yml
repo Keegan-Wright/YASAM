@@ -39,14 +39,14 @@ jobs:
       run: dotnet restore YASAM.sln
 
     - name: Build Solution
-      run: dotnet publish -r ${{ matrix.arch-name }} -o ./Release --self-contained
+      run: dotnet publish ./YASAM.csproj -r ${{ matrix.arch-name }} -o ./Release --self-contained
 
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: YASAM-${{ matrix.os-name }}
-        path: ./Release
+        path: ./YASAM/Release
 
   release:
     needs: Build
