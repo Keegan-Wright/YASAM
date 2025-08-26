@@ -43,7 +43,7 @@ jobs:
 
     - name: Create Archive (Linux)
       if: runner.os == 'Linux'
-      run: zip YASAM-${{matrix.os-name}}.zip ./Release
+      run: zip YASAM-${{matrix.os-name}}.zip ./Release/*
 
     - name: Create Archive (Windows)
       if:  runner.os == 'Windows'
