@@ -1,0 +1,58 @@
+name: .NET Release Linux & Winows
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  Build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        arch-name: [linux-x64, win-64]
+        os-name: [linux, windows]
+        
+    steps:
+    - name: Checkout Latest
+      uses: actions/checkout@v4.1.7
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Add community toolset nuget
+      uses: deitry/add-nuget-source-action@v2
+      with:
+        url: https://pkgs.dev.azure.com/dotnet/CommunityToolkit/_packaging/CommunityToolkit-Labs/nuget/v3/index.json
+
+    - name: Restore the application
+      run: dotnet restore YASAM.sln
+
+    - name: Build Solution
+      run: dotnet publish -r ${{ matrix.arch-name }} -o ./Release --self-contained
+
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: YASAM-${{ matrix.os-name }}
+        path: ./Release
+
+  release:
+    needs: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: YASAM-*/YASAM-*
+          tag_name: ${{ github.ref_name }}
+          body: "Automated release of ${{ github.ref_name }}."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
