@@ -54,11 +54,12 @@ jobs:
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
+
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
           files: YASAM-*
-          tag_name: ${{ github.ref_name }}
-          body: "Automated release of ${{ github.ref_name }}."
+          draft: true
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
