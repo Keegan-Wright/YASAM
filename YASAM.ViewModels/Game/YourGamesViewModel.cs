@@ -25,10 +25,6 @@ public sealed partial class YourGamesViewModel : PageViewModelBase
     private ObservableCollection<GameViewModel> _games = [];
 
     [ObservableProperty] private ObservableCollection<GameViewModel> _gamesToDisplay = [];
-    
-
-
-    [ObservableProperty] private DateTimeOffset? _lastUpdated;
 
     [ObservableProperty] private bool _loading;
     
@@ -102,19 +98,20 @@ public sealed partial class YourGamesViewModel : PageViewModelBase
     private async Task LoadAsync()
     {
         Loading = true;
-        if (!LastUpdated.HasValue || DateTimeOffset.UtcNow - LastUpdated?.UtcDateTime > TimeSpan.FromMinutes(5))
-        {
+        
             var games = _steamApiClient.GetGamesAsync(_selectedUser.SteamUserId!.Value, _selectedUser.ApiKey!);
             var gameVMs = new List<GameViewModel>();
+            
             await foreach (var game in games)
                 gameVMs.Add(new GameViewModel(game.AppId!.Value, game.Name!, game.PlaytimeForever!.Value));
+            
             Games = new ObservableCollection<GameViewModel>(gameVMs.OrderBy(x => x.Name));
-            LastUpdated = DateTimeOffset.UtcNow;
             GamesToDisplay = Games;
-        }
+
         Loading = false;
     }
 
+    
     [RelayCommand]
     private void UpdateFilteredGames(string filter)
     {

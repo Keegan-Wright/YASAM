@@ -48,7 +48,9 @@ public class App : Application
 
             services.AddSingleton<ISukiDialogManager, SukiDialogManager>(_ => new SukiDialogManager());
             services.AddSingleton<ISukiToastManager, SukiToastManager>(_ => new SukiToastManager());
-
+            
+            services.AddMemoryCache();
+            
             var provider = services.BuildServiceProvider();
 
             Ioc.Default.ConfigureServices(provider);
@@ -95,7 +97,7 @@ public class App : Application
     private static void AddViewModels(ServiceCollection services)
     {
         services.AddSingleton<MainWindowViewModel>();
-        services.AddSingleton<YourGamesViewModel>();
+        services.AddTransient<YourGamesViewModel>();
         services.AddSingleton<IdlingGamesViewModel>();
         services.AddSingleton<LandingViewModel>();
         services.AddSingleton<SelectedUserViewModel>();

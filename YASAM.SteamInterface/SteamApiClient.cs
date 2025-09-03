@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using Microsoft.Extensions.Caching.Memory;
 using YASAM.SteamInterface.Models.Api;
 
 namespace YASAM.SteamInterface;
@@ -6,19 +7,29 @@ namespace YASAM.SteamInterface;
 public class SteamApiClient : HttpClient, ISteamApiClient
 {
     private readonly HttpClient _client;
+    private readonly IMemoryCache _memoryCache;
 
-    public SteamApiClient(HttpClient client)
+    public SteamApiClient(HttpClient client, IMemoryCache memoryCache)
     {
         _client = client;
+        _memoryCache = memoryCache;
     }
 
 
     public async IAsyncEnumerable<ApiGame> GetGamesAsync(ulong steamUserId, string steamApiKey)
     {
-        var apiResponse = await _client.GetFromJsonAsync<ApiGetOwnedGames?>(
-            $"/IPlayerService/GetOwnedGames/v0001/?key={steamApiKey}&steamid={steamUserId}&include_played_free_games=true&include_appinfo=true");
-
-        foreach (var game in apiResponse?.Response?.Games!) yield return game;
+        var cacheItem = await _memoryCache.GetOrCreateAsync<ApiGetOwnedGames>($"OwnedGames-{steamUserId}", async cacheEntry =>
+        {
+            cacheEntry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
+            
+            var apiResponse = await _client.GetFromJsonAsync<ApiGetOwnedGames?>(
+                $"/IPlayerService/GetOwnedGames/v0001/?key={steamApiKey}&steamid={steamUserId}&include_played_free_games=true&include_appinfo=true");
+            
+            return apiResponse!;
+        });
+        
+        
+        foreach (var game in cacheItem?.Response?.Games!) yield return game;
     }
 
     public async IAsyncEnumerable<ApiGameAchievement> GetAchievementsAsync(ulong steamUserId, string apiKey, ulong appId)
