@@ -1,5 +1,19 @@
 ﻿using System;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Avalonia;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using SQLitePCL;
+using SukiUI.Dialogs;
+using SukiUI.Toasts;
+using TickerQ.DependencyInjection;
+using YASAM.Data;
+using YASAM.Services.Client;
+using YASAM.SteamInterface;
+using YASAM.ViewModels;
+using YASAM.Views;
 
 namespace YASAM;
 
@@ -9,10 +23,29 @@ internal sealed class Program
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
-        BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+        var builder = App.CreateBuilder(args, BuildAvaloniaApp);
+        var app = builder.Build();
+        await EnsureMigrated(app.Services);
+        _ = app.Run();
+    }
+    
+    private static async Task EnsureMigrated(IServiceProvider appServices)
+    {
+        await using var scope = appServices.CreateAsyncScope();
+        
+        
+        var db = scope.ServiceProvider.GetRequiredService<YasamDbContext>();
+
+        try
+        {
+            await db.Database.MigrateAsync();
+        }
+        catch
+        {
+            await db.Database.EnsureCreatedAsync();
+        }
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
