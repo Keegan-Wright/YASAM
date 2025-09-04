@@ -27,25 +27,7 @@ internal sealed class Program
     {
         var builder = App.CreateBuilder(args, BuildAvaloniaApp);
         var app = builder.Build();
-        await EnsureMigrated(app.Services);
         _ = app.Run();
-    }
-    
-    private static async Task EnsureMigrated(IServiceProvider appServices)
-    {
-        await using var scope = appServices.CreateAsyncScope();
-        
-        
-        var db = scope.ServiceProvider.GetRequiredService<YasamDbContext>();
-
-        try
-        {
-            await db.Database.MigrateAsync();
-        }
-        catch
-        {
-            await db.Database.EnsureCreatedAsync();
-        }
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.

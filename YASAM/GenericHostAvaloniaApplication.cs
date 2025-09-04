@@ -8,6 +8,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.Metrics;
@@ -18,6 +19,10 @@ using SukiUI.Dialogs;
 using SukiUI.Toasts;
 using TickerQ.DependencyInjection;
 using TickerQ.DependencyInjection.Hosting;
+using TickerQ.EntityFrameworkCore.DependencyInjection;
+using TickerQ.Utilities;
+using TickerQ.Utilities.Interfaces.Managers;
+using TickerQ.Utilities.Models.Ticker;
 using YASAM.Data;
 using YASAM.Services.Client;
 using YASAM.SteamInterface;
@@ -52,7 +57,17 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
         builder.Services.AddSingleton<ISukiDialogManager, SukiDialogManager>(_ => new SukiDialogManager());
         builder.Services.AddSingleton<ISukiToastManager, SukiToastManager>(_ => new SukiToastManager());
 
-        builder.Services.AddTickerQ();
+        builder.Services.AddTickerQ(opt =>
+        {
+            opt.UpdateMissedJobCheckDelay(TimeSpan.FromMinutes(5));
+
+            opt.AddOperationalStore<YasamDbContext>(efOpt =>
+            {
+                efOpt.CancelMissedTickersOnAppStart();          
+                efOpt.IgnoreSeedMemoryCronTickers();     
+            });
+        });
+        
         builder.Services.AddHostedService<MyHostedService>();
         
         return builder;
@@ -138,7 +153,32 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
             _hostBuilder.Services.AddHostedService<TAvaloniaApplication>(_ => (TAvaloniaApplication)Current!);
 
             IHost host = _hostBuilder.Build();
+            
+        
+                var db = host.Services.GetRequiredService<YasamDbContext>();
+
+                try
+                {
+                    db.Database.Migrate();
+                }
+                catch
+                {
+                    db.Database.EnsureCreated();
+                }
+         
+            
             host.UseTickerQ();
+            
+            var _cronTickerManager = host.Services.GetRequiredService<ICronTickerManager<CronTicker>>();
+            var a = _cronTickerManager.AddAsync(new CronTicker
+            {
+                Request = TickerHelper.CreateTickerRequest<string>("Hello"),
+                Expression = "* * * * *",
+                Function = "ExampleTicker",
+                Description = $"Short Description",
+                Retries = 3,
+                RetryIntervals = [20, 60, 100] // set in seconds
+            }).Result;
             
             var app = host.Services.GetRequiredService<TAvaloniaApplication>();
 

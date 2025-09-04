@@ -1,7 +1,9 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using TickerQ.Utilities.Base;
+using TickerQ.Utilities.Models;
 
 namespace YASAM;
 
@@ -17,24 +19,9 @@ public class MyHostedService : IHostedService
         return Task.CompletedTask;
     }
     
-    [TickerFunction("ExampleMethod", "* * * * *")]
-    public void ExampleMethod()
+    [TickerFunction("ExampleTicker")]
+    public async Task ExampleTicker(TickerFunctionContext<string> tickerContext, CancellationToken cancellationToken)
     {
-        var a = 1;
+        Console.WriteLine(tickerContext.Request); // Output Hello
     }
-
-    [TickerFunction("DeactivateStaleUsers", "0 0 * * 0")]
-    public void DeactivateStaleUsersAsync()
-    {
-        var a = 1;
-        // Deactivate accounts that haven't been used for a set period.
-    }
-
-    [TickerFunction("CleanUpUserSessions", "0 */2 * * *")]
-    public void CleanUpUserSessions()
-    {
-        var a = 1;
-        // Remove expired or inactive user sessions.
-    }
-    
 }
