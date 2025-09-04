@@ -98,7 +98,7 @@ public class App : Application
     private static void AddViewModels(ServiceCollection services)
     {
         services.AddSingleton<MainWindowViewModel>();
-        services.AddTransient<YourGamesViewModel>();
+        services.AddSingleton<YourGamesViewModel>();
         services.AddSingleton<IdlingGamesViewModel>();
         services.AddSingleton<LandingViewModel>();
         services.AddSingleton<SelectedUserViewModel>();
