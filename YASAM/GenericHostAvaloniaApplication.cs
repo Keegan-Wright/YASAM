@@ -47,7 +47,7 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
         
         Batteries.Init();
         
-        builder.Services.AddDbContext<YasamDbContext>();
+        builder.Services.AddDbContextFactory<YasamDbContext>();
         
         AddWindows(builder.Services);
         AddViews(builder.Services);
@@ -68,7 +68,7 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
             });
         });
         
-        builder.Services.AddHostedService<MyHostedService>();
+        builder.Services.AddHostedService<CronJobRunner>();
         
         return builder;
     }
@@ -155,7 +155,7 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
             IHost host = _hostBuilder.Build();
             
         
-                var db = host.Services.GetRequiredService<YasamDbContext>();
+                var db = host.Services.GetRequiredService<IDbContextFactory<YasamDbContext>>().CreateDbContext();
 
                 try
                 {
@@ -169,17 +169,17 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
             
             host.UseTickerQ();
             
-            var _cronTickerManager = host.Services.GetRequiredService<ICronTickerManager<CronTicker>>();
-            var a = _cronTickerManager.AddAsync(new CronTicker
-            {
-                Request = TickerHelper.CreateTickerRequest<string>("Hello"),
-                Expression = "* * * * *",
-                Function = "ExampleTicker",
-                Description = $"Short Description",
-                Retries = 3,
-                RetryIntervals = [20, 60, 100] // set in seconds
-            }).Result;
-            
+            // var _cronTickerManager = host.Services.GetRequiredService<ICronTickerManager<CronTicker>>();
+            // var a = _cronTickerManager.AddAsync(new CronTicker
+            // {
+            //     Request = TickerHelper.CreateTickerRequest<string>("Hello"),
+            //     Expression = "* * * * *",
+            //     Function = "AutomatedGameIdling",
+            //     Description = $"Short Description",
+            //     Retries = 3,
+            //     RetryIntervals = [20, 60, 100] // set in seconds
+            // }).Result;
+            //
             var app = host.Services.GetRequiredService<TAvaloniaApplication>();
 
             app.Services = host.Services;
