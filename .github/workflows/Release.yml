@@ -43,11 +43,11 @@ jobs:
 
     - name: Create Archive (Linux)
       if: runner.os == 'Linux'
-      run: zip YASAM-${{matrix.os-name}}.zip ./Release/*
+      run: cd Release && zip -r YASAM-${{matrix.os-name}}.zip ./* && cd ../
 
     - name: Create Archive (Windows)
       if:  runner.os == 'Windows'
-      run: tar -caf YASAM-${{matrix.os-name}}.zip ./Release
+      run: tar -caf YASAM-${{matrix.os-name}}.zip -C Release/ *
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
