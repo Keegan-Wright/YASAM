@@ -36,7 +36,8 @@
                                     <controls:GameCard 
                                         DisplayIdle="False"
                                         DisplayStop="False"
-                                        DisplayAchievements="False">
+                                        DisplayAchievements="False"
+                                        DisplaySteamStore="True">
                                         <Interaction.Behaviors>
                                             <RoutedEventTriggerBehavior
                                                 RoutedEvent="{x:Static  controls:GameCard.ShowInSteamEvent}">
