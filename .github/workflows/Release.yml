@@ -15,11 +15,11 @@ jobs:
         include:
           - os: ubuntu-latest
             arch-name: linux-x64
-            os-name: linux
+            os-name: Linux
 
           - os: windows-latest
             arch-name: win-x64
-            os-name: windows
+            os-name: Windows
         
     steps:
     - name: Checkout Latest
@@ -43,7 +43,7 @@ jobs:
 
     - name: Create Archive (Linux)
       if: runner.os == 'Linux'
-      run: cd Release && zip -r YASAM-${{matrix.os-name}}.zip ./* && cd ../
+      run: cd Release && zip -r ../YASAM-${{matrix.os-name}}.zip ./* && cd ../
 
     - name: Create Archive (Windows)
       if:  runner.os == 'Windows'
