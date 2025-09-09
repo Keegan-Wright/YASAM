@@ -12,6 +12,8 @@ public class YasamDbContext : DbContext
     public DbSet<CronTickerEntity> CronTickers { get; set; }
     public DbSet<TimeTickerEntity> TimeTickers { get; set; }
     public DbSet<CronTickerOccurrenceEntity<CronTickerEntity>> CronTickerOccurrences { get; set; }
+    
+    public DbSet<AutomaticIdlingConfiguration> AutomaticIdlingConfigurations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

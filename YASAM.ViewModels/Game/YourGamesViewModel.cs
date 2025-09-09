@@ -81,14 +81,23 @@ public sealed partial class YourGamesViewModel : PageViewModelBase
         var achievementsViewModel = Ioc.Default.GetRequiredService<GameAchievementsViewModel>();
         achievementsViewModel.AppId = vm.AppId;
 
-        _dialogManager.CreateDialog()
-            .WithViewModel(s =>
-            {
-                s.ShowCardBackground = true;
-                s.CanDismissWithBackgroundClick = true;
-                return achievementsViewModel;
-            })
-            .TryShow();
+        try
+        {
+            var a =_dialogManager.CreateDialog()
+                .WithViewModel(s =>
+                {
+                    s.ShowCardBackground = true;
+                    s.CanDismissWithBackgroundClick = true;
+                    return achievementsViewModel;
+                })
+                .TryShow();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
     }
 
     [RelayCommand]

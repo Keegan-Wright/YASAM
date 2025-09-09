@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 using YASAM.SteamInterface.Models.Api;
 
 namespace YASAM.SteamInterface;
@@ -13,22 +14,22 @@ public class SteamApiClient : HttpClient, ISteamApiClient
     }
 
 
-    public async IAsyncEnumerable<ApiGame> GetGamesAsync(ulong steamUserId, string steamApiKey)
+    public async IAsyncEnumerable<ApiGame> GetGamesAsync(ulong steamUserId, string steamApiKey, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         var apiResponse = await _client.GetFromJsonAsync<ApiGetOwnedGames?>(
-            $"/IPlayerService/GetOwnedGames/v0001/?key={steamApiKey}&steamid={steamUserId}&include_played_free_games=true&include_appinfo=true");
+            $"/IPlayerService/GetOwnedGames/v0001/?key={steamApiKey}&steamid={steamUserId}&include_played_free_games=true&include_appinfo=true", cancellationToken);
 
         foreach (var game in apiResponse?.Response?.Games!) yield return game;
     }
 
-    public async IAsyncEnumerable<ApiGameAchievement> GetAchievementsAsync(ulong steamUserId, string apiKey, ulong appId)
+    public async IAsyncEnumerable<ApiGameAchievement> GetAchievementsAsync(ulong steamUserId, string apiKey, ulong appId, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         var gameSchemaApiTask =
             _client.GetFromJsonAsync<ApiSchemaForGameResponse>(
-                $"ISteamUserStats/GetSchemaForGame/v0002/?appid={appId}&key={apiKey}&l=en-gb");
+                $"ISteamUserStats/GetSchemaForGame/v0002/?appid={appId}&key={apiKey}&l=en-gb",cancellationToken);
 
         var achievementsApiTask = _client.GetFromJsonAsync<ApiAchievementsForGameResponse?>(
-            $"/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appId}&key={apiKey}&steamid={steamUserId}&l=en");
+            $"/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appId}&key={apiKey}&steamid={steamUserId}&l=en", cancellationToken);
 
         await Task.WhenAll(gameSchemaApiTask, achievementsApiTask);
 

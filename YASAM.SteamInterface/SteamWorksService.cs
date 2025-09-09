@@ -8,51 +8,51 @@ namespace YASAM.SteamInterface;
 public class SteamWorksService : ISteamWorksService
 {
     private readonly Dictionary<ulong, IdlingGame> _idlingGames = new();
-    public Task<bool> LockAchievements(ulong appId, IEnumerable<string> achievementIds)
+    public async Task<bool> LockAchievements(ulong appId, IEnumerable<string> achievementIds, CancellationToken cancellationToken = default)
     {
         var enumerable = achievementIds.ToFrozenSet();
         
         if (!enumerable.Any())
-            return Task.FromResult(true);
+            return true;
 
         var args = $"{string.Join(" ", enumerable)}";
         var process = InvokeSteamCommand(appId, SteamUtilityCommandType.LockAchievements, args);
-        process.WaitForExit();
+        await process.WaitForExitAsync(cancellationToken);
         var result = process.ExitCode == 0;
         process.Dispose();
-        return Task.FromResult(result);
+        return result;
     }
 
-    public Task<bool> UnlockAchievements(ulong appId, IEnumerable<string> achievementIds)
+    public async Task<bool> UnlockAchievements(ulong appId, IEnumerable<string> achievementIds, CancellationToken cancellationToken = default)
     {
         var enumerable = achievementIds.ToFrozenSet();
         if (!enumerable.Any())
-            return Task.FromResult(true);
+            return true;
 
         var args = $"{string.Join(" ", enumerable)}";
         var process = InvokeSteamCommand(appId, SteamUtilityCommandType.UnlockAchievements, args);
-        process.WaitForExit();
+        await process.WaitForExitAsync(cancellationToken);
         var result = process.ExitCode == 0;
         process.Dispose();
-        return Task.FromResult(result);
+        return result;
     }
 
-    public Task<bool> LockAllAchievements(ulong appId)
+    public async Task<bool> LockAllAchievements(ulong appId, CancellationToken cancellationToken = default)
     {
         var process = InvokeSteamCommand(appId, SteamUtilityCommandType.LockAllAchievements);
-        process.WaitForExit();
+        await process.WaitForExitAsync(cancellationToken);
         var result = process.ExitCode == 0;
         process.Dispose();
-        return Task.FromResult(result);
+        return result;
     }
 
-    public Task<bool> UnlockAllAchievements(ulong appId)
+    public async Task<bool> UnlockAllAchievements(ulong appId, CancellationToken cancellationToken = default)
     {
         var process = InvokeSteamCommand(appId, SteamUtilityCommandType.UnlockAllAchievements);
-        process.WaitForExit();
+        await process.WaitForExitAsync(cancellationToken);;
         var result = process.ExitCode == 0;
         process.Dispose();
-        return Task.FromResult(result);
+        return result;
     }
 
     public Task<bool> IdleGame(GameToInvoke gameToInvoke)

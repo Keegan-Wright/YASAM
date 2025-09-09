@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using HtmlAgilityPack;
 using YASAM.SteamInterface.Executor;
 using YASAM.SteamInterface.Models.Api;
@@ -15,13 +16,13 @@ public class SteamStoreClient : HttpClient, ISteamStoreClient
         _client = client;
     }
 
-    public async IAsyncEnumerable<SteamFreeGame> GetFreeGamesAsync()
+    public async IAsyncEnumerable<SteamFreeGame> GetFreeGamesAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         var responseBody =
-            await _client.GetAsync("search/?l=english&maxprice=free&specials=1&category1=998");
+            await _client.GetAsync("search/?l=english&maxprice=free&specials=1&category1=998", cancellationToken);
 
         var htmlDoc = new HtmlDocument();
-        htmlDoc.LoadHtml(await responseBody.Content.ReadAsStringAsync());
+        htmlDoc.LoadHtml(await responseBody.Content.ReadAsStringAsync(cancellationToken));
         
         var nodes = htmlDoc.DocumentNode.SelectNodes(
             "/html/body/div[1]/div[7]/div[6]/form/div[1]/div/div[1]/div[3]/div[2]/div[3]/a");
@@ -42,7 +43,7 @@ public class SteamStoreClient : HttpClient, ISteamStoreClient
         }
     }
 
-    public void OpenStorePage(ulong appId, string gameName)
+    public async Task OpenStorePage(ulong appId, string gameName, CancellationToken cancellationToken = default)
     {
         var formattedGameName = gameName
             .Replace(" ", "_")
@@ -55,6 +56,6 @@ public class SteamStoreClient : HttpClient, ISteamStoreClient
         proc.StartInfo.FileName = OperatingSystem.IsWindows() ? "cmd" : "/bin/bash";
         proc.StartInfo.Arguments = $"-c \"steam steam://openurl/{_client.BaseAddress}/app/{appId}/{formattedGameName}";
         proc.Start();
-        proc.WaitForExit();
+        await proc.WaitForExitAsync(cancellationToken);
     }
 }

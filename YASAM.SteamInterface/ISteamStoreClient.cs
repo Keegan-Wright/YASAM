@@ -4,6 +4,6 @@ namespace YASAM.SteamInterface;
 
 public interface ISteamStoreClient
 {
-    IAsyncEnumerable<SteamFreeGame> GetFreeGamesAsync();
-    void OpenStorePage(ulong appId, string gameName);
+    IAsyncEnumerable<SteamFreeGame> GetFreeGamesAsync(CancellationToken cancellationToken = default);
+    Task OpenStorePage(ulong appId, string gameName, CancellationToken cancellationToken = default);
 }
