@@ -24,19 +24,33 @@ public class SteamApiClient : HttpClient, ISteamApiClient
 
     public async IAsyncEnumerable<ApiGameAchievement> GetAchievementsAsync(ulong steamUserId, string apiKey, ulong appId, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var gameSchemaApiTask =
-            _client.GetFromJsonAsync<ApiSchemaForGameResponse>(
-                $"ISteamUserStats/GetSchemaForGame/v0002/?appid={appId}&key={apiKey}&l=en-gb",cancellationToken);
+        var apiAchivements = new ApiAchievementsForGameResponse();
+        var schema = new ApiSchemaForGameResponse();
+        try
+        {
+            var gameSchemaApiTask =
+                _client.GetFromJsonAsync<ApiSchemaForGameResponse>(
+                    $"ISteamUserStats/GetSchemaForGame/v0002/?appid={appId}&key={apiKey}&l=en-gb", cancellationToken);
 
-        var achievementsApiTask = _client.GetFromJsonAsync<ApiAchievementsForGameResponse?>(
-            $"/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appId}&key={apiKey}&steamid={steamUserId}&l=en", cancellationToken);
+            var achievementsApiTask = _client.GetFromJsonAsync<ApiAchievementsForGameResponse?>(
+                $"/ISteamUserStats/GetPlayerAchievements/v0001/?appid={appId}&key={apiKey}&steamid={steamUserId}&l=en", cancellationToken);
 
-        await Task.WhenAll(gameSchemaApiTask, achievementsApiTask);
+            await Task.WhenAll(gameSchemaApiTask, achievementsApiTask);
 
-        foreach (var achievement in achievementsApiTask.Result?.PlayerStats?.Achievements!)
+            apiAchivements = await achievementsApiTask;
+            schema = await gameSchemaApiTask;
+        }
+        catch
+        {
+            yield break;
+        }
+
+
+
+        foreach (var achievement in apiAchivements?.PlayerStats?.Achievements ?? [])
         {
             var matchingSchemaItem =
-                (gameSchemaApiTask.Result?.Game?.AvailableGameStats?.Achievements!).FirstOrDefault(x =>
+                (schema.Game?.AvailableGameStats?.Achievements!).FirstOrDefault(x =>
                     x.Name == achievement.ApiName);
 
             if (matchingSchemaItem != null)

@@ -11,7 +11,7 @@
 
     <sukiUi:GlassCard>
         <Grid
-            ColumnDefinitions="auto,*, Auto"
+            ColumnDefinitions="*,2*, Auto"
             Width="300"
             RowSpacing="10"
             ColumnSpacing="10">
