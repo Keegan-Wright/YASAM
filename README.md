@@ -13,12 +13,15 @@ with Avalonia on .NET.
     - Bulk unlock/lock selected achievements
     - Unlock/lock all achievements for a game
 - Free game alerts
+- Task automation and scheduling via cron jobs
+    - Set games to automatically idle on a set schedule
+    - Games will stop idling after the idle time has been hit
 
 ### Planned
 
 - Automatic trading card farming
 - Automatic card trading
-- Task automation and scheduling via cron jobs
+
 
 ## Requirements
 
@@ -126,7 +129,7 @@ This project wouldn't be possible without these amazing open-source tools and li
   applications
 - [SukiUI](https://github.com/kikipoulet/SukiUI) - Extensive UI component library
 - [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) - A wrapper around Steams API
--[TickerQ](https://tickerq.net/) - Mordern background task scheduler
+- [TickerQ](https://tickerq.net/) - Mordern background task scheduler
 
 ## Inspiration
 
