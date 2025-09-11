@@ -126,6 +126,7 @@ This project wouldn't be possible without these amazing open-source tools and li
   applications
 - [SukiUI](https://github.com/kikipoulet/SukiUI) - Extensive UI component library
 - [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) - A wrapper around Steams API
+-[TickerQ](https://tickerq.net/) - Mordern background task scheduler
 
 ## Inspiration
 
