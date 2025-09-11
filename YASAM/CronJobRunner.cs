@@ -34,15 +34,23 @@ public class CronJobRunner : IHostedService
         return Task.CompletedTask;
     }
     
-    [TickerFunction("AutomatedGameIdling")]
-    public async Task AutomatedGameIdling(TickerFunctionContext context, CancellationToken cancellationToken)
+    
+    [TickerFunction("ExampleTicker")]
+    public async Task ExampleTicker(TickerFunctionContext<string> tickerContext, CancellationToken cancellationToken)
     {
-        await using var serviceScope = _serviceProvider.CreateAsyncScope();
-        
+        Console.WriteLine(tickerContext.Request); // Output Hello
+    }
+    
+    [TickerFunction("AutomatedGameIdling")]
+    public async Task AutomatedGameIdling(TickerFunctionContext<string> context, CancellationToken cancellationToken)
+    {
+        var a = 1;
+        /*await using var serviceScope = _serviceProvider.CreateAsyncScope();
+
         var dbFactory = serviceScope.ServiceProvider.GetRequiredService<IDbContextFactory<YasamDbContext>>();
         var steamworksService = _serviceProvider.GetRequiredService<ISteamWorksService>();
         var tickerTimerManager = _serviceProvider.GetRequiredService<ITimeTickerManager<TimeTicker>>();
-        
+
         await using var db = await dbFactory.CreateDbContextAsync(cancellationToken);
 
         var gamesToIdle = db.AutomaticIdlingConfigurations
@@ -62,15 +70,15 @@ public class CronJobRunner : IHostedService
                 Retries = 3,
                 RetryIntervals = [20, 60, 100]
             }, cancellationToken);
-        }
+        }*/
     }
 
     [TickerFunction("AutomatedStopIdlingGame")]
     public async Task AutomatedStopIdlingGame(TickerFunctionContext<ulong> context, CancellationToken cancellationToken)
     {
-        await using var serviceScope = _serviceProvider.CreateAsyncScope();
-        var steamworksService = _serviceProvider.GetRequiredService<ISteamWorksService>();
-
-        steamworksService.StopIdlingGame(new GameToInvoke(context.Request, ""));
+        // await using var serviceScope = _serviceProvider.CreateAsyncScope();
+        // var steamworksService = _serviceProvider.GetRequiredService<ISteamWorksService>();
+        //
+        // steamworksService.StopIdlingGame(new GameToInvoke(context.Request, ""));
     }
 }

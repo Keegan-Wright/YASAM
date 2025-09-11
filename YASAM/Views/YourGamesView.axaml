@@ -68,7 +68,7 @@
                                             <RoutedEventTriggerBehavior
                                                 RoutedEvent="{x:Static  controls:GameCard.ShowAchievementsEvent}">
                                                 <InvokeCommandAction
-                                                    Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).ShowAchievementsCommand}"
+                                                    Command="{Binding $parent[ItemsControl].((vm:YourGamesViewModel)DataContext).ShowAchievementsCommand, Mode=OneTime}"
                                                     CommandParameter="{Binding }" />
                                             </RoutedEventTriggerBehavior>
                                             

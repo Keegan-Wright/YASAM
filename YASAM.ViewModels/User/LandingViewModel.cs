@@ -15,6 +15,9 @@ public sealed partial class LandingViewModel : PageViewModelBase
     [ObservableProperty] private string? _newUserSteamApiKey;
 
     [ObservableProperty] private ulong? _newUserSteamId;
+    
+    [ObservableProperty] private bool _loading;
+
 
     [ObservableProperty] private ObservableCollection<TrackedUserViewModel> _trackedUsers = [];
 
@@ -31,7 +34,9 @@ public sealed partial class LandingViewModel : PageViewModelBase
     {
         if (TrackedUsers.Any())
             return;
-
+        
+        Loading = true;
+        
         await foreach (var user in _userService.GetTrackedUsersAsync())
             TrackedUsers.Add(new TrackedUserViewModel
             {
@@ -40,6 +45,8 @@ public sealed partial class LandingViewModel : PageViewModelBase
                 SteamUserId = user.SteamId,
                 ApiKey = user.ApiKey
             });
+        
+        Loading = false;
     }
 
     [RelayCommand]

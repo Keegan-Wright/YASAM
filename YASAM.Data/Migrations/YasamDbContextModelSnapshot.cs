@@ -15,7 +15,7 @@ namespace YASAM.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
 
             modelBuilder.Entity("TickerQ.EntityFrameworkCore.Entities.CronTickerEntity", b =>
                 {
@@ -184,38 +184,6 @@ namespace YASAM.Data.Migrations
                     b.ToTable("TimeTickers", "ticker");
                 });
 
-            modelBuilder.Entity("YASAM.Data.Models.AutomaticIdlingConfiguration", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<ulong>("AppId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("CronTickerId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GameName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("IdleTime")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset>("Updated")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CronTickerId");
-
-                    b.ToTable("AutomaticIdlingConfigurations");
-                });
-
             modelBuilder.Entity("YASAM.Data.Models.TrackedSteamUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -243,7 +211,7 @@ namespace YASAM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("TickerQ.EntityFrameworkCore.Entities.CronTickerOccurrenceEntity<TickerQ.EntityFrameworkCore.Entities.CronTickerEntity>", b =>
@@ -265,17 +233,6 @@ namespace YASAM.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ParentJob");
-                });
-
-            modelBuilder.Entity("YASAM.Data.Models.AutomaticIdlingConfiguration", b =>
-                {
-                    b.HasOne("TickerQ.EntityFrameworkCore.Entities.CronTickerEntity", "CronTicker")
-                        .WithMany()
-                        .HasForeignKey("CronTickerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CronTicker");
                 });
 
             modelBuilder.Entity("TickerQ.EntityFrameworkCore.Entities.TimeTickerEntity", b =>

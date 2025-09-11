@@ -10,7 +10,5 @@ public class AutomaticIdlingConfiguration : BaseEntity
     public int IdleTime { get; set; }
     
     public Guid CronTickerId { get; set; }
-    
-    
     public virtual CronTickerEntity CronTicker { get; set; }
 }

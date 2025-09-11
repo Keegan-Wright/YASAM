@@ -18,7 +18,9 @@
 
 
     <sukiUi:GlassCard Margin="10">
-        <Grid RowDefinitions="Auto, *">
+        
+        <sukiUi:BusyArea BusyText="Loading Users" IsBusy="{Binding Loading}">
+                    <Grid RowDefinitions="Auto, *">
 
             <sukiUi:GlassCard IsInteractive="True">
                 <StackPanel>
@@ -55,7 +57,7 @@
                     <Button Name="ButtonSignIn"
                             Width="160"
                             Height="40"
-                            Margin="0,0,0,7"
+                            Margin="0,10,0,10"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
                             Classes="Flat Rounded"
@@ -100,5 +102,6 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Grid>
+        </sukiUi:BusyArea>
     </sukiUi:GlassCard>
 </UserControl>

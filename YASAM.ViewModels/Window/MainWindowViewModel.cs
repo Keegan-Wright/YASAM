@@ -29,7 +29,7 @@ public partial class MainWindowViewModel : ViewModelBase
             Ioc.Default.GetRequiredService<LandingViewModel>()
         ];
 
-        _activePage = Ioc.Default.GetRequiredService<LandingViewModel>();
+        ActivePage = Ioc.Default.GetRequiredService<LandingViewModel>();
         _selectedUserViewModel.SelectedUserUpdated += SelectUser;
     }
 
@@ -45,7 +45,8 @@ public partial class MainWindowViewModel : ViewModelBase
                 Ioc.Default.GetRequiredService<LandingViewModel>(),
                 Ioc.Default.GetRequiredService<YourGamesViewModel>(),
                 Ioc.Default.GetRequiredService<IdlingGamesViewModel>(),
-                Ioc.Default.GetRequiredService<FreeGamesViewModel>()
+                Ioc.Default.GetRequiredService<FreeGamesViewModel>(),
+                Ioc.Default.GetRequiredService<AutomationsViewModel>()
             ];
         HasSelectedUser = true;
         ActivePage = Ioc.Default.GetRequiredService<YourGamesViewModel>();

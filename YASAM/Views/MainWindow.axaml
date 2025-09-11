@@ -26,10 +26,11 @@
         ItemsSource="{Binding PageList}"
         SelectedItem="{Binding ActivePage}"
         IsSearchEnabled="False"
-        SidebarToggleEnabled="False">
+        SidebarToggleEnabled="False"
+        Padding="0 10">
         <sukiUi:SukiSideMenu.ItemTemplate>
             <DataTemplate>
-                <sukiUi:SukiSideMenuItem Classes="Compact" Header="{Binding DisplayName}" />
+                <sukiUi:SukiSideMenuItem Header="{Binding DisplayName}" />
             </DataTemplate>
         </sukiUi:SukiSideMenu.ItemTemplate>
     </sukiUi:SukiSideMenu>

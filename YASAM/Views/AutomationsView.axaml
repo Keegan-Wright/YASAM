@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:YASAM.ViewModels;assembly=YASAM.ViewModels"
+             xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="YASAM.Views.AutomationsView"
+             x:DataType="vm:AutomationsViewModel">
+
+    <Interaction.Behaviors>
+        <RoutedEventTriggerBehavior
+            RoutedEvent="{x:Static  Control.LoadedEvent}">
+            <InvokeCommandAction
+                Command="{Binding LoadCommand, Mode=OneTime}" />
+        </RoutedEventTriggerBehavior>
+    </Interaction.Behaviors>
+
+                <sukiUi:BusyArea BusyText="Loading Your Automations" IsBusy="{Binding Loading}">
+                    <StackPanel>
+                        <ItemsControl ItemsSource="{Binding Automations}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel HorizontalAlignment="Center" ItemSpacing="10" LineSpacing="10" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </sukiUi:BusyArea>
+</UserControl>

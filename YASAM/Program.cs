@@ -9,6 +9,7 @@ using SQLitePCL;
 using SukiUI.Dialogs;
 using SukiUI.Toasts;
 using TickerQ.DependencyInjection;
+using TickerQ.Utilities.Interfaces;
 using YASAM.Data;
 using YASAM.Services.Client;
 using YASAM.SteamInterface;
@@ -28,6 +29,8 @@ internal sealed class Program
         var builder = App.CreateBuilder(args, BuildAvaloniaApp);
         var app = builder.Build();
         _ = app.Run();
+
+
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.

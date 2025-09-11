@@ -21,6 +21,8 @@ using TickerQ.DependencyInjection;
 using TickerQ.DependencyInjection.Hosting;
 using TickerQ.EntityFrameworkCore.DependencyInjection;
 using TickerQ.Utilities;
+using TickerQ.Utilities.Enums;
+using TickerQ.Utilities.Interfaces;
 using TickerQ.Utilities.Interfaces.Managers;
 using TickerQ.Utilities.Models.Ticker;
 using YASAM.Data;
@@ -67,6 +69,7 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
                 efOpt.IgnoreSeedMemoryCronTickers();     
             });
         });
+        
         
         builder.Services.AddHostedService<CronJobRunner>();
         
@@ -150,8 +153,9 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
             _appBuilder.SetupWithClassicDesktopLifetime(_args, lifetimeBuilder);
 
 
+            
             _hostBuilder.Services.AddHostedService<TAvaloniaApplication>(_ => (TAvaloniaApplication)Current!);
-
+            
             IHost host = _hostBuilder.Build();
             
         
@@ -168,18 +172,27 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
          
             
             host.UseTickerQ();
+
+            var _cronTickerManager = host.Services.GetRequiredService<ICronTickerManager<CronTicker>>();
+            var a = _cronTickerManager.AddAsync(new CronTicker
+            {
+                Expression = "* * * * *",
+                Function = nameof(CronJobRunner.AutomatedGameIdling),
+                Description = $"Short Description 2",
+                Retries = 3,
+                RetryIntervals = [20, 60, 100] // set in seconds
+            }).Result;
             
-            // var _cronTickerManager = host.Services.GetRequiredService<ICronTickerManager<CronTicker>>();
-            // var a = _cronTickerManager.AddAsync(new CronTicker
-            // {
-            //     Request = TickerHelper.CreateTickerRequest<string>("Hello"),
-            //     Expression = "* * * * *",
-            //     Function = "AutomatedGameIdling",
-            //     Description = $"Short Description",
-            //     Retries = 3,
-            //     RetryIntervals = [20, 60, 100] // set in seconds
-            // }).Result;
-            //
+            var b =  _cronTickerManager.AddAsync(new CronTicker
+            {
+                Request = TickerHelper.CreateTickerRequest<string>("Hello"),
+                Expression = "* * * * *",
+                Function = nameof(CronJobRunner.ExampleTicker),
+                Description = $"Short Description",
+                Retries = 3,
+                RetryIntervals = [20, 60, 100] // set in seconds
+            }).Result;
+            
             var app = host.Services.GetRequiredService<TAvaloniaApplication>();
 
             app.Services = host.Services;
@@ -214,6 +227,7 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
         services.AddSingleton<SelectedUserViewModel>();
         services.AddSingleton<GameAchievementsViewModel>();
         services.AddSingleton<FreeGamesViewModel>();
+        services.AddSingleton<AutomationsViewModel>();
     }
 
     private static void AddWindows(IServiceCollection services)
@@ -228,11 +242,14 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
         services.AddSingleton<LandingView>();
         services.AddSingleton<GameAchievementsView>();
         services.AddSingleton<FreeGamesView>();
+        services.AddSingleton<AutomationsView>();
     }
 
     private static void AddServices(IServiceCollection services)
     {
         services.AddSingleton<IUserService, UserService>();
+        services.AddSingleton<IAutomationService, AutomationService>();
+        
         services.AddHttpClient<ISteamApiClient, SteamApiClient>(client =>
         {
             client.BaseAddress = new Uri("http://api.steampowered.com/");
