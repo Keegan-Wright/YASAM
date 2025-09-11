@@ -53,6 +53,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\YASAM.CronModels\YASAM.CronModels.csproj" />
         <ProjectReference Include="..\YASAM.Data\YASAM.Data.csproj" />
         <ProjectReference Include="..\YASAM.Services.Client\YASAM.Services.Client.csproj" />
         <ProjectReference Include="..\YASAM.ViewModels\YASAM.ViewModels.csproj" />

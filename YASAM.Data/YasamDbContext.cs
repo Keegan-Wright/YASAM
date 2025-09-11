@@ -13,7 +13,7 @@ public class YasamDbContext : DbContext
     public DbSet<TimeTickerEntity> TimeTickers { get; set; }
     public DbSet<CronTickerOccurrenceEntity<CronTickerEntity>> CronTickerOccurrences { get; set; }
     
-    //public DbSet<AutomaticIdlingConfiguration> AutomaticIdlingConfigurations { get; set; }
+    public DbSet<AutomaticIdlingConfiguration> AutomaticIdlingConfigurations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

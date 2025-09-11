@@ -12,4 +12,10 @@
         <ProjectReference Include="..\YASAM.Data\YASAM.Data.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="TickerQ.EntityFrameworkCore">
+        <HintPath>..\..\..\.nuget\packages\tickerq.entityframeworkcore\2.5.3\lib\netstandard2.1\TickerQ.EntityFrameworkCore.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

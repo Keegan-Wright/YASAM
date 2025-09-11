@@ -20,14 +20,13 @@ public class AutomationService : IAutomationService
     {
         await using var db = await _dbContextFactory.CreateDbContextAsync();
 
-        yield break;
         
-        // var query = db.AutomaticIdlingConfigurations
-        //     .Include(x => x.CronTicker).AsAsyncEnumerable();
-        //
-        // await foreach (var automaticIdlingConfiguration in query)
-        // {
-        //     yield return automaticIdlingConfiguration;
-        // }
+        var query = db.AutomaticIdlingConfigurations
+            .Include(x => x.CronTicker).AsAsyncEnumerable();
+        
+        await foreach (var automaticIdlingConfiguration in query)
+        {
+            yield return automaticIdlingConfiguration;
+        }
     }
 }

@@ -172,27 +172,18 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
          
             
             host.UseTickerQ();
+            
+            
+            // var _cronTickerManager = host.Services.GetRequiredService<ICronTickerManager<CronTicker>>();
+            // var a = _cronTickerManager.AddAsync(new CronTicker
+            // {
+            //     Expression = "* * * * *",
+            //     Function = nameof(CronJobRunner.AutomatedGameIdling),
+            //     Description = $"Short Description 2",
+            //     Retries = 3,
+            //     RetryIntervals = [20, 60, 100] // set in seconds
+            // }).Result;
 
-            var _cronTickerManager = host.Services.GetRequiredService<ICronTickerManager<CronTicker>>();
-            var a = _cronTickerManager.AddAsync(new CronTicker
-            {
-                Expression = "* * * * *",
-                Function = nameof(CronJobRunner.AutomatedGameIdling),
-                Description = $"Short Description 2",
-                Retries = 3,
-                RetryIntervals = [20, 60, 100] // set in seconds
-            }).Result;
-            
-            var b =  _cronTickerManager.AddAsync(new CronTicker
-            {
-                Request = TickerHelper.CreateTickerRequest<string>("Hello"),
-                Expression = "* * * * *",
-                Function = nameof(CronJobRunner.ExampleTicker),
-                Description = $"Short Description",
-                Retries = 3,
-                RetryIntervals = [20, 60, 100] // set in seconds
-            }).Result;
-            
             var app = host.Services.GetRequiredService<TAvaloniaApplication>();
 
             app.Services = host.Services;
