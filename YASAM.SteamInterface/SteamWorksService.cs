@@ -70,6 +70,7 @@ public class SteamWorksService : ISteamWorksService
     public bool StopIdlingGame(GameToInvoke gameToInvoke)
     {
         var process = Process.GetProcessById(_idlingGames[gameToInvoke.AppId].ProcessId);
+        
         process.Kill();
         process.Dispose();
         _idlingGames.Remove(gameToInvoke.AppId);

@@ -36,12 +36,6 @@ public class CronJobRunner : IHostedService
     }
     
     
-    [TickerFunction("ExampleTicker")]
-    public async Task ExampleTicker(TickerFunctionContext<string> tickerContext, CancellationToken cancellationToken)
-    {
-        Console.WriteLine(tickerContext.Request); // Output Hello
-    }
-    
     [TickerFunction("AutomatedGameIdling")]
     public async Task AutomatedGameIdling(TickerFunctionContext<string> context, CancellationToken cancellationToken)
     {
