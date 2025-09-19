@@ -56,6 +56,7 @@
         <ProjectReference Include="..\YASAM.CronModels\YASAM.CronModels.csproj" />
         <ProjectReference Include="..\YASAM.Data\YASAM.Data.csproj" />
         <ProjectReference Include="..\YASAM.Services.Client\YASAM.Services.Client.csproj" />
+        <ProjectReference Include="..\YASAM.SourceGenerators\YASAM.SourceGenerators\YASAM.SourceGenerators.csproj" OutputItemType="Analyzer" />
         <ProjectReference Include="..\YASAM.ViewModels\YASAM.ViewModels.csproj" />
     </ItemGroup>
 

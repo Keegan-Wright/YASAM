@@ -20,20 +20,16 @@ using SukiUI.Toasts;
 using TickerQ.DependencyInjection;
 using TickerQ.DependencyInjection.Hosting;
 using TickerQ.EntityFrameworkCore.DependencyInjection;
-using TickerQ.Utilities;
-using TickerQ.Utilities.Enums;
-using TickerQ.Utilities.Interfaces;
-using TickerQ.Utilities.Interfaces.Managers;
-using TickerQ.Utilities.Models.Ticker;
 using YASAM.Data;
 using YASAM.Services.Client;
 using YASAM.SteamInterface;
 using YASAM.ViewModels;
 using YASAM.Views;
 
+
 namespace YASAM;
 
-public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : Application, IHostedService
+public abstract partial class GenericHostAvaloniaApplication<TAvaloniaApplication> : Application, IHostedService
     where TAvaloniaApplication : GenericHostAvaloniaApplication<TAvaloniaApplication>, new()
 {
     public IServiceProvider Services { get; private set; } = default!;
@@ -220,27 +216,17 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
         services.AddSingleton<FreeGamesViewModel>();
         services.AddSingleton<AutomationsViewModel>();
     }
-
-    private static void AddWindows(IServiceCollection services)
-    {
-        services.AddSingleton<MainWindow>();
-    }
-
-    private static void AddViews(IServiceCollection services)
-    {
-        services.AddSingleton<YourGamesView>();
-        services.AddSingleton<IdlingGamesView>();
-        services.AddSingleton<LandingView>();
-        services.AddSingleton<GameAchievementsView>();
-        services.AddSingleton<FreeGamesView>();
-        services.AddSingleton<AutomationsView>();
-    }
+    
 
     private static void AddServices(IServiceCollection services)
     {
         services.AddSingleton<IUserService, UserService>();
         services.AddSingleton<IAutomationService, AutomationService>();
-        
+        services.AddSingleton<ISteamWorksService, SteamWorksService>();
+    }
+
+    private static void AddHttpClients(IServiceCollection services)
+    {
         services.AddHttpClient<ISteamApiClient, SteamApiClient>(client =>
         {
             client.BaseAddress = new Uri("http://api.steampowered.com/");
@@ -251,7 +237,6 @@ public abstract class GenericHostAvaloniaApplication<TAvaloniaApplication> : App
         {
             client.BaseAddress = new Uri("https://store.steampowered.com/");
         });
-        services.AddSingleton<ISteamWorksService, SteamWorksService>();
     }
     
 }
