@@ -51,6 +51,7 @@ public abstract partial class GenericHostAvaloniaApplication<TAvaloniaApplicatio
         AddViews(builder.Services);
         AddViewModels(builder.Services);
         AddServices(builder.Services);
+        AddHttpClients(builder.Services);
         
         builder.Services.AddSingleton<ISukiDialogManager, SukiDialogManager>(_ => new SukiDialogManager());
         builder.Services.AddSingleton<ISukiToastManager, SukiToastManager>(_ => new SukiToastManager());
@@ -203,26 +204,6 @@ public abstract partial class GenericHostAvaloniaApplication<TAvaloniaApplicatio
         }
 
 
-    }
-    
-    private static void AddViewModels(IServiceCollection services)
-    {
-        services.AddSingleton<MainWindowViewModel>();
-        services.AddSingleton<YourGamesViewModel>();
-        services.AddSingleton<IdlingGamesViewModel>();
-        services.AddSingleton<LandingViewModel>();
-        services.AddSingleton<SelectedUserViewModel>();
-        services.AddSingleton<GameAchievementsViewModel>();
-        services.AddSingleton<FreeGamesViewModel>();
-        services.AddSingleton<AutomationsViewModel>();
-    }
-    
-
-    private static void AddServices(IServiceCollection services)
-    {
-        services.AddSingleton<IUserService, UserService>();
-        services.AddSingleton<IAutomationService, AutomationService>();
-        services.AddSingleton<ISteamWorksService, SteamWorksService>();
     }
 
     private static void AddHttpClients(IServiceCollection services)
